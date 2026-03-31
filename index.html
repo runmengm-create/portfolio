@@ -115,10 +115,8 @@ nav.solid{background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bot
 .proj-card-img{border-radius:6px;overflow:hidden;cursor:none;position:relative;transition:opacity .45s var(--ease),transform .45s var(--ease);flex-shrink:0;aspect-ratio:3/4;}
 .proj-card-img img{width:100%;height:100%;object-fit:cover;object-position:center 15%;display:block;}
 .proj-card-img .card-label{position:absolute;bottom:10px;left:12px;font-family:var(--mono);font-size:9px;color:rgba(17,17,17,.6);letter-spacing:.06em;}
-/* hover: hovered card grows, others fade+shrink */
 .proj-cards:has(.proj-card-img:hover) .proj-card-img{opacity:.38;transform:scale(.96);}
 .proj-cards:has(.proj-card-img:hover) .proj-card-img:hover{opacity:1;transform:scale(1.025);}
-@media(max-width:768px){.proj-cards{grid-template-columns:1fr;}.proj-cards-right{flex-direction:row;}}
 
 .proj-list{display:flex;flex-direction:column;}
 .proj-item{display:flex;padding:18px 0;border-bottom:1px solid var(--border);cursor:none;transition:padding .2s var(--ease);align-items:flex-start;gap:20px;}
@@ -142,7 +140,6 @@ nav.solid{background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bot
 .exp-item::before{content:'';position:absolute;left:-32px;top:28px;width:8px;height:8px;border-radius:50%;background:var(--bg);border:1.5px solid var(--border);transition:border-color .3s,background .3s;}
 .exp-item:hover::before{border-color:var(--blue);background:var(--blue);}
 .exp-date{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.03em;line-height:1.5;padding-top:2px;}
-.exp-r{}
 .exp-co{font-size:14px;font-weight:500;color:var(--text);margin-bottom:1px;display:flex;align-items:center;gap:7px;}
 .exp-logo{width:16px;height:16px;border-radius:3px;background:var(--bg2);border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:6px;color:var(--muted);flex-shrink:0;}
 .exp-role{font-size:12px;color:var(--muted);margin-bottom:8px;}
@@ -158,7 +155,6 @@ nav.solid{background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bot
 .edu-item::before{content:'';position:absolute;left:0;top:28px;width:8px;height:8px;border-radius:50%;background:var(--bg);border:1.5px solid var(--border);transition:border-color .3s,background .3s;}
 .edu-item:hover::before{border-color:var(--blue);background:var(--blue);}
 .edu-date{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.03em;line-height:1.5;padding-top:2px;}
-.edu-r{}
 .edu-school{font-size:14px;font-weight:500;color:var(--text);margin-bottom:1px;display:flex;align-items:center;gap:8px;}
 .edu-logo{width:16px;height:16px;border-radius:3px;background:var(--bg2);border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:6px;color:var(--muted);flex-shrink:0;}
 .edu-major{font-size:12px;color:var(--muted);margin-bottom:8px;}
@@ -197,11 +193,11 @@ nav.solid{background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bot
 .sc-sub{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.08em;}
 .sc-sub.dk{color:var(--muted);}
 
-/* PROJECT CARDS — illustrated placeholders (kept for covers) */
+/* PROJECT CARDS */
 .proj-card-img{border-radius:6px;overflow:hidden;cursor:none;position:relative;transition:opacity .45s var(--ease),transform .45s var(--ease);flex-shrink:0;aspect-ratio:3/4;}
 .proj-card-cover{width:100%;height:100%;display:block;position:relative;overflow:hidden;}
 
-/* PoopNow card — light */
+/* PoopNow card */
 .cover-poop{background:#f0f0ee;}
 .cover-poop .cv-grid{position:absolute;inset:0;z-index:1;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.045) 0,rgba(0,0,0,.045) 1px,transparent 1px,transparent 32px),repeating-linear-gradient(90deg,rgba(0,0,0,.045) 0,rgba(0,0,0,.045) 1px,transparent 1px,transparent 32px);}
 .cover-poop .cv-glow{display:none;}
@@ -212,12 +208,12 @@ nav.solid{background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bot
 .cover-poop .cv-bars{position:absolute;bottom:0;left:0;right:0;z-index:1;height:30%;display:flex;align-items:flex-end;gap:3px;padding:0 20px;}
 .cover-poop .cv-bar{flex:1;background:rgba(61,90,254,.15);border-radius:2px 2px 0 0;}
 
-/* Collar card — light */
+/* Collar card */
 .cover-collar{background:#f5f4f1;}
 .cover-collar svg{z-index:1;}
 .cover-collar .cv-shape{position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);z-index:1;}
 
-/* Agent card — light */
+/* Agent card */
 .cover-agent{background:#f2f1ef;}
 .cover-agent .cv-code{position:absolute;inset:0;padding:22px 20px;font-family:var(--mono);font-size:8px;line-height:1.9;color:rgba(17,17,17,.18);overflow:hidden;user-select:none;}
 .cover-agent .cv-code .hl{color:rgba(61,90,254,.45);}
@@ -247,15 +243,43 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
 .rv{opacity:0;transform:translateY(14px);transition:opacity .65s var(--ease),transform .65s var(--ease);}
 .rv.on{opacity:1;transform:none;}
 
+/* ===================== MOBILE FIXES ===================== */
 @media(max-width:768px){
+  /* 基础间距 */
   nav,#hero,.section{padding-left:24px;padding-right:24px;}
-  nav{padding-top:14px;padding-bottom:14px;}
-  nav.solid{padding-top:10px;padding-bottom:10px;}
+  nav{padding-top:12px;padding-bottom:12px;}
+  nav.solid{padding-left:24px;padding-right:24px;padding-top:9px;padding-bottom:9px;}
   .wrap{padding:0 24px;}
   footer{padding:16px 24px;flex-direction:column;gap:6px;}
+
+  /* ✅ FIX 1: 导航栏 - 隐藏文字链接，只保留 logo + 语言切换 + 时钟 */
+  .nav-links{display:none;}
+  .nav-r{gap:12px;}
+  .clock{font-size:10px;}
+
+  /* ✅ FIX 2: 堆叠卡片居中 */
+  .proj-stack-wrap{
+    height:280px;
+    display:flex;
+    justify-content:center;
+    align-items:flex-end;
+  }
+  .proj-stack{
+    position:relative;
+    width:260px;
+    height:100%;
+  }
+  .stack-card{width:180px;height:240px;}
+  .stack-card:nth-child(1){left:10px;bottom:0;transform:rotate(-5deg) translateY(8px);}
+  .stack-card:nth-child(2){left:70px;bottom:16px;transform:rotate(3deg) translateY(0px);}
+
+  /* 其他布局修复 */
   .about-grid{grid-template-columns:1fr;}
   .exp-item{grid-template-columns:1fr;gap:4px;}
+  .edu-item{grid-template-columns:1fr;gap:4px;padding-left:20px;}
+  .edu-item::before{left:0;}
   .proj-cards{grid-template-columns:1fr;}
+  .proj-cards-right{flex-direction:row;}
   .hero-meta{flex-direction:column;gap:4px;align-items:flex-start;}
 }
 </style>
@@ -535,7 +559,6 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
     <div class="exp-wrap rv" style="transition-delay:.05s;">
       <div class="edu-wrap exp-list">
 
-        <!-- 东华大学 研究生 -->
         <div class="edu-item">
           <div class="edu-date">2024.9<br>— 2027</div>
           <div class="edu-r">
@@ -554,7 +577,6 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
           </div>
         </div>
 
-        <!-- 上海海事大学 本科 -->
         <div class="edu-item">
           <div class="edu-date">2020.9<br>— 2024.6</div>
           <div class="edu-r">
@@ -565,7 +587,6 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
             <div class="edu-major" data-en="B.Eng · Industrial Design" data-zh="工学学士 · 工业设计">B.Eng · Industrial Design</div>
             <div class="edu-gpa">GPA 3.85 / 4.0</div>
 
-            <!-- Top awards shown by default -->
             <div class="edu-awards">
               <div class="edu-award">
                 <strong data-en="China Good Creativity · National Digital Art Design Competition" data-zh="中国好创意暨全国数字艺术设计大赛">中国好创意暨全国数字艺术设计大赛</strong>
@@ -581,7 +602,6 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
               </div>
             </div>
 
-            <!-- Collapsed awards -->
             <div class="edu-hidden" id="edu-more">
               <div class="edu-award">
                 <strong data-en="Shanghai Undergraduate Maker Competition" data-zh="上海市大学生创客大赛">上海市大学生创客大赛</strong>
@@ -676,16 +696,18 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
 .spill{font-family:'DM Mono',monospace;font-size:9px;padding:3px 8px;border-radius:20px;background:#f7f7f5;color:#999;border:1px solid #e8e6e0;}
 .di{width:5px;height:5px;border-radius:50%;background:#e8e6e0;transition:all .2s;}
 .di.active{background:#3D5AFE;transform:scale(1.4);}
+@media(max-width:768px){
+  .slide{padding:28px 24px;}
+}
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-// CURSOR - only interactive elements trigger grow
+// CURSOR
 const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
 (function ar(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ar);})();
-// Only links, buttons, cards trigger cursor grow - NOT stats
 document.querySelectorAll('a,.proj-item,.stack-card,.c-row,button,.lang-tog,.hc-shortcut,.stack-item,.chip.b').forEach(el=>{
   el.addEventListener('mouseenter',()=>document.body.classList.add('ch'));
   el.addEventListener('mouseleave',()=>document.body.classList.remove('ch'));
