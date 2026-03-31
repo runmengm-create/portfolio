@@ -136,6 +136,9 @@ nav.solid{background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bot
 .proj-tags{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;}
 .proj-tag{font-family:var(--mono);font-size:9px;padding:2px 7px;border:1px solid var(--border);border-radius:20px;color:var(--muted);}
 
+.work-hint{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(12px);padding:10px 12px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--mid);opacity:0;pointer-events:none;transition:opacity .35s var(--ease),transform .35s var(--ease);z-index:650;white-space:nowrap;}
+.work-hint.on{opacity:1;transform:translateX(-50%) translateY(0);}
+
 /* EXPERIENCE - with timeline */
 .exp-wrap{position:relative;}
 .exp-wrap::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--border) 0%,var(--blue) 30%,var(--border) 100%);}
@@ -662,6 +665,10 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
 
 </div><!-- /main -->
 
+<div class="work-hint" id="workHint" role="status" aria-live="polite">
+  <span data-en="Tip: tap a project to view the full case ↗" data-zh="提示：点项目进入详情 ↗">提示：点项目进入详情 ↗</span>
+</div>
+
 <footer>
   <span>© 2026 马润萌 · Renee Ma</span>
   <span>Shanghai · Available Now</span>
@@ -786,12 +793,36 @@ document.getElementById('langTog').addEventListener('click',function(){
   applyLang();
 });
 
+// WORK HINT
+const workHint=document.getElementById('workHint');
+let workHintShown=false;
+let workHintTimer=null;
+function showWorkHint(){
+  if(!workHint||workHintShown)return;
+  workHintShown=true;
+  workHint.classList.add('on');
+  clearTimeout(workHintTimer);
+  workHintTimer=setTimeout(()=>workHint.classList.remove('on'),5200);
+}
+const workSec=document.getElementById('work');
+if(workSec&&workHint){
+  const workHintObs=new IntersectionObserver(es=>{
+    if(es.some(e=>e.isIntersecting)){
+      showWorkHint();
+      workHintObs.disconnect();
+    }
+  },{threshold:.28});
+  workHintObs.observe(workSec);
+}
+document.querySelectorAll('.proj-item,.stack-card').forEach(el=>el.addEventListener('click',()=>workHint&&workHint.classList.remove('on')));
+
 if(window.location.hash){
   setEntered();
   requestAnimationFrame(()=>{
     const target=document.querySelector(window.location.hash);
     if(target)target.scrollIntoView({behavior:'auto',block:'start'});
   });
+  setTimeout(showWorkHint,240);
 }
 
 // REVEAL
