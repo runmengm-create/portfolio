@@ -187,6 +187,7 @@ nav.solid{background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bot
 .stack-card:hover{transform:rotate(0deg) translateY(-20px) scale(1.04)!important;z-index:10!important;box-shadow:0 28px 64px rgba(0,0,0,.15)!important;transition:transform .3s var(--ease),box-shadow .3s var(--ease),z-index 0s!important;}
 .stack-card-inner{width:100%;height:100%;position:relative;display:flex;flex-direction:column;justify-content:flex-end;}
 .stack-card-body{position:absolute;inset:0;}
+.cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;z-index:3;}
 .stack-card-foot{position:relative;z-index:2;padding:18px 16px 16px;background:linear-gradient(to top,rgba(255,255,255,.88) 0%,transparent 100%);}
 .stack-card-foot.light{background:linear-gradient(to top,rgba(255,255,255,.92) 0%,transparent 100%);}
 .sc-num{font-family:var(--mono);font-size:9px;color:rgba(17,17,17,.35);letter-spacing:.12em;margin-bottom:4px;}
@@ -202,18 +203,19 @@ nav.solid{background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bot
 
 /* PoopNow card — light */
 .cover-poop{background:#f0f0ee;}
-.cover-poop .cv-grid{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.045) 0,rgba(0,0,0,.045) 1px,transparent 1px,transparent 32px),repeating-linear-gradient(90deg,rgba(0,0,0,.045) 0,rgba(0,0,0,.045) 1px,transparent 1px,transparent 32px);}
+.cover-poop .cv-grid{position:absolute;inset:0;z-index:1;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.045) 0,rgba(0,0,0,.045) 1px,transparent 1px,transparent 32px),repeating-linear-gradient(90deg,rgba(0,0,0,.045) 0,rgba(0,0,0,.045) 1px,transparent 1px,transparent 32px);}
 .cover-poop .cv-glow{display:none;}
-.cover-poop .cv-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);}
+.cover-poop .cv-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);z-index:1;}
 .cover-poop .cv-ring{width:56px;height:56px;border-radius:50%;border:1px solid rgba(61,90,254,.5);display:flex;align-items:center;justify-content:center;}
 .cover-poop .cv-ring-outer{width:80px;height:80px;border-radius:50%;border:1px solid rgba(61,90,254,.18);position:absolute;}
 .cover-poop .cv-dot{width:7px;height:7px;border-radius:50%;background:#3D5AFE;opacity:.7;}
-.cover-poop .cv-bars{position:absolute;bottom:0;left:0;right:0;height:30%;display:flex;align-items:flex-end;gap:3px;padding:0 20px;}
+.cover-poop .cv-bars{position:absolute;bottom:0;left:0;right:0;z-index:1;height:30%;display:flex;align-items:flex-end;gap:3px;padding:0 20px;}
 .cover-poop .cv-bar{flex:1;background:rgba(61,90,254,.15);border-radius:2px 2px 0 0;}
 
 /* Collar card — light */
 .cover-collar{background:#f5f4f1;}
-.cover-collar .cv-shape{position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);}
+.cover-collar svg{z-index:1;}
+.cover-collar .cv-shape{position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);z-index:1;}
 
 /* Agent card — light */
 .cover-agent{background:#f2f1ef;}
@@ -307,7 +309,7 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
     <div class="hero-card rv" style="transition-delay:.1s">
       <div class="hc-top">
         <div style="position:relative;flex-shrink:0;">
-          <img class="hc-photo" src="placeholder.jpg" alt="Renee"/>
+          <img class="hc-photo" src="public/images/avatar.jpg" alt="Renee"/>
           <div style="width:9px;height:9px;background:#22c55e;border-radius:50%;border:2px solid #fff;position:absolute;bottom:1px;right:1px;"></div>
         </div>
         <div class="hc-id">
@@ -384,6 +386,7 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
         <div class="stack-card" data-link="files/poopnow-case-v6.html">
           <div class="stack-card-inner">
             <div class="stack-card-body cover-poop">
+              <img class="cover-img" src="public/images/cover-poopnow.jpg" alt="PoopNow cover"/>
               <div class="cv-grid"></div>
               <div class="cv-icon">
                 <div style="position:relative;display:flex;align-items:center;justify-content:center;width:84px;height:84px;">
@@ -410,6 +413,7 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
         <div class="stack-card" data-link="files/collar-case-v4.html">
           <div class="stack-card-inner">
             <div class="stack-card-body cover-collar">
+              <img class="cover-img" src="public/images/cover-collar.jpg" alt="Xiaomi Smart Pet Collar cover"/>
               <svg viewBox="0 0 200 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
                 <line x1="0" y1="70" x2="200" y2="70" stroke="#e8e6e0" stroke-width=".8"/>
                 <line x1="0" y1="140" x2="200" y2="140" stroke="#e8e6e0" stroke-width=".8"/>

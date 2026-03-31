@@ -221,7 +221,8 @@ section:last-of-type{border-bottom:none;}
 
 .qr-block{display:flex;gap:40px;align-items:center;margin-top:40px;border:1px dashed var(--border);padding:36px;transition:border-color .3s;}
 .qr-block:hover{border-color:var(--ink2);}
-.qr-box{width:88px;height:88px;flex-shrink:0;border:1px dashed var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:var(--muted);text-align:center;letter-spacing:.08em;text-transform:uppercase;}
+.qr-box{width:88px;height:88px;flex-shrink:0;border:1px dashed var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.qr-img{width:100%;height:100%;display:block;object-fit:cover;object-position:center;}
 .qr-title{font-family:var(--serif);font-size:20px;font-weight:500;margin-bottom:8px;}
 .qr-desc{font-size:13px;color:var(--ink2);line-height:1.7;}
 .qr-status{display:flex;align-items:center;gap:8px;margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
@@ -530,7 +531,7 @@ section:last-of-type{border-bottom:none;}
       <strong>识别限制条件，是比解决限制条件更重要的产品能力。</strong></p>
     </div>
     <div class="qr-block reveal">
-      <div class="qr-box">QR<br>待替换</div>
+      <div class="qr-box"><img class="qr-img" src="../public/images/poopnow-qrcode.png" alt="PoopNow 小程序码"/></div>
       <div>
         <div class="qr-title">扫码体验 PoopNow</div>
         <p class="qr-desc">微信扫码即可体验小程序。当前为开发版，正在等待微信平台审核通过。所有功能已完整实现，代码由 PM 独立使用 AI 工具完成。</p>
