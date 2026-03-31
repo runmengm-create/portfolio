@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -267,9 +267,9 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
 <div id="entry">
   <div style="text-align:center;">
     <div class="e-name">Renee<span>.</span></div>
-    <div class="e-sub">Product Manager · Shanghai<span class="e-cursor"></span></div>
+    <div class="e-sub" data-en="Product Manager · Shanghai" data-zh="产品经理 · 上海">Product Manager · Shanghai<span class="e-cursor"></span></div>
   </div>
-  <div class="e-hint"><span class="ekey">Enter</span> or click anywhere to continue</div>
+  <div class="e-hint" data-en="<span class=&quot;ekey&quot;>Enter</span> or click anywhere to continue" data-zh="<span class=&quot;ekey&quot;>回车</span> 或点击任意位置继续"><span class="ekey">Enter</span> or click anywhere to continue</div>
 </div>
 
 <!-- NAV -->
@@ -284,8 +284,8 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
       <a href="#contact" data-en="Contact" data-zh="联系">Contact</a>
     </div>
     <div class="lang-tog" id="langTog">
-      <span class="active" data-lang="en">EN</span>
-      <span data-lang="zh">中文</span>
+      <span data-lang="en">EN</span>
+      <span class="active" data-lang="zh">中文</span>
     </div>
     <div class="clock" id="clock"></div>
   </div>
@@ -444,7 +444,7 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
     </div>
 
     <div class="proj-list rv" style="transition-delay:.1s;">
-      <div class="proj-item" data-link="files/poopnow-case-v6.html">
+      <div class="proj-item" id="poopnow" data-link="files/poopnow-case-v6.html">
         <div class="proj-num">01</div>
         <div class="proj-info">
           <div class="proj-name"><span data-en="PoopNow — WeChat Mini Program" data-zh="PoopNow 微信小程序">PoopNow — WeChat Mini Program</span><span class="proj-arr">↗</span></div>
@@ -452,7 +452,7 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
           <div class="proj-tags"><span class="proj-tag">Zero-Click UX</span><span class="proj-tag">AI-Native</span><span class="proj-tag">Vibe Coding</span></div>
         </div>
       </div>
-      <div class="proj-item" data-link="files/collar-case-v4.html">
+      <div class="proj-item" id="collar" data-link="files/collar-case-v4.html">
         <div class="proj-num">02</div>
         <div class="proj-info">
           <div class="proj-name"><span data-en="Xiaomi Smart Pet Collar" data-zh="米家智能宠物项圈">Xiaomi Smart Pet Collar</span><span class="proj-arr">↗</span></div>
@@ -711,6 +711,13 @@ const pts=Array.from({length:45},()=>new P());
 
 // ENTRY
 const entry=document.getElementById('entry'),main=document.getElementById('main');
+function setEntered(){
+  entry.style.display='none';
+  main.classList.add('on');
+  cur.style.mixBlendMode='difference';
+  cur.style.background='var(--text)';
+  ring.style.borderColor='rgba(17,17,17,.25)';
+}
 function enter(){
   entry.classList.add('out');
   cur.style.mixBlendMode='difference';
@@ -732,17 +739,29 @@ tick();setInterval(tick,1000);
 window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('solid',scrollY>50);});
 
 // LANG TOGGLE
-let lang='en';
+let lang='zh';
 const langEls=Array.from(document.querySelectorAll('[data-en]'));
-document.getElementById('langTog').addEventListener('click',function(){
-  lang=lang==='en'?'zh':'en';
-  this.querySelectorAll('span').forEach(s=>s.classList.toggle('active',s.dataset.lang===lang));
+function applyLang(){
+  document.getElementById('langTog').querySelectorAll('span').forEach(s=>s.classList.toggle('active',s.dataset.lang===lang));
   langEls.forEach(el=>{
     const val=el.getAttribute('data-'+lang);
     if(val)el.innerHTML=val;
   });
   document.documentElement.lang=lang==='zh'?'zh-CN':'en';
+}
+applyLang();
+document.getElementById('langTog').addEventListener('click',function(){
+  lang=lang==='en'?'zh':'en';
+  applyLang();
 });
+
+if(window.location.hash){
+  setEntered();
+  requestAnimationFrame(()=>{
+    const target=document.querySelector(window.location.hash);
+    if(target)target.scrollIntoView({behavior:'auto',block:'start'});
+  });
+}
 
 // REVEAL
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.08});
