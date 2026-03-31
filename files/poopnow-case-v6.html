@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PoopNow · Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff;--bg2:#f7f7f5;--ink:#111;--ink2:#444;--muted:#999;--border:#e8e6e0;--blue:#3D5AFE;
+  --ease:cubic-bezier(0.25,0.1,0.25,1);--spring:cubic-bezier(0.34,1.56,0.64,1);
+  --serif:'EB Garamond',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono','Courier New',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.7;overflow-x:hidden;cursor:none;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.028;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;}
+
+#cur,#cur-r{position:fixed;top:0;left:0;border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:difference;will-change:transform;}
+#cur{width:8px;height:8px;background:#fff;transform:translate(-50%,-50%);}
+#cur-r{width:40px;height:40px;border:1.5px solid rgba(255,255,255,.8);transform:translate(-50%,-50%);transition:width .4s var(--spring),height .4s var(--spring);}
+#prog{position:fixed;top:0;left:0;height:1px;background:var(--blue);z-index:900;pointer-events:none;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:800;padding:22px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.88);backdrop-filter:blur(16px) saturate(180%);border-bottom:1px solid var(--border);transition:padding .3s var(--ease);}
+nav.scrolled{padding:16px 48px;}
+.nav-back{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);text-decoration:none;transition:color .2s,letter-spacing .3s;}
+.nav-back:hover{color:var(--blue);letter-spacing:.16em;}
+.nav-label{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+
+.wrap{max-width:720px;margin:0 auto;padding:0 48px;position:relative;z-index:1;}
+section{padding:120px 0;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+section:last-of-type{border-bottom:none;}
+#s2,#s4{background:var(--bg2);}
+#s2::after,#s4::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(circle at 1px 1px,rgba(0,0,0,.06) 1px,transparent 0);background-size:28px 28px;opacity:.5;}
+#s1::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 50% 40% at 80% 30%,rgba(61,90,254,.05) 0%,transparent 70%);}
+
+/* hero */
+#s1{padding-top:160px;padding-bottom:100px;}
+.hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:24px;opacity:0;animation:fadeUp .8s .1s var(--ease) forwards;}
+.hero-title{font-family:var(--serif);font-size:clamp(56px,10vw,104px);font-weight:400;line-height:.95;letter-spacing:-.03em;margin-bottom:28px;color:var(--ink);opacity:0;animation:fadeUp .9s .25s var(--ease) forwards;}
+.hero-sub{font-size:17px;color:var(--ink2);line-height:1.8;max-width:500px;margin-bottom:44px;opacity:0;animation:fadeUp .8s .4s var(--ease) forwards;}
+.hero-tags{display:flex;gap:8px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .55s var(--ease) forwards;}
+.pill{font-family:var(--mono);font-size:10px;letter-spacing:.08em;padding:5px 14px;border-radius:100px;border:1px solid var(--border);color:var(--ink2);text-transform:uppercase;transition:border-color .25s,color .25s,transform .25s var(--spring),background .25s;}
+.pill:hover{transform:translateY(-2px);border-color:var(--ink2);}
+.pill.accent{border-color:var(--blue);color:var(--blue);background:rgba(61,90,254,.04);}
+.pill.accent:hover{background:var(--blue);color:#fff;}
+.hero-meta{margin-top:72px;padding-top:36px;border-top:1px solid var(--border);display:flex;gap:48px;opacity:0;animation:fadeUp .8s .7s var(--ease) forwards;}
+.hero-meta-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;}
+.hero-meta-value{font-size:14px;color:var(--ink2);}
+.scroll-cue{display:flex;align-items:center;gap:10px;margin-top:64px;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;opacity:0;animation:fadeUp .8s .85s var(--ease) forwards;}
+.scroll-cue::before{content:'';width:1px;height:32px;background:var(--border);}
+
+.sec-label{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:12px;margin-bottom:40px;}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.sec-h{font-family:var(--serif);font-size:clamp(30px,4.5vw,48px);font-weight:500;line-height:1.15;letter-spacing:-.01em;margin-bottom:28px;color:var(--ink);}
+.sec-h em{font-style:italic;color:var(--blue);}
+.sec-body{font-size:16px;color:var(--ink2);line-height:1.85;max-width:560px;margin-bottom:40px;}
+
+/* ── 01 PAIN: animated step reveal ── */
+.pain-layout{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:40px;border:1px dashed var(--border);}
+.pain-col{padding:32px;background:var(--bg);}
+.pain-col.highlight{background:var(--bg);border-left:2px solid var(--blue);}
+.pain-col-label{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:block;}
+.pain-col.highlight .pain-col-label{color:var(--blue);}
+.big-num{font-family:var(--serif);font-size:88px;font-weight:400;line-height:1;color:rgba(0,0,0,.08);margin-bottom:4px;display:block;}
+.big-num.active{color:var(--blue);transition:color .4s var(--ease);}
+.pain-col-sub{font-size:13px;color:var(--ink2);margin-bottom:28px;}
+
+/* step items */
+.step-list{list-style:none;}
+.step-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;margin-bottom:4px;border-radius:3px;
+  font-size:12px;color:var(--ink2);
+  opacity:0;transform:translateX(-12px);
+  transition:opacity .4s var(--ease),transform .4s var(--ease),background .2s;
+}
+.step-item.lit{opacity:1;transform:none;}
+.step-item:hover{background:var(--bg2);}
+.step-n{font-family:var(--mono);font-size:9px;color:var(--muted);width:18px;flex-shrink:0;text-align:right;}
+.step-icon{font-size:13px;width:20px;text-align:center;flex-shrink:0;}
+.step-crossed{text-decoration:line-through;color:var(--muted);}
+
+/* poopnow single step */
+.poop-single{
+  display:flex;align-items:center;gap:12px;
+  padding:14px;border:1px solid var(--blue);background:rgba(61,90,254,.03);
+  border-radius:3px;margin-top:20px;
+  opacity:0;transform:translateY(8px) scale(.98);
+  transition:opacity .5s var(--ease),transform .5s var(--ease);
+}
+.poop-single.lit{opacity:1;transform:none;}
+.poop-single-icon{font-size:18px;}
+.poop-single-text{font-size:12px;color:var(--ink);font-weight:500;}
+.poop-single-label{font-family:var(--mono);font-size:9px;color:var(--blue);letter-spacing:.1em;text-transform:uppercase;margin-top:3px;}
+
+/* ── 02 ZERO-CLICK: layout + phone ── */
+.zero-layout{display:grid;grid-template-columns:1fr 224px;gap:56px;align-items:start;margin-top:40px;}
+
+.state-row{display:flex;align-items:flex-start;gap:16px;padding:20px 0;border-top:1px solid var(--border);position:relative;transition:padding-left .3s var(--ease);}
+.state-row::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--blue);transform:scaleY(0);transform-origin:center;transition:transform .35s var(--ease);}
+.state-row:hover{padding-left:10px;}
+.state-row:hover::after{transform:scaleY(1);}
+.state-badge{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);border:1px solid var(--blue);padding:3px 9px;flex-shrink:0;margin-top:2px;transition:background .2s,color .2s;}
+.state-row:hover .state-badge{background:var(--blue);color:#fff;}
+.state-title{font-family:var(--serif);font-size:17px;font-weight:500;margin-bottom:3px;}
+.state-desc{font-size:12px;color:var(--ink2);line-height:1.55;}
+
+/* phone */
+.phone-outer{display:flex;flex-direction:column;align-items:center;gap:18px;}
+.phone{width:200px;background:#1a1a1a;border-radius:34px;padding:12px;box-shadow:0 0 0 1px #2e2e2e,0 24px 64px rgba(0,0,0,.3),inset 0 0 0 1px rgba(255,255,255,.05);}
+.phone-island{width:68px;height:18px;background:#000;border-radius:10px;margin:0 auto 8px;}
+.phone-screen{background:var(--bg);border-radius:24px;overflow:hidden;border:1px solid rgba(0,0,0,.08);}
+.p-map{height:180px;background:linear-gradient(155deg,#e8f0e9,#d4e5d6,#c8dccb);position:relative;overflow:hidden;}
+.p-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,0,0,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.04) 1px,transparent 1px);background-size:22px 22px;}
+.p-road{position:absolute;background:rgba(255,255,255,.78);}
+.p-road-h{height:3px;left:0;right:0;}
+.p-road-v{width:3px;top:0;bottom:0;}
+.p-dot{position:absolute;border-radius:50%;border:2px solid #fff;}
+.p-dot-user{width:9px;height:9px;background:#3D5AFE;top:52%;left:45%;transform:translate(-50%,-50%);box-shadow:0 0 0 3px rgba(61,90,254,.2);}
+.p-dot-t1{width:16px;height:16px;background:#34c759;top:32%;left:65%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;font-size:8px;box-shadow:0 2px 8px rgba(52,199,89,.3);}
+.p-dot-t2{width:12px;height:12px;background:#8e8e93;top:65%;left:26%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;font-size:7px;}
+.p-route{position:absolute;inset:0;pointer-events:none;}
+.p-route path{stroke:#3D5AFE;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-dasharray:160;stroke-dashoffset:160;filter:drop-shadow(0 2px 6px rgba(61,90,254,.3));transition:stroke-dashoffset .9s var(--ease);}
+.p-route.drawn path{stroke-dashoffset:0;}
+.p-bubble-wrap{position:absolute;top:7px;left:6px;right:6px;display:flex;gap:5px;align-items:flex-start;opacity:0;transform:translateY(-6px);transition:opacity .4s var(--ease),transform .4s var(--ease);}
+.p-bubble-wrap.show{opacity:1;transform:none;}
+.p-av{width:24px;height:24px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.1);}
+.p-bub{background:rgba(255,255,255,.96);border-radius:8px 8px 8px 2px;padding:7px 9px;box-shadow:0 4px 16px rgba(0,0,0,.1);flex:1;}
+.p-bub-text{font-size:8.5px;line-height:1.5;color:#111;font-family:var(--sans);margin-bottom:5px;}
+.p-bub-btns{display:flex;gap:4px;}
+.p-btn{padding:2px 7px;border-radius:4px;font-size:7.5px;font-weight:600;font-family:var(--sans);cursor:default;}
+.p-btn-dismiss{background:#f2f2f7;color:#8e8e93;}
+.p-btn-go{background:#3D5AFE;color:#fff;flex:1;text-align:center;}
+.p-sheet{background:rgba(255,255,255,.97);backdrop-filter:blur(12px);padding:8px 10px 12px;}
+.p-handle{width:28px;height:3px;background:#e5e5ea;border-radius:2px;margin:0 auto 9px;}
+.p-mode-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;font-size:8.5px;font-weight:600;font-family:var(--sans);margin-bottom:9px;transition:all .3s var(--ease);}
+.pm-driver{background:#3D5AFE;color:#fff;}
+.pm-walk{background:#34c759;color:#fff;}
+.pm-metro{background:#5856d6;color:#fff;}
+.p-list-item{display:flex;align-items:center;gap:6px;padding:6px 7px;border-radius:6px;margin-bottom:3px;transition:background .2s;}
+.p-list-item.hi{background:rgba(61,90,254,.06);}
+.p-rank{font-size:7.5px;color:#8e8e93;font-family:var(--mono);width:8px;}
+.p-name{font-size:9px;font-weight:600;color:#111;font-family:var(--sans);}
+.p-tag{font-size:7px;background:rgba(52,199,89,.1);color:#34c759;padding:1px 4px;border-radius:3px;font-weight:600;}
+.p-dist{margin-left:auto;font-size:8px;color:#3D5AFE;font-family:var(--mono);}
+.p-dist.m{color:#8e8e93;}
+.phone-mode-btns{display:flex;gap:6px;}
+.mode-btn{font-family:var(--mono);font-size:9px;letter-spacing:.06em;padding:5px 11px;border:1px solid var(--border);background:none;color:var(--ink2);cursor:none;text-transform:uppercase;transition:all .25s;}
+.mode-btn.active{border-color:var(--blue);color:var(--blue);background:rgba(61,90,254,.04);}
+
+/* ── 03 DATA: SVG cluster illustration ── */
+.cluster-wrap{border:1px dashed var(--border);padding:32px;background:var(--bg);margin-top:40px;position:relative;overflow:hidden;}
+.cluster-wrap::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(61,90,254,.04) 1px,transparent 0);background-size:20px 20px;pointer-events:none;}
+#clusterSvg{width:100%;display:block;}
+
+/* layer items */
+.layer-list{margin-top:8px;}
+.layer-item{display:grid;grid-template-columns:52px 1fr;gap:0 24px;padding:28px 0;border-top:1px solid var(--border);position:relative;transition:padding-left .35s var(--ease);}
+.layer-item::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--blue);transform:scaleY(0);transform-origin:top;transition:transform .4s var(--ease);}
+.layer-item:hover{padding-left:12px;}
+.layer-item:hover::after{transform:scaleY(1);}
+.layer-n{font-family:var(--mono);font-size:22px;font-weight:300;color:var(--border);line-height:1;padding-top:4px;transition:color .3s;}
+.layer-item:hover .layer-n{color:var(--blue);}
+.layer-title{font-family:var(--serif);font-size:20px;font-weight:500;margin-bottom:8px;}
+.layer-desc{font-size:13px;color:var(--ink2);line-height:1.7;}
+
+/* ── 04 iPupu: chat ── */
+.chat-outer{margin-top:40px;max-width:540px;}
+.chat-row{margin-bottom:20px;display:flex;flex-direction:column;}
+.chat-row.user-row{align-items:flex-end;}
+.chat-row.ai-row{align-items:flex-start;}
+.chat-meta{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
+.bubble{padding:13px 17px;font-size:15px;line-height:1.65;max-width:80%;opacity:0;transform:translateY(10px) scale(.97);transition:opacity .5s var(--ease),transform .5s var(--ease);}
+.bubble.on{opacity:1;transform:none;}
+.bubble.user{background:var(--ink);color:#fff;border-radius:18px 18px 4px 18px;}
+.bubble.ai{background:var(--bg2);color:var(--ink);border:1px solid var(--border);border-radius:18px 18px 18px 4px;}
+.chat-hint{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;text-align:right;margin-top:6px;}
+
+/* ── 05 SUMMARY: differentiated cards ── */
+.sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px;}
+
+/* DONE card: solid, ink bg */
+.sum-done{
+  background:var(--ink);color:#fff;
+  padding:36px;position:relative;overflow:hidden;
+}
+.sum-done::before{
+  content:'✓';position:absolute;bottom:-10px;right:16px;
+  font-family:var(--serif);font-size:100px;font-weight:600;
+  color:rgba(255,255,255,.06);line-height:1;pointer-events:none;
+}
+.sum-done-label{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.sum-done-label::before{content:'';width:12px;height:12px;border-radius:50%;background:#34c759;flex-shrink:0;}
+.sum-done-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;margin-bottom:10px;}
+.sum-done-item:last-child{margin-bottom:0;}
+.sum-done-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.4);flex-shrink:0;margin-top:8px;}
+
+/* WIP card: outline, quiet */
+.sum-wip{
+  border:1px dashed var(--border);
+  padding:36px;position:relative;
+}
+.sum-wip-label{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.sum-wip-label::before{content:'';width:12px;height:12px;border-radius:50%;border:1.5px solid var(--muted);flex-shrink:0;}
+.sum-wip-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:12px;}
+.sum-wip-item:last-child{margin-bottom:0;}
+.sum-wip-dot{width:3px;height:3px;border-radius:50%;border:1px solid var(--muted);flex-shrink:0;margin-top:8px;}
+.sum-wip-item strong{color:var(--ink);font-weight:500;}
+
+/* takeaway */
+.takeaway{margin-top:40px;padding:44px 44px 44px 64px;background:var(--bg2);border:1px dashed var(--border);position:relative;overflow:hidden;}
+.takeaway::before{content:'"';font-family:var(--serif);font-size:120px;line-height:.8;color:rgba(0,0,0,.06);position:absolute;top:24px;left:16px;pointer-events:none;}
+.takeaway::after{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--blue);}
+.takeaway-label{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin-bottom:20px;display:block;}
+.takeaway-text{font-family:var(--serif);font-size:21px;line-height:1.7;color:var(--ink);font-style:italic;}
+.takeaway-text strong{font-style:normal;font-weight:600;}
+
+.qr-block{display:flex;gap:40px;align-items:center;margin-top:40px;border:1px dashed var(--border);padding:36px;transition:border-color .3s;}
+.qr-block:hover{border-color:var(--ink2);}
+.qr-box{width:88px;height:88px;flex-shrink:0;border:1px dashed var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:var(--muted);text-align:center;letter-spacing:.08em;text-transform:uppercase;}
+.qr-title{font-family:var(--serif);font-size:20px;font-weight:500;margin-bottom:8px;}
+.qr-desc{font-size:13px;color:var(--ink2);line-height:1.7;}
+.qr-status{display:flex;align-items:center;gap:8px;margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+.qr-dot{width:5px;height:5px;border-radius:50%;background:var(--muted);animation:blink 2s infinite;}
+
+.case-footer{padding:64px 0 88px;border-top:1px solid var(--border);}
+.case-footer .wrap{display:flex;align-items:center;justify-content:space-between;}
+.footer-info{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+.footer-back{font-family:var(--mono);font-size:11px;color:var(--ink2);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:6px;transition:color .2s,gap .3s;}
+.footer-back:hover{color:var(--blue);gap:10px;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .75s var(--ease),transform .75s var(--ease);}
+.reveal.on{opacity:1;transform:none;}
+.reveal-scale{opacity:0;transform:scale(.97);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.reveal-scale.on{opacity:1;transform:scale(1);}
+
+@media(max-width:768px){
+  .wrap{padding:0 24px;}nav{padding:18px 24px;}
+  .zero-layout,.pain-layout{grid-template-columns:1fr;}
+  .sum-grid{grid-template-columns:1fr;}
+  .hero-meta{flex-wrap:wrap;gap:24px;}
+  .case-footer .wrap{flex-direction:column;gap:16px;align-items:flex-start;}
+  .qr-block{flex-direction:column;gap:20px;}
+  .phone-outer{align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-r"></div><div id="prog"></div>
+
+<nav id="nav">
+  <a href="../index.html" class="nav-back">← Portfolio</a>
+  <span class="nav-label">PoopNow · Case Study</span>
+</nav>
+
+<!-- HERO -->
+<section id="s1">
+  <div class="wrap">
+    <span class="hero-eyebrow">Product Design · Case Study</span>
+    <h1 class="hero-title">PoopNow</h1>
+    <p class="hero-sub">城市极致生存决策引擎。开屏即导航，消除搜索路径——Zero-Click UX 的极端实验。</p>
+    <div class="hero-tags">
+      <span class="pill accent">Zero-Click UX</span><span class="pill accent">AI-Native</span>
+      <span class="pill">微信小程序</span><span class="pill">Vibe Coding</span>
+    </div>
+    <div class="hero-meta">
+      <div><div class="hero-meta-label">项目类型</div><div class="hero-meta-value">独立产品 / 0→1</div></div>
+      <div><div class="hero-meta-label">角色</div><div class="hero-meta-value">PM + 全栈（AI 协同开发）</div></div>
+      <div><div class="hero-meta-label">平台</div><div class="hero-meta-value">微信小程序</div></div>
+    </div>
+    <div class="scroll-cue">Scroll</div>
+  </div>
+</section>
+
+<!-- 01 PAIN: animated step reveal -->
+<section id="s2">
+  <div class="wrap">
+    <div class="sec-label reveal">01 &nbsp;核心痛点</div>
+    <h2 class="sec-h reveal">传统地图在紧急状态下<em>失效了</em></h2>
+    <p class="sec-body reveal">生理紧急时刻，认知负荷极高，任何一步多余操作都是代价。</p>
+
+    <div class="pain-layout reveal-scale" id="painBox">
+      <!-- left: 8 steps one by one -->
+      <div class="pain-col">
+        <span class="pain-col-label">传统地图 · 操作链路</span>
+        <span class="big-num" id="bigN">0</span>
+        <div class="pain-col-sub">步才能开始导航</div>
+        <ul class="step-list" id="stepList">
+          <li class="step-item" data-step="1"><span class="step-n">01</span><span class="step-icon">📱</span><span class="step-crossed">打开 App</span></li>
+          <li class="step-item" data-step="2"><span class="step-n">02</span><span class="step-icon">🔍</span><span class="step-crossed">寻找搜索框</span></li>
+          <li class="step-item" data-step="3"><span class="step-n">03</span><span class="step-icon">⌨️</span><span class="step-crossed">输入关键词</span></li>
+          <li class="step-item" data-step="4"><span class="step-n">04</span><span class="step-icon">👆</span><span class="step-crossed">点击搜索</span></li>
+          <li class="step-item" data-step="5"><span class="step-n">05</span><span class="step-icon">📋</span><span class="step-crossed">浏览列表</span></li>
+          <li class="step-item" data-step="6"><span class="step-n">06</span><span class="step-icon">⭐</span><span class="step-crossed">查看评价</span></li>
+          <li class="step-item" data-step="7"><span class="step-n">07</span><span class="step-icon">🗺️</span><span class="step-crossed">确认路线</span></li>
+          <li class="step-item" data-step="8"><span class="step-n">08</span><span class="step-icon">🧭</span><span class="step-crossed">开始导航</span></li>
+        </ul>
+      </div>
+      <!-- right: PoopNow = 1 step -->
+      <div class="pain-col highlight">
+        <span class="pain-col-label">PoopNow · 打开即此步</span>
+        <span class="big-num active">1</span>
+        <div class="pain-col-sub">开屏即导航</div>
+        <div class="poop-single" id="poopSingle">
+          <span class="poop-single-icon">🚀</span>
+          <div>
+            <div class="poop-single-text">打开即完成全部 8 步</div>
+            <div class="poop-single-label">Zero-Click · 无需输入任何内容</div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--ink2);line-height:1.7;margin-top:20px">利用传感器静默判断用户状态，1.5s 内完成决策，自动加权推荐最优坑位。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 ZERO-CLICK -->
+<section id="s3">
+  <div class="wrap">
+    <div class="sec-label reveal">02 &nbsp;Zero-Click 交互设计</div>
+    <h2 class="sec-h reveal">开屏<em>即决策</em></h2>
+
+    <div class="zero-layout">
+      <div class="reveal">
+        <p class="sec-body" style="margin-bottom:28px">利用<strong>加速度与速度传感器</strong>，首页加载 1.5s 内静默判断用户状态，自动加权推荐最优坑位。无需输入一个字。</p>
+        <div>
+          <div class="state-row" id="sr0">
+            <span class="state-badge">Driving</span>
+            <div><div class="state-title">驾驶模式</div><p class="state-desc">优先推荐可停车路边公厕，注入道路停靠可能性权重</p></div>
+          </div>
+          <div class="state-row" id="sr1">
+            <span class="state-badge">Walking</span>
+            <div><div class="state-title">步行模式</div><p class="state-desc">推荐 200m 内最近可用，步行去程路径最短</p></div>
+          </div>
+          <div class="state-row" id="sr2">
+            <span class="state-badge">Subway</span>
+            <div><div class="state-title">地铁模式</div><p class="state-desc">滑动窗口过滤速度突变，精确识别站内外，推荐下一站</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHONE -->
+      <div class="phone-outer reveal">
+        <div class="phone">
+          <div class="phone-island"></div>
+          <div class="phone-screen">
+            <div class="p-map" id="pMap">
+              <div class="p-grid"></div>
+              <div class="p-road p-road-h" style="top:38%"></div>
+              <div class="p-road p-road-h" style="top:63%"></div>
+              <div class="p-road p-road-v" style="left:33%"></div>
+              <div class="p-road p-road-v" style="left:67%"></div>
+              <svg class="p-route" id="pRoute" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M 45 52 Q 52 44 65 32"/>
+              </svg>
+              <div class="p-dot p-dot-user"></div>
+              <div class="p-dot p-dot-t1">🚻</div>
+              <div class="p-dot p-dot-t2">🚻</div>
+              <div class="p-bubble-wrap" id="pBubble">
+                <div class="p-av">😤</div>
+                <div class="p-bub">
+                  <div class="p-bub-text" id="bubText">检测到驾驶状态，340m处有可停靠公厕，要去吗？</div>
+                  <div class="p-bub-btns">
+                    <div class="p-btn p-btn-dismiss">知道了</div>
+                    <div class="p-btn p-btn-go">go!</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="p-sheet">
+              <div class="p-handle"></div>
+              <div id="pModePill" class="p-mode-pill pm-driver">🚗 驾驶 ▼</div>
+              <div class="p-list-item hi">
+                <span class="p-rank">1</span>
+                <div><div class="p-name" id="p0n">建国路公厕</div><div class="p-tag" id="p0t">🟢 可停靠·已验证</div></div>
+                <span class="p-dist" id="p0d">340m</span>
+              </div>
+              <div class="p-list-item">
+                <span class="p-rank">2</span>
+                <div><div class="p-name" id="p1n">正大广场 B1</div></div>
+                <span class="p-dist m" id="p1d">680m</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-mode-btns">
+          <button class="mode-btn active" data-mode="driver">🚗</button>
+          <button class="mode-btn" data-mode="walk">🚶</button>
+          <button class="mode-btn" data-mode="metro">🚇</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 DATA -->
+<section id="s4">
+  <div class="wrap">
+    <div class="sec-label reveal">03 &nbsp;数据自净化机制</div>
+    <h2 class="sec-h reveal">零人工干预的<em>分布式共识验证</em></h2>
+    <p class="sec-body reveal">UGC 数据存在恶意上报与 GPS 偏移风险。三层验证架构确保只有通过 30m 空间聚类共识的点位才进入推荐网络。</p>
+
+    <!-- SVG cluster diagram -->
+    <div class="cluster-wrap reveal-scale" id="clusterWrap">
+      <svg id="clusterSvg" viewBox="0 0 620 160" xmlns="http://www.w3.org/2000/svg">
+        <!-- header -->
+        <text x="0" y="14" font-family="'DM Mono',monospace" font-size="9" fill="#999" letter-spacing="1.5">UGC CONSENSUS · 30m RADIUS SPATIAL CLUSTERING</text>
+
+        <!-- cluster 1 -->
+        <g id="cl1">
+          <circle cx="100" cy="95" r="32" fill="none" stroke="#e8e6e0" stroke-width="1" stroke-dasharray="3 3" id="ring1"/>
+          <!-- raw dots -->
+          <circle cx="92" cy="88" r="3" fill="#999" opacity=".4" id="rd1a"/>
+          <circle cx="108" cy="100" r="3" fill="#999" opacity=".4" id="rd1b"/>
+          <circle cx="96" cy="105" r="3" fill="#999" opacity=".4" id="rd1c"/>
+          <!-- validated center -->
+          <circle cx="100" cy="97" r="7" fill="#34c759" opacity="0" id="vc1"/>
+          <text x="100" y="100" text-anchor="middle" font-family="'DM Mono',monospace" font-size="6.5" fill="#fff" opacity="0" id="vt1">✓</text>
+          <text x="100" y="140" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#999">#4821 · 3 reports</text>
+        </g>
+
+        <!-- cluster 2 -->
+        <g id="cl2">
+          <circle cx="310" cy="90" r="32" fill="none" stroke="#e8e6e0" stroke-width="1" stroke-dasharray="3 3" id="ring2"/>
+          <circle cx="302" cy="84" r="3" fill="#999" opacity=".4" id="rd2a"/>
+          <circle cx="318" cy="95" r="3" fill="#999" opacity=".4" id="rd2b"/>
+          <circle cx="306" cy="100" r="3" fill="#999" opacity=".4" id="rd2c"/>
+          <circle cx="310" cy="92" r="7" fill="#34c759" opacity="0" id="vc2"/>
+          <text x="310" y="95" text-anchor="middle" font-family="'DM Mono',monospace" font-size="6.5" fill="#fff" opacity="0" id="vt2">✓</text>
+          <text x="310" y="140" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#999">#3307 · 4 reports</text>
+        </g>
+
+        <!-- cluster 3 -->
+        <g id="cl3">
+          <circle cx="520" cy="88" r="32" fill="none" stroke="#e8e6e0" stroke-width="1" stroke-dasharray="3 3" id="ring3"/>
+          <circle cx="512" cy="82" r="3" fill="#999" opacity=".4" id="rd3a"/>
+          <circle cx="528" cy="93" r="3" fill="#999" opacity=".4" id="rd3b"/>
+          <circle cx="516" cy="98" r="3" fill="#999" opacity=".4" id="rd3c"/>
+          <circle cx="520" cy="90" r="7" fill="#34c759" opacity="0" id="vc3"/>
+          <text x="520" y="93" text-anchor="middle" font-family="'DM Mono',monospace" font-size="6.5" fill="#fff" opacity="0" id="vt3">✓</text>
+          <text x="520" y="140" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#999">#9914 · 3 reports</text>
+        </g>
+
+        <!-- rejected outlier (red X) -->
+        <circle cx="390" cy="75" r="5" fill="#ff3b30" opacity=".2" id="reject"/>
+        <text x="390" y="78" text-anchor="middle" font-family="'DM Mono',monospace" font-size="7" fill="#ff3b30" opacity=".5">✗</text>
+        <text x="390" y="155" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#ff3b30" opacity=".5">rejected</text>
+
+        <!-- flow arrows connecting clusters to "network" -->
+        <defs>
+          <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#3D5AFE" opacity=".5"/>
+          </marker>
+        </defs>
+        <line x1="135" y1="97" x2="210" y2="97" stroke="#3D5AFE" stroke-width="1" stroke-dasharray="4 3" opacity="0" id="fl1" marker-end="url(#arr)"/>
+        <line x1="345" y1="92" x2="420" y2="97" stroke="#3D5AFE" stroke-width="1" stroke-dasharray="4 3" opacity="0" id="fl2" marker-end="url(#arr)"/>
+        <!-- "NETWORK" label -->
+        <rect x="210" y="83" width="70" height="26" rx="2" fill="none" stroke="#3D5AFE" stroke-width="1" stroke-dasharray="3 3" opacity="0" id="netbox"/>
+        <text x="245" y="100" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#3D5AFE" opacity="0" letter-spacing="1" id="netlabel">L3 NETWORK</text>
+        <rect x="420" y="83" width="70" height="26" rx="2" fill="none" stroke="#3D5AFE" stroke-width="1" stroke-dasharray="3 3" opacity="0" id="netbox2"/>
+        <text x="455" y="100" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#3D5AFE" opacity="0" letter-spacing="1" id="netlabel2">L3 NETWORK</text>
+      </svg>
+    </div>
+
+    <div class="layer-list">
+      <div class="layer-item reveal">
+        <div class="layer-n">L1</div>
+        <div><div class="layer-title">本地私有层</div><p class="layer-desc">上报即生效，保障用户即时反馈体验。数据在本地先行，降低用户感知延迟。</p></div>
+      </div>
+      <div class="layer-item reveal">
+        <div class="layer-n">L2</div>
+        <div><div class="layer-title">30m 空间聚类</div><p class="layer-desc">三个独立 ID 在 30m 误差半径内产生重合上报，触发共识投票。单点恶意数据无法通过此层。</p></div>
+      </div>
+      <div class="layer-item reveal">
+        <div class="layer-n">L3</div>
+        <div><div class="layer-title">全网推送</div><p class="layer-desc">通过共识验证才进入推荐网络。零人工干预，系统自净化，可规模化扩展至任意城市。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 iPupu -->
+<section id="s5">
+  <div class="wrap">
+    <div class="sec-label reveal">04 &nbsp;AI 人格设计</div>
+    <h2 class="sec-h reveal">iPupu 噗噗：<em>情绪价值也是产品力</em></h2>
+    <p class="sec-body reveal">为 AI 助手设定「傲娇毒舌小女孩」人设——用阴阳怪气的调侃式反馈缓解焦虑，将工具软件转化为具备性格色彩的社交产品。</p>
+    <p style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:24px" class="reveal">↓ 点击气泡继续对话</p>
+    <div class="chat-outer reveal" id="chatWrap">
+      <div class="chat-row ai-row"><div class="chat-meta">iPupu ✦</div><div class="bubble ai" id="b1">哎哟，又憋到最后一刻了？找到了，340米，建国路188号，路边公厕，你的车能停。快去吧。</div></div>
+      <div class="chat-row user-row"><div class="chat-meta" style="text-align:right">User</div><div class="bubble user" id="b0">附近有厕所吗，急</div></div>
+      <div class="chat-row ai-row"><div class="chat-meta">iPupu ✦</div><div class="bubble ai" id="b2">行了行了，去吧。下次早点开我，别等到这种程度。</div></div>
+      <div class="chat-row user-row"><div class="chat-meta" style="text-align:right">User</div><div class="bubble user" id="b3">谢谢你</div></div>
+      <div class="chat-hint">Tap to continue →</div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 SUMMARY -->
+<section id="s6">
+  <div class="wrap">
+    <div class="sec-label reveal">05 &nbsp;总结与反思</div>
+    <h2 class="sec-h reveal">做到了什么，<em>还没做到什么</em></h2>
+    <div class="sum-grid">
+      <div class="sum-done reveal">
+        <div class="sum-done-label">已完成</div>
+        <div class="sum-done-item"><div class="sum-done-dot"></div><div>Zero-Click 交互，将 5—8 步操作链路缩短至 1 步</div></div>
+        <div class="sum-done-item"><div class="sum-done-dot"></div><div>三态状态识别逻辑 + 差异化推荐权重</div></div>
+        <div class="sum-done-item"><div class="sum-done-dot"></div><div>分布式共识验证机制，数据自净化</div></div>
+        <div class="sum-done-item"><div class="sum-done-dot"></div><div>上海全线路地铁厕所数据库（精确到费区内外）</div></div>
+        <div class="sum-done-item"><div class="sum-done-dot"></div><div>iPupu 人格化 AI 助手 + UGC 评价系统</div></div>
+        <div class="sum-done-item"><div class="sum-done-dot"></div><div>全流程 AI 协同开发，独立完成微信小程序从 0 到 1</div></div>
+      </div>
+      <div class="sum-wip reveal">
+        <div class="sum-wip-label">还在攻克</div>
+        <div class="sum-wip-item"><div class="sum-wip-dot"></div><div><strong>状态识别精度</strong><br>传感器在极端场景（快速启停、信号差的地铁）下仍有误判，无法做到 100% 准确</div></div>
+        <div class="sum-wip-item"><div class="sum-wip-dot"></div><div><strong>GPS 定位漂移</strong><br>密集楼宇、地下场景偏移较大；在做小米项圈时遇到了同一底层问题</div></div>
+        <div class="sum-wip-item"><div class="sum-wip-dot"></div><div><strong>数据源反爬</strong><br>部分平台对自动化访问有限制，工作流数据完整性需要降级处理</div></div>
+      </div>
+    </div>
+    <div class="takeaway reveal-scale">
+      <span class="takeaway-label">PM Takeaway</span>
+      <p class="takeaway-text">GPS 漂移和传感器精度是<strong>硬件层面的物理限制</strong>，不是纯靠算法能解决的问题。这个认知让我在做小米项圈的产品定义时，主动把「实时位置追踪」降级为「运动状态感知」——先做能做好的事，不承诺做不到的精度。<br><br>
+      <strong>识别限制条件，是比解决限制条件更重要的产品能力。</strong></p>
+    </div>
+    <div class="qr-block reveal">
+      <div class="qr-box">QR<br>待替换</div>
+      <div>
+        <div class="qr-title">扫码体验 PoopNow</div>
+        <p class="qr-desc">微信扫码即可体验小程序。当前为开发版，正在等待微信平台审核通过。所有功能已完整实现，代码由 PM 独立使用 AI 工具完成。</p>
+        <div class="qr-status"><div class="qr-dot"></div>审核中 · 即将上线</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="case-footer">
+  <div class="wrap">
+    <span class="footer-info">Case Study · 2026.03</span>
+    <a href="../index.html" class="footer-back">← Back to Portfolio ↗</a>
+  </div>
+</footer>
+
+<script>
+// cursor
+const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+document.querySelectorAll('a,button,.layer-item,.pill,.state-row,.bubble,.dcard').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{curR.style.width='56px';curR.style.height='56px';});
+  el.addEventListener('mouseleave',()=>{curR.style.width='40px';curR.style.height='40px';});
+});
+(function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;cur.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`;curR.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`;requestAnimationFrame(loop);})();
+
+// nav
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60));
+// progress
+const prog=document.getElementById('prog');
+window.addEventListener('scroll',()=>{const h=document.documentElement,b=document.body;prog.style.width=(h.scrollTop||b.scrollTop)/((h.scrollHeight||b.scrollHeight)-h.clientHeight)*100+'%';});
+
+// reveal
+const ro=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('on'),i*90);ro.unobserve(e.target);}});},{threshold:.08});
+document.querySelectorAll('.reveal,.reveal-scale').forEach(el=>ro.observe(el));
+
+// ── 01 PAIN: staggered step animation ──
+let painFired=false;
+const painBox=document.getElementById('painBox');
+const painObs=new IntersectionObserver(es=>{
+  if(es[0].isIntersecting&&!painFired){
+    painFired=true;
+    const steps=document.querySelectorAll('.step-item');
+    const bigN=document.getElementById('bigN');
+    steps.forEach((s,i)=>{
+      setTimeout(()=>{
+        s.classList.add('lit');
+        bigN.textContent=i+1;
+        if(i===steps.length-1){
+          bigN.style.transition='color .4s';
+          // show poopnow card after all steps lit
+          setTimeout(()=>document.getElementById('poopSingle').classList.add('lit'),400);
+        }
+      },300+i*180);
+    });
+    painObs.unobserve(painBox);
+  }
+},{threshold:.3});
+if(painBox)painObs.observe(painBox);
+
+// ── 02 state rows stagger ──
+const s3=document.getElementById('s3');
+const srObs=new IntersectionObserver(es=>{
+  if(es[0].isIntersecting){
+    ['sr0','sr1','sr2'].forEach((id,i)=>{
+      const el=document.getElementById(id);
+      if(el){el.style.opacity='0';el.style.transform='translateX(-14px)';el.style.transition='opacity .55s ease,transform .55s ease';}
+      setTimeout(()=>{if(el){el.style.opacity='1';el.style.transform='none';}},200+i*160);
+    });
+    srObs.unobserve(s3);
+  }
+},{threshold:.2});
+if(s3)srObs.observe(s3);
+
+// phone route + bubble
+const pRoute=document.getElementById('pRoute'),pBubble=document.getElementById('pBubble');
+const s3r=new IntersectionObserver(es=>{if(es[0].isIntersecting){setTimeout(()=>pRoute.classList.add('drawn'),600);setTimeout(()=>pBubble.classList.add('show'),1100);s3r.unobserve(s3);}},{threshold:.35});
+if(s3)s3r.observe(s3);
+
+// phone modes
+const MODES={
+  driver:{bubble:'检测到驾驶状态，340m处有可停靠公厕，要去吗？',pill:'🚗 驾驶 ▼',pc:'pm-driver',p0:'建国路公厕',t0:'🟢 可停靠·已验证',d0:'340m',p1:'正大广场 B1',d1:'680m'},
+  walk:{bubble:'步行模式，最近的在168m，能跑就跑，我在等你。',pill:'🚶 步行 ▼',pc:'pm-walk',p0:'陆家嘴公共厕所',t0:'🚶 168m·步行2分钟',d0:'168m',p1:'上海中心大厦 B2',d1:'420m'},
+  metro:{bubble:'地铁模式，下一站陆家嘴有站内厕所，费区内。',pill:'🚇 地铁 ▼',pc:'pm-metro',p0:'陆家嘴站·站内',t0:'🚇 费区内·2号口',d0:'下一站',p1:'上海中心·地面层',d1:'出站450m'},
+};
+document.querySelectorAll('.mode-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+    const m=MODES[btn.dataset.mode];
+    pBubble.classList.remove('show');document.getElementById('bubText').textContent=m.bubble;setTimeout(()=>pBubble.classList.add('show'),280);
+    const pp=document.getElementById('pModePill');pp.className='p-mode-pill '+m.pc;pp.textContent=m.pill;
+    document.getElementById('p0n').textContent=m.p0;document.getElementById('p0t').textContent=m.t0;document.getElementById('p0d').textContent=m.d0;
+    document.getElementById('p1n').textContent=m.p1;document.getElementById('p1d').textContent=m.d1;
+    pRoute.classList.remove('drawn');setTimeout(()=>pRoute.classList.add('drawn'),80);
+  });
+});
+
+// ── 03 cluster SVG animation ──
+const clusterWrap=document.getElementById('clusterWrap');
+let clFired=false;
+const clObs=new IntersectionObserver(es=>{
+  if(es[0].isIntersecting&&!clFired){
+    clFired=true;
+    // phase 1: rings glow
+    ['ring1','ring2','ring3'].forEach((id,i)=>{
+      setTimeout(()=>{
+        const el=document.getElementById(id);
+        if(el){el.style.stroke='rgba(61,90,254,.3)';el.style.transition='stroke .5s';}
+      },i*200);
+    });
+    // phase 2: validated dots appear
+    ['vc1','vc2','vc3','vt1','vt2','vt3'].forEach((id,i)=>{
+      setTimeout(()=>{
+        const el=document.getElementById(id);
+        if(el){el.style.opacity='1';el.style.transition='opacity .4s';}
+      },600+i*150);
+    });
+    // phase 3: flow arrows + network boxes
+    setTimeout(()=>{
+      ['fl1','fl2','netbox','netlabel','netbox2','netlabel2'].forEach(id=>{
+        const el=document.getElementById(id);
+        if(el){el.style.opacity='1';el.style.transition='opacity .6s';}
+      });
+    },1400);
+    clObs.unobserve(clusterWrap);
+  }
+},{threshold:.4});
+if(clusterWrap)clObs.observe(clusterWrap);
+
+// ── chat bubbles ──
+const chatOrder=['b1','b0','b2','b3'];
+let chatIdx=0;
+const s5=document.getElementById('s5');
+const revNext=()=>{if(chatIdx<chatOrder.length){document.getElementById(chatOrder[chatIdx])?.classList.add('on');chatIdx++;setTimeout(revNext,1100);}};
+const s5obs=new IntersectionObserver(es=>{if(es[0].isIntersecting&&chatIdx===0)setTimeout(revNext,500);},{threshold:.35});
+if(s5)s5obs.observe(s5);
+document.getElementById('chatWrap')?.addEventListener('click',()=>{if(chatIdx<chatOrder.length){document.getElementById(chatOrder[chatIdx])?.classList.add('on');chatIdx++;}});
+</script>
+</body>
+</html>

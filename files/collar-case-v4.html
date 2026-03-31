@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>米家智能宠物项圈 · Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #fff;
+  --bg2:    #f7f7f5;
+  --ink:    #111;
+  --ink2:   #444;
+  --muted:  #999;
+  --border: #e8e6e0;
+  --blue:   #3D5AFE;
+  --ease:   cubic-bezier(0.25, 0.1, 0.25, 1);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --serif:  'EB Garamond', Georgia, serif;
+  --sans:   'DM Sans', system-ui, sans-serif;
+  --mono:   'DM Mono', 'Courier New', monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.7;overflow-x:hidden;cursor:none;}
+
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.028;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;}
+
+#cur,#cur-r{position:fixed;top:0;left:0;border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:difference;will-change:transform;}
+#cur{width:8px;height:8px;background:#fff;transform:translate(-50%,-50%);}
+#cur-r{width:40px;height:40px;border:1.5px solid rgba(255,255,255,.8);transform:translate(-50%,-50%);transition:width .4s var(--spring),height .4s var(--spring);}
+
+#prog{position:fixed;top:0;left:0;height:1px;background:var(--blue);z-index:900;pointer-events:none;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:800;padding:22px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.88);backdrop-filter:blur(16px) saturate(180%);border-bottom:1px solid var(--border);transition:padding .3s var(--ease);}
+nav.scrolled{padding:16px 48px;}
+.nav-back{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);text-decoration:none;transition:color .2s,letter-spacing .3s;}
+.nav-back:hover{color:var(--blue);letter-spacing:.16em;}
+.nav-label{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+
+.wrap{max-width:720px;margin:0 auto;padding:0 48px;position:relative;z-index:1;}
+section{padding:120px 0;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+section:last-of-type{border-bottom:none;}
+#s2,#s4{background:var(--bg2);}
+#s2::after,#s4::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(circle at 1px 1px,rgba(0,0,0,.06) 1px,transparent 0);background-size:28px 28px;opacity:.5;}
+#s1::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 70% 40%,rgba(61,90,254,.04) 0%,transparent 70%);}
+
+/* hero */
+#s1{padding-top:160px;padding-bottom:120px;}
+.hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:28px;opacity:0;animation:fadeUp .8s .1s var(--ease) forwards;}
+.hero-title{font-family:var(--serif);font-size:clamp(44px,7.5vw,80px);font-weight:500;line-height:1.05;letter-spacing:-.02em;margin-bottom:28px;color:var(--ink);opacity:0;animation:fadeUp .9s .25s var(--ease) forwards;}
+.hero-title span{display:block;}
+.hero-title .accent-line{font-style:italic;color:var(--blue);}
+.hero-sub{font-size:17px;color:var(--ink2);line-height:1.8;max-width:500px;margin-bottom:44px;opacity:0;animation:fadeUp .8s .4s var(--ease) forwards;}
+.hero-tags{display:flex;gap:8px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .55s var(--ease) forwards;}
+.pill{font-family:var(--mono);font-size:10px;letter-spacing:.08em;padding:5px 14px;border-radius:100px;border:1px solid var(--border);color:var(--ink2);text-transform:uppercase;transition:border-color .25s,color .25s,transform .25s var(--spring),background .25s;}
+.pill:hover{transform:translateY(-2px);border-color:var(--ink2);}
+.pill.accent{border-color:var(--blue);color:var(--blue);background:rgba(61,90,254,.04);}
+.pill.accent:hover{background:var(--blue);color:#fff;}
+.hero-meta{margin-top:72px;padding-top:36px;border-top:1px solid var(--border);display:flex;gap:48px;opacity:0;animation:fadeUp .8s .7s var(--ease) forwards;}
+.hero-meta-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;}
+.hero-meta-value{font-size:14px;color:var(--ink2);}
+.scroll-cue{display:flex;align-items:center;gap:10px;margin-top:64px;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;opacity:0;animation:fadeUp .8s .9s var(--ease) forwards;}
+.scroll-cue::before{content:'';width:1px;height:32px;background:var(--border);}
+
+/* section labels */
+.sec-label{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:12px;margin-bottom:40px;}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.sec-h{font-family:var(--serif);font-size:clamp(30px,4.5vw,48px);font-weight:500;line-height:1.15;letter-spacing:-.01em;margin-bottom:28px;color:var(--ink);}
+.sec-h em{font-style:italic;color:var(--blue);}
+.sec-body{font-size:16px;color:var(--ink2);line-height:1.85;max-width:560px;margin-bottom:48px;}
+
+/* finding cards */
+.card-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:40px;border:1px dashed var(--border);}
+.dcard{padding:36px 32px;background:var(--bg);transition:background .3s;position:relative;overflow:hidden;}
+.dcard::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(61,90,254,.03) 0%,transparent 60%);opacity:0;transition:opacity .4s;}
+.dcard:hover::before{opacity:1;}
+.dcard+.dcard{border-left:1px dashed var(--border);}
+.dcard-num{font-family:var(--mono);font-size:10px;color:var(--blue);letter-spacing:.1em;margin-bottom:20px;display:block;}
+.dcard-title{font-family:var(--serif);font-size:22px;font-weight:500;margin-bottom:12px;color:var(--ink);}
+.dcard-desc{font-size:13px;color:var(--ink2);line-height:1.75;}
+
+/* ── STRATEGY REFRAME: animated ── */
+.reframe-animated{margin:40px 0;position:relative;}
+.reframe-before,.reframe-after{
+  position:relative;padding:32px 36px;border:1px dashed var(--border);
+  transition:border-color .4s,transform .4s var(--ease);
+}
+.reframe-before{
+  background:var(--bg2);margin-bottom:0;
+  border-bottom:none;
+}
+.reframe-after{
+  background:var(--bg);border-top:none;
+}
+.reframe-animated:hover .reframe-before{border-color:var(--border);}
+.reframe-animated:hover .reframe-after{border-color:var(--blue);}
+
+/* strikethrough animation on before */
+.reframe-before-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;}
+.reframe-before-text{
+  font-family:var(--serif);font-size:28px;font-weight:400;color:var(--ink2);
+  position:relative;display:inline-block;line-height:1.2;
+}
+.reframe-before-text::after{
+  content:'';position:absolute;left:0;top:50%;height:1.5px;background:var(--muted);
+  width:0;transition:width .7s .3s var(--ease);transform:translateY(-50%);
+}
+.reframe-animated.is-visible .reframe-before-text::after{width:100%;}
+.reframe-before-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);border:1px dashed var(--border);padding:3px 10px;margin-top:14px;
+}
+
+/* arrow between */
+.reframe-arrow-row{
+  display:flex;align-items:center;height:40px;
+  border-left:1px dashed var(--border);border-right:1px dashed var(--border);
+  background:var(--bg);
+  padding:0 36px;gap:12px;
+}
+.reframe-arrow-line{flex:1;height:1px;background:var(--border);}
+.reframe-arrow-mid{
+  font-family:var(--mono);font-size:10px;color:var(--blue);
+  letter-spacing:.12em;text-transform:uppercase;
+  display:flex;align-items:center;gap:6px;
+  white-space:nowrap;
+}
+/* animated arrow */
+.arrow-anim{display:inline-block;transition:transform .4s var(--spring);}
+.reframe-animated.is-visible .arrow-anim{transform:translateY(4px);}
+
+/* after card */
+.reframe-after-label{font-family:var(--mono);font-size:10px;color:var(--blue);letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;}
+.reframe-after-text{
+  font-family:var(--serif);font-size:32px;font-weight:600;color:var(--ink);line-height:1.2;
+  opacity:0;transform:translateY(12px);transition:opacity .6s .6s var(--ease),transform .6s .6s var(--ease);
+}
+.reframe-animated.is-visible .reframe-after-text{opacity:1;transform:none;}
+.reframe-after-sub{
+  font-size:13px;color:var(--ink2);margin-top:10px;font-family:var(--mono);letter-spacing:.04em;
+  opacity:0;transform:translateY(8px);transition:opacity .6s .8s var(--ease),transform .6s .8s var(--ease);
+}
+.reframe-animated.is-visible .reframe-after-sub{opacity:1;transform:none;}
+.reframe-after-badge{
+  display:inline-flex;align-items:center;gap:6px;margin-top:16px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--blue);border:1px solid var(--blue);padding:3px 10px;
+  opacity:0;transition:opacity .5s 1s var(--ease);
+}
+.reframe-animated.is-visible .reframe-after-badge{opacity:1;}
+
+/* features timeline */
+.feat-list{margin-top:8px;}
+.feat-item{display:grid;grid-template-columns:48px 1fr;gap:0 28px;padding:32px 0;border-top:1px solid var(--border);position:relative;transition:padding-left .35s var(--ease);}
+.feat-item:hover{padding-left:10px;}
+.feat-item::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--blue);transform:scaleY(0);transform-origin:top;transition:transform .4s var(--ease);}
+.feat-item:hover::after{transform:scaleY(1);}
+.feat-num{font-family:var(--mono);font-size:11px;color:var(--muted);padding-top:4px;}
+.feat-title{font-family:var(--serif);font-size:22px;font-weight:500;margin-bottom:10px;}
+.feat-desc{font-size:14px;color:var(--ink2);line-height:1.75;}
+
+/* ── ECOSYSTEM: full SVG diagram ── */
+.eco-intro{font-size:15px;color:var(--ink2);line-height:1.85;margin-bottom:36px;max-width:560px;}
+.eco-svg-wrap{
+  border:1px dashed var(--border);padding:40px 32px;background:var(--bg);
+  position:relative;overflow:hidden;margin-top:8px;
+}
+.eco-svg-wrap::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(61,90,254,.04) 1px,transparent 0);
+  background-size:24px 24px;pointer-events:none;
+}
+#ecoSvg{width:100%;display:block;}
+
+/* SVG node styles applied via CSS */
+.eco-node-group{cursor:default;transition:opacity .3s;}
+.eco-node-group:hover{opacity:.8;}
+.eco-center-rect{fill:var(--ink);rx:2;}
+.eco-device-rect{fill:none;stroke:var(--border);stroke-width:1;rx:2;}
+.eco-device-rect.highlight{stroke:var(--blue);stroke-dasharray:none;}
+.eco-line{stroke:var(--border);stroke-width:1;stroke-dasharray:4 3;}
+.eco-line.lit{stroke:var(--blue);stroke-dasharray:none;stroke-opacity:.6;}
+.eco-label{font-family:'DM Mono',monospace;font-size:11px;fill:var(--ink2);}
+.eco-label-small{font-family:'DM Mono',monospace;font-size:9px;fill:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.eco-center-label{font-family:'DM Mono',monospace;font-size:11px;fill:#fff;letter-spacing:.5px;}
+.eco-tag{font-family:'DM Mono',monospace;font-size:8.5px;fill:var(--blue);letter-spacing:.5px;}
+.eco-tag-muted{font-family:'DM Mono',monospace;font-size:8.5px;fill:var(--muted);letter-spacing:.5px;}
+.eco-pulse{fill:var(--blue);opacity:0;}
+
+/* line draw animation */
+@keyframes drawLine{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+.eco-animated-line{stroke-dasharray:100;stroke-dashoffset:100;}
+.eco-animated-line.drawn{animation:drawLine .6s var(--ease) forwards;}
+@keyframes pulseDot{0%,100%{opacity:0;transform:scale(1)}50%{opacity:.5;transform:scale(1.8)}}
+
+/* takeaway */
+.takeaway{margin-top:48px;padding:44px 44px 44px 64px;background:var(--bg2);border:1px dashed var(--border);position:relative;overflow:hidden;}
+.takeaway::before{content:'"';font-family:var(--serif);font-size:120px;line-height:.8;color:rgba(0,0,0,.06);position:absolute;top:24px;left:16px;pointer-events:none;}
+.takeaway::after{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--blue);}
+.takeaway-label{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin-bottom:20px;display:block;}
+.takeaway-text{font-family:var(--serif);font-size:21px;line-height:1.7;color:var(--ink);font-style:italic;}
+.takeaway-text strong{font-style:normal;font-weight:600;}
+
+/* footer */
+.case-footer{padding:64px 0 88px;border-top:1px solid var(--border);}
+.case-footer .wrap{display:flex;align-items:center;justify-content:space-between;}
+.footer-info{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+.footer-back{font-family:var(--mono);font-size:11px;color:var(--ink2);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:6px;transition:color .2s,gap .3s;}
+.footer-back:hover{color:var(--blue);gap:10px;}
+
+/* animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .75s var(--ease),transform .75s var(--ease);}
+.reveal.on{opacity:1;transform:none;}
+.reveal-scale{opacity:0;transform:scale(.97);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.reveal-scale.on{opacity:1;transform:scale(1);}
+
+@media(max-width:768px){
+  .wrap{padding:0 24px;}
+  nav{padding:18px 24px;}
+  .card-row{grid-template-columns:1fr;}
+  .dcard+.dcard{border-left:none;border-top:1px dashed var(--border);}
+  .hero-meta{flex-wrap:wrap;gap:24px;}
+  .case-footer .wrap{flex-direction:column;gap:16px;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-r"></div>
+<div id="prog"></div>
+
+<nav id="nav">
+  <a href="../index.html" class="nav-back">← Portfolio</a>
+  <span class="nav-label">Mi Collar · Case Study</span>
+</nav>
+
+<!-- HERO -->
+<section id="s1">
+  <div class="wrap">
+    <span class="hero-eyebrow">Product Strategy · Case Study</span>
+    <h1 class="hero-title">
+      <span>米家智能</span>
+      <span class="accent-line">宠物项圈</span>
+    </h1>
+    <p class="hero-sub">定义伴侣感知的智能逻辑。从「寻找宠物」转向「理解宠物」——一次针对市场定位的根本性重构。</p>
+    <div class="hero-tags">
+      <span class="pill accent">AIoT 硬件定义</span>
+      <span class="pill accent">用户行为洞察</span>
+      <span class="pill">小米生态链</span>
+      <span class="pill">米家联动</span>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><div class="hero-meta-label">项目类型</div><div class="hero-meta-value">预立项产品策略</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-label">角色</div><div class="hero-meta-value">产品经理（独立负责）</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-label">时间</div><div class="hero-meta-value">2025—2026</div></div>
+    </div>
+    <div class="scroll-cue">Scroll</div>
+  </div>
+</section>
+
+<!-- 01 INSIGHT -->
+<section id="s2">
+  <div class="wrap">
+    <div class="sec-label reveal">01 &nbsp;核心洞察</div>
+    <h2 class="sec-h reveal">被误读的赛道：<br><em>是追踪，还是连接？</em></h2>
+    <p class="sec-body reveal">宠物穿戴市场普遍将产品定义为解决「丢失寻找」的低频应急工具。然而研究揭示了更深层的需求：主人渴望了解宠物独处时的生活状态。</p>
+    <div class="card-row reveal-scale">
+      <div class="dcard">
+        <span class="dcard-num">FINDING / 01</span>
+        <div class="dcard-title">自发的用户行为修正</div>
+        <p class="dcard-desc">大量用户将 AirTag 或儿童手表挂在宠物身上，自行拼凑宠物日常生活叙事——这是需求未被满足的信号，不是边缘行为。</p>
+      </div>
+      <div class="dcard">
+        <span class="dcard-num">FINDING / 02</span>
+        <div class="dcard-title">低频恐惧 vs 高频情感</div>
+        <p class="dcard-desc">「防丢」是极低频的恐惧驱动；「了解宠物」是每天都在发生的情感驱动。两者在产品策略层面的权重根本不对等。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 STRATEGY -->
+<section id="s3">
+  <div class="wrap">
+    <div class="sec-label reveal">02 &nbsp;策略重构</div>
+    <h2 class="sec-h reveal">从应急工具到<em>日常伴侣</em></h2>
+    <p class="sec-body reveal">识别出「防丢」与「感知」的权重差异后，产品逻辑从单纯的经纬度数据转向对宠物情绪与行为的解构。</p>
+
+    <div class="reframe-animated reveal-scale" id="reframeBox">
+      <!-- BEFORE -->
+      <div class="reframe-before">
+        <div class="reframe-before-label">旧定义 · Old Framing</div>
+        <div class="reframe-before-text">应急定位工具（GPS Tracker）</div>
+        <div style="margin-top:14px">
+          <span class="reframe-before-badge">低使用频次 · 恐惧驱动 · 功能单一</span>
+        </div>
+      </div>
+      <!-- ARROW -->
+      <div class="reframe-arrow-row">
+        <div class="reframe-arrow-line"></div>
+        <div class="reframe-arrow-mid">
+          <span class="arrow-anim">↓</span>
+          <span>策略重构</span>
+        </div>
+        <div class="reframe-arrow-line"></div>
+      </div>
+      <!-- AFTER -->
+      <div class="reframe-after">
+        <div class="reframe-after-label">新策略 · New Strategy</div>
+        <div class="reframe-after-text">日常伴侣感知设备</div>
+        <div class="reframe-after-sub">Companion Awareness Device</div>
+        <div>
+          <span class="reframe-after-badge">高频情感驱动 · 多维感知 · 生态联动</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 FEATURES -->
+<section id="s4">
+  <div class="wrap">
+    <div class="sec-label reveal">03 &nbsp;功能定义</div>
+    <h2 class="sec-h reveal">多维感知的<em>产品矩阵</em></h2>
+    <div class="feat-list">
+      <div class="feat-item reveal">
+        <span class="feat-num">01</span>
+        <div><div class="feat-title">日常叙事</div><p class="feat-desc">自动记录遛弯轨迹，生成每日宠物日记。将枯燥的轨迹数据转化为有温度的生活记录，满足主人分享欲与情感连接需求。</p></div>
+      </div>
+      <div class="feat-item reveal">
+        <span class="feat-num">02</span>
+        <div><div class="feat-title">实时状态感知</div><p class="feat-desc">利用传感器判断宠物是「玩耍」、「休息」还是「焦虑」——让主人即使不在身边也能感同身受，触达情感连接的核心。</p></div>
+      </div>
+      <div class="feat-item reveal">
+        <span class="feat-num">03</span>
+        <div><div class="feat-title">双向语音沟通</div><p class="feat-desc">随时随地远程对话，提供及时的安抚与指令。将物理距离带来的焦虑感压缩至最低。</p></div>
+      </div>
+      <div class="feat-item reveal">
+        <span class="feat-num">04</span>
+        <div><div class="feat-title">可靠定位基石</div><p class="feat-desc">GPS / Wi-Fi / 基站多模定位，为日常轨迹与极端应急提供双重保障——定位是基础设施，不是核心卖点。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 ECOSYSTEM -->
+<section id="s5">
+  <div class="wrap">
+    <div class="sec-label reveal">04 &nbsp;生态联动</div>
+    <h2 class="sec-h reveal">全屋智能的<em>最后一块拼图</em></h2>
+    <p class="eco-intro reveal">作为米家生态链的组成部分，宠物项圈与摄像头、饮水机、喂食器、门锁形成完整的宠物居家监控闭环——项圈是感知中枢，其他设备是响应终端。</p>
+
+    <div class="eco-svg-wrap reveal-scale" id="ecoWrap">
+      <svg id="ecoSvg" viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg">
+        <!-- center: Mi Home hub -->
+        <rect x="270" y="120" width="100" height="60" rx="2" fill="#111"/>
+        <text x="320" y="145" text-anchor="middle" class="eco-center-label">Mi Home</text>
+        <text x="320" y="162" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" fill="rgba(255,255,255,.5)" letter-spacing=".5">Hub</text>
+
+        <!-- lines from center to devices -->
+        <!-- left top: camera -->
+        <line id="l1" x1="270" y1="135" x2="148" y2="72" stroke="#e8e6e0" stroke-width="1" stroke-dasharray="4 3" class="eco-animated-line"/>
+        <!-- left mid: fountain -->
+        <line id="l2" x1="270" y1="150" x2="100" y2="150" stroke="#e8e6e0" stroke-width="1" stroke-dasharray="4 3" class="eco-animated-line"/>
+        <!-- left bot: door lock -->
+        <line id="l3" x1="270" y1="165" x2="148" y2="228" stroke="#e8e6e0" stroke-width="1" stroke-dasharray="4 3" class="eco-animated-line"/>
+        <!-- right top: feeder -->
+        <line id="l4" x1="370" y1="135" x2="492" y2="72" stroke="#e8e6e0" stroke-width="1" stroke-dasharray="4 3" class="eco-animated-line"/>
+        <!-- right bot: collar (this product, highlighted) -->
+        <line id="l5" x1="370" y1="165" x2="492" y2="228" stroke="#3D5AFE" stroke-width="1.5" class="eco-animated-line"/>
+
+        <!-- device: camera (top-left) -->
+        <rect x="60" y="44" width="88" height="56" rx="2" fill="none" stroke="#e8e6e0" stroke-width="1"/>
+        <text x="64" y="65" class="eco-label-small">📷</text>
+        <text x="84" y="65" class="eco-label" font-size="11" font-family="'DM Sans',sans-serif" fill="#444">米家摄像头</text>
+        <text x="64" y="88" class="eco-tag-muted">室内监控 · 行为记录</text>
+
+        <!-- device: water fountain (mid-left) -->
+        <rect x="12" y="122" width="88" height="56" rx="2" fill="none" stroke="#e8e6e0" stroke-width="1"/>
+        <text x="16" y="143" class="eco-label-small">💧</text>
+        <text x="36" y="143" class="eco-label" font-size="11" font-family="'DM Sans',sans-serif" fill="#444">智能饮水机</text>
+        <text x="16" y="166" class="eco-tag-muted">饮水提醒 · 用量统计</text>
+
+        <!-- device: door lock (bot-left) -->
+        <rect x="60" y="200" width="88" height="56" rx="2" fill="none" stroke="#e8e6e0" stroke-width="1"/>
+        <text x="64" y="221" class="eco-label-small">🔒</text>
+        <text x="84" y="221" class="eco-label" font-size="11" font-family="'DM Sans',sans-serif" fill="#444">智能门锁</text>
+        <text x="64" y="244" class="eco-tag-muted">出入感知 · 独处检测</text>
+
+        <!-- device: feeder (top-right) -->
+        <rect x="492" y="44" width="88" height="56" rx="2" fill="none" stroke="#e8e6e0" stroke-width="1"/>
+        <text x="496" y="65" class="eco-label-small">🍽️</text>
+        <text x="516" y="65" class="eco-label" font-size="11" font-family="'DM Sans',sans-serif" fill="#444">自动喂食器</text>
+        <text x="496" y="88" class="eco-tag-muted">定时投食 · 联动触发</text>
+
+        <!-- device: collar (bot-right, highlighted) -->
+        <rect x="492" y="200" width="88" height="56" rx="2" fill="rgba(61,90,254,.04)" stroke="#3D5AFE" stroke-width="1.5"/>
+        <text x="496" y="221" class="eco-label-small">🐾</text>
+        <text x="516" y="221" class="eco-label" font-size="11" font-family="'DM Sans',sans-serif" fill="#3D5AFE">宠物项圈</text>
+        <text x="496" y="244" class="eco-tag">本产品 · 感知中枢</text>
+
+        <!-- pulse dots on center -->
+        <circle id="p1" cx="320" cy="150" r="40" fill="none" stroke="#3D5AFE" stroke-width="1" opacity="0"/>
+        <circle id="p2" cx="320" cy="150" r="64" fill="none" stroke="#3D5AFE" stroke-width=".5" opacity="0"/>
+      </svg>
+    </div>
+    <div style="margin-top:20px">
+      <span class="pill accent" style="display:inline-flex">MI HOME INTEGRATION</span>
+    </div>
+  </div>
+</section>
+
+<!-- 05 REFLECTION -->
+<section id="s6">
+  <div class="wrap">
+    <div class="sec-label reveal">05 &nbsp;PM 反思</div>
+    <h2 class="sec-h reveal">洞察驱动决策</h2>
+    <div class="takeaway reveal-scale">
+      <span class="takeaway-label">Strategy Takeaway</span>
+      <p class="takeaway-text">
+        在这个项目中，我学到的最重要的事是：<strong>识别出真实的需求，比单纯解决一个预设的问题更关键。</strong><br><br>
+        如果我们顺着「防丢」的思路走，只会卷 GPS 精度和功耗；但跳出「防丢」，转向「感知」时，产品才真正具备打动宠物主的情感溢价。<br><br>
+        <strong>定义对的赛道，是产品策略的第一要务。</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer class="case-footer">
+  <div class="wrap">
+    <span class="footer-info">Case Study · 2026.03</span>
+    <a href="../index.html" class="footer-back">← Back to Portfolio ↗</a>
+  </div>
+</footer>
+
+<script>
+// cursor
+const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+document.querySelectorAll('a,button,.dcard,.feat-item,.pill,.eco-node-group').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{curR.style.width='56px';curR.style.height='56px';});
+  el.addEventListener('mouseleave',()=>{curR.style.width='40px';curR.style.height='40px';});
+});
+(function loop(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;cur.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`;curR.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`;requestAnimationFrame(loop);})();
+
+// nav
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60));
+
+// progress
+const prog=document.getElementById('prog');
+window.addEventListener('scroll',()=>{const h=document.documentElement,b=document.body;prog.style.width=(h.scrollTop||b.scrollTop)/((h.scrollHeight||b.scrollHeight)-h.clientHeight)*100+'%';});
+
+// reveal observer
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('on'),i*90);ro.unobserve(e.target);}});
+},{threshold:.08});
+document.querySelectorAll('.reveal,.reveal-scale').forEach(el=>ro.observe(el));
+
+// strategy reframe animation
+const reframeBox=document.getElementById('reframeBox');
+const rfObs=new IntersectionObserver(es=>{
+  if(es[0].isIntersecting){
+    reframeBox.classList.add('is-visible');
+    rfObs.unobserve(reframeBox);
+  }
+},{threshold:.4});
+rfObs.observe(reframeBox);
+
+// ecosystem line draw + pulse
+const ecoWrap=document.getElementById('ecoWrap');
+const ecoObs=new IntersectionObserver(es=>{
+  if(es[0].isIntersecting){
+    // stagger line draws
+    ['l1','l2','l3','l4','l5'].forEach((id,i)=>{
+      setTimeout(()=>{
+        const el=document.getElementById(id);
+        if(el){
+          el.style.strokeDasharray='100';
+          el.style.strokeDashoffset='100';
+          el.style.transition=`stroke-dashoffset .6s ${i*.1}s cubic-bezier(0.25,0.1,0.25,1)`;
+          requestAnimationFrame(()=>{ el.style.strokeDashoffset='0'; });
+        }
+      },i*100);
+    });
+    // pulse rings
+    ['p1','p2'].forEach((id,i)=>{
+      const el=document.getElementById(id);
+      if(el){
+        el.style.animation=`ecoPulse 2s ${.8+i*.4}s ease-out infinite`;
+      }
+    });
+    ecoObs.unobserve(ecoWrap);
+  }
+},{threshold:.3});
+ecoObs.observe(ecoWrap);
+</script>
+<style>
+@keyframes ecoPulse{0%{r:40;opacity:.4}100%{r:90;opacity:0}}
+</style>
+</body>
+</html>
