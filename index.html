@@ -24,6 +24,11 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.7;overflow-x:hidden;cursor:none;}
+/* 手机端恢复默认光标和点击 */
+@media(hover:none),(pointer:coarse){
+  body,*{cursor:auto!important;}
+  #cur,#cur-ring{display:none!important;}
+}
 
 /* CURSOR */
 #cur{position:fixed;width:8px;height:8px;background:#3D5AFE;border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:width .15s,height .15s,opacity .2s;left:-50px;top:-50px;}
@@ -845,7 +850,18 @@ function closeM(){ov.classList.remove('open');document.body.style.overflow='';}
 pb.onclick=()=>{if(cs>0)goTo(cs-1);};nb.onclick=()=>{if(cs<PROJECTS[cp].slides.length-1)goTo(cs+1);};cb.onclick=closeM;ov.onclick=e=>{if(e.target===ov)closeM();};
 document.addEventListener('keydown',e=>{if(!ov.classList.contains('open'))return;if(e.key==='ArrowRight')nb.click();if(e.key==='ArrowLeft')pb.click();if(e.key==='Escape')closeM();});
 document.querySelectorAll('[data-project]').forEach(el=>el.addEventListener('click',()=>openM(el.dataset.project)));
-document.querySelectorAll('[data-link]').forEach(el=>el.addEventListener('click',()=>window.location.href=el.dataset.link));
+
+// data-link 跳转：同时支持 click 和 touchend（手机兼容）
+function bindLink(el){
+  let touchMoved=false;
+  el.addEventListener('touchstart',()=>{touchMoved=false;},{passive:true});
+  el.addEventListener('touchmove',()=>{touchMoved=true;},{passive:true});
+  el.addEventListener('touchend',e=>{
+    if(!touchMoved){e.preventDefault();window.location.href=el.dataset.link;}
+  });
+  el.addEventListener('click',()=>{window.location.href=el.dataset.link;});
+}
+document.querySelectorAll('[data-link]').forEach(bindLink);
 
 }); // end DOMContentLoaded
 </script>
