@@ -655,10 +655,10 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
         <div class="c-label"><div class="c-icon">💬</div><span data-en="WeChat" data-zh="微信">WeChat</span></div>
         <div class="c-val">155-3992-0387 <span class="c-arr">↗</span></div>
       </div>
-      <div class="c-row" id="resume-row">
+      <a class="c-row" id="resume-row" href="public/resume.pdf" target="_blank">
         <div class="c-label"><div class="c-icon">📄</div><span data-en="Resume" data-zh="简历">Resume</span></div>
         <div class="c-val" data-en="Download PDF" data-zh="下载简历">Download PDF <span class="c-arr">↓</span></div>
-      </div>
+      </a>
     </div>
   </div>
 </section>
@@ -840,9 +840,6 @@ document.getElementById('copyEmail').addEventListener('click',doCopy);
 document.addEventListener('keydown',e=>{
   if(e.key==='c'&&!e.metaKey&&!e.ctrlKey&&!e.altKey&&main.classList.contains('on'))doCopy();
 });
-
-// RESUME
-document.getElementById('resume-row').addEventListener('click',()=>alert('简历下载\n请上传 PDF 后替换此链接。'));
 
 // EDUCATION TOGGLE
 const eduToggle=document.getElementById('edu-toggle');
