@@ -186,19 +186,16 @@ nav.solid{background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bot
 .edu-hidden.show{display:flex;flex-direction:column;gap:4px;margin-top:4px;}
 
 /* PROJECT STACK */
-.proj-stack-wrap{perspective:1000px;height:340px;position:relative;margin-bottom:48px;cursor:none;}
-.proj-stack{position:relative;width:100%;height:100%;transform-style:preserve-3d;}
-.stack-card{position:absolute;width:220px;height:300px;border-radius:8px;overflow:hidden;cursor:none;transition:transform .45s var(--ease),box-shadow .45s var(--ease),z-index 0s .45s;will-change:transform;}
-.stack-card:nth-child(1){left:40px;bottom:0;transform:rotate(-5deg) translateY(8px);z-index:1;box-shadow:0 8px 32px rgba(0,0,0,.09);}
-.stack-card:nth-child(2){left:220px;bottom:16px;transform:rotate(3deg) translateY(0px);z-index:2;box-shadow:0 12px 40px rgba(0,0,0,.11);}
-.proj-stack-wrap:hover .stack-card:nth-child(1){transform:rotate(-7deg) translateY(16px) translateX(-12px);box-shadow:0 16px 48px rgba(0,0,0,.12);}
-.proj-stack-wrap:hover .stack-card:nth-child(2){transform:rotate(5deg) translateY(12px) translateX(12px);box-shadow:0 14px 44px rgba(0,0,0,.12);}
-.stack-card:hover{transform:rotate(0deg) translateY(-20px) scale(1.04)!important;z-index:10!important;box-shadow:0 28px 64px rgba(0,0,0,.15)!important;transition:transform .3s var(--ease),box-shadow .3s var(--ease),z-index 0s!important;}
-.stack-card-inner{width:100%;height:100%;position:relative;display:flex;flex-direction:column;justify-content:flex-end;}
-.stack-card-body{position:absolute;inset:0;}
-.cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;z-index:3;}
-.stack-card-foot{position:relative;z-index:2;padding:18px 16px 16px;background:linear-gradient(to top,rgba(255,255,255,.88) 0%,transparent 100%);}
-.stack-card-foot.light{background:linear-gradient(to top,rgba(255,255,255,.92) 0%,transparent 100%);}
+.proj-stack-wrap{height:auto;position:relative;margin-bottom:44px;cursor:none;}
+.proj-stack{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;width:100%;}
+.stack-card{position:relative;width:100%;height:360px;border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:none;background:var(--bg);box-shadow:0 8px 28px rgba(17,17,17,.07);transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s;}
+.stack-card:hover{transform:translateY(-7px);border-color:rgba(61,90,254,.3);box-shadow:0 18px 44px rgba(17,17,17,.12);}
+.stack-card-inner{width:100%;height:100%;display:grid;grid-template-rows:minmax(0,1fr) auto;}
+.stack-card-body{position:relative;min-height:0;overflow:hidden;}
+.cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;z-index:3;transition:transform .55s var(--ease);}
+.stack-card:hover .cover-img{transform:scale(1.025);}
+.stack-card-foot{position:relative;z-index:4;padding:15px 16px 16px;background:#fff;border-top:1px solid var(--border);}
+.stack-card-foot.light{background:#fff;}
 .sc-num{font-family:var(--mono);font-size:9px;color:rgba(17,17,17,.35);letter-spacing:.12em;margin-bottom:4px;}
 .sc-num.dk{color:rgba(17,17,17,.4);}
 .sc-title{font-family:var(--serif);font-size:16px;color:var(--text);line-height:1.2;margin-bottom:3px;}
@@ -270,21 +267,13 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
   .nav-r{gap:12px;}
   .clock{font-size:10px;}
 
-  /* ✅ FIX 2: 堆叠卡片居中 */
-  .proj-stack-wrap{
-    height:280px;
-    display:flex;
-    justify-content:center;
-    align-items:flex-end;
-  }
-  .proj-stack{
-    position:relative;
-    width:260px;
-    height:100%;
-  }
-  .stack-card{width:180px;height:240px;}
-  .stack-card:nth-child(1){left:10px;bottom:0;transform:rotate(-5deg) translateY(8px);}
-  .stack-card:nth-child(2){left:70px;bottom:16px;transform:rotate(3deg) translateY(0px);}
+  /* 案例卡片保持清晰、互不遮挡 */
+  .proj-stack-wrap{height:auto;}
+  .proj-stack{width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .stack-card{width:100%;height:320px;}
+  .stack-card-foot{padding:13px 12px 14px;}
+  .sc-title{font-size:15px;}
+  .sc-sub{line-height:1.45;}
 
   /* 其他布局修复 */
   .about-grid{grid-template-columns:1fr;}
@@ -294,6 +283,10 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
   .proj-cards{grid-template-columns:1fr;}
   .proj-cards-right{flex-direction:row;}
   .hero-meta{flex-direction:column;gap:4px;align-items:flex-start;}
+}
+@media(max-width:520px){
+  .proj-stack{grid-template-columns:1fr;}
+  .stack-card{height:380px;}
 }
 </style>
   <!-- Microsoft Clarity --> 
@@ -344,9 +337,6 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
 <!-- HERO -->
 <section id="hero">
   <div class="wrap">
-    <div class="hero-meta rv">
-      <span class="hero-est" data-en="EST. 2002" data-zh="生于 2002">EST. 2002</span>
-    </div>
     <h1 class="hero-name rv" style="transition-delay:.04s" data-en="Ma Runmeng" data-zh="马润萌">Ma Runmeng</h1>
     <p class="hero-en rv" style="transition-delay:.07s">Renee</p>
     <p class="rv" style="transition-delay:.09s;font-family:var(--serif);font-size:clamp(17px,2vw,24px);color:var(--mid);margin-bottom:28px;font-style:italic;" data-en="Hi, I'm Renee." data-zh="你好，我是马润萌。">Hi, I'm Renee.</p>
@@ -365,7 +355,7 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
           <div class="hc-role" data-en="AI & Smart Hardware PM · 2027 Graduate" data-zh="AI 与智能硬件产品经理 · 2027届">AI & Smart Hardware PM · 2027 Graduate</div>
         </div>
       </div>
-      <p class="hc-bio" data-en="I turn ambiguous scenarios into scoped, measurable product systems.<br>Currently at <strong>NIO</strong>, working on a travel-planning Agent, 360° panoramic imaging and in-cabin sensing." data-zh="把模糊场景转化为边界清晰、可验证的产品系统。<br>目前在<strong>蔚来</strong>负责旅行规划 Agent、360° 全景影像与舱内感知相关产品工作。">I turn ambiguous scenarios into scoped, measurable product systems.<br>Currently at <strong>NIO</strong>, working on a travel-planning Agent, 360° panoramic imaging and in-cabin sensing.</p>
+      <p class="hc-bio" data-en="Currently a <strong>Smart Cockpit Product Manager Intern at NIO</strong>, working across in-car experiences and AI product exploration. I focus on understanding real user scenarios, shaping clear product rules and working with cross-functional teams to move ideas toward delivery. Outside work, I keep building small products of my own." data-zh="目前在<strong>蔚来担任智能座舱产品经理实习生</strong>，参与座舱体验与 AI 产品方向的探索和落地。工作中，我关注真实用户场景、产品规则与跨团队协作，也持续通过个人项目练习把想法做成真正可用的产品。">Currently a <strong>Smart Cockpit Product Manager Intern at NIO</strong>, working across in-car experiences and AI product exploration. I focus on understanding real user scenarios, shaping clear product rules and working with cross-functional teams to move ideas toward delivery. Outside work, I keep building small products of my own.</p>
       <div class="hc-shortcut" id="copyEmail">
         <span data-en="Press" data-zh="按">Press</span>
         <span class="key">C</span>
@@ -391,11 +381,10 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
     <span class="sec-label rv" data-en="ABOUT" data-zh="关于我">ABOUT</span>
     <div class="about-grid rv" style="transition-delay:.05s;">
       <div class="about-text">
-        <p data-en="I work across <strong>smart cockpit, AI Agent and connected hardware</strong>, turning uncertain scenarios into scoped products, measurable decisions and executable roadmaps." data-zh="我关注<strong>智能座舱、AI Agent 与智能硬件</strong>，擅长把不确定的场景转化为有边界的产品、可衡量的决策和可执行的路线图。">I work across <strong>smart cockpit, AI Agent and connected hardware</strong>, turning uncertain scenarios into scoped products, measurable decisions and executable roadmaps.</p>
-        <p data-en="At <strong>NIO</strong>, I define the end-to-end task chain and capability boundaries for a travel-planning Agent, while rebuilding the analytics loop for 360° panoramic imaging." data-zh="在<strong>蔚来</strong>，我负责旅行规划 Agent 的端到端任务链路与能力边界，并重构 360° 全景影像的数据分析闭环。">At <strong>NIO</strong>, I define the end-to-end task chain and capability boundaries for a travel-planning Agent, while rebuilding the analytics loop for 360° panoramic imaging.</p>
-        <p data-en="At <strong>70mai</strong>, I worked from user research through firmware, app and cloud rules — including smart-feeder weight logic, multi-pet product definition and AI feature planning." data-zh="在<strong>70mai</strong>，我从用户研究推进到固件、App 与云端规则，覆盖智能喂食器称重逻辑、多宠新品定义和 AI 功能规划。">At <strong>70mai</strong>, I worked from user research through firmware, app and cloud rules — including smart-feeder weight logic, multi-pet product definition and AI feature planning.</p>
-        <p data-en="<strong>PoopNow</strong> is my independent 0→1 practice: product definition, recommendation logic, API integration and launch, completed with AI coding tools." data-zh="<strong>PoopNow</strong> 是我的独立 0→1 实践：从产品定义、推荐逻辑、API 对接到上线，均通过 AI 编程工具完成。"><strong>PoopNow</strong> is my independent 0→1 practice: product definition, recommendation logic, API integration and launch, completed with AI coding tools.</p>
-        <p data-en="Open to <strong>2027 graduate roles</strong> in AI applications, smart cockpit and smart hardware." data-zh="寻找<strong>AI 应用、智能座舱与智能硬件方向的 2027 届校招机会</strong>。">Open to <strong>2027 graduate roles</strong> in AI applications, smart cockpit and smart hardware.</p>
+        <p data-en="I moved from industrial design into product management because I wanted to take part in the decisions that happen before a product takes shape: what people actually need, why it is worth building and how it can work in the real world." data-zh="我从工业设计转向产品经理，是因为比起只关注产品最后呈现出来的样子，我更想参与前面的判断：用户真正需要什么、为什么要做，以及怎样才能落地。">I moved from industrial design into product management because I wanted to take part in the decisions that happen before a product takes shape: what people actually need, why it is worth building and how it can work in the real world.</p>
+        <p data-en="I am now working on smart-cockpit products at <strong>NIO</strong>. Before that, I worked on connected pet hardware at <strong>70mai</strong>. Across these experiences, I have done user research, new-product definition, core-experience redesign and data analysis, and learned how to carry a problem from discovery into delivery." data-zh="目前我在<strong>蔚来</strong>做智能座舱产品，之前在<strong>70mai</strong>参与智能宠物硬件。在这些项目里，我做过用户研究、新产品定义、核心体验重构和数据分析，也逐渐形成了从发现问题到推动落地的工作方式。">I am now working on smart-cockpit products at <strong>NIO</strong>. Before that, I worked on connected pet hardware at <strong>70mai</strong>. Across these experiences, I have done user research, new-product definition, core-experience redesign and data analysis, and learned how to carry a problem from discovery into delivery.</p>
+        <p data-en="Outside work, I use AI coding tools to build my own products. <strong>PoopNow</strong> started with a very ordinary problem from daily life, and I independently took it through product definition, design, development and launch." data-zh="工作之外，我会用 AI 编程工具做自己的产品。<strong>PoopNow</strong> 从生活里一个很具体的需求出发，由我独立完成产品定义、设计、开发和上线。">Outside work, I use AI coding tools to build my own products. <strong>PoopNow</strong> started with a very ordinary problem from daily life, and I independently took it through product definition, design, development and launch.</p>
+        <p data-en="I am currently preparing for 2027 graduate recruitment and hope to continue working on AI applications, smart cockpit or connected hardware products." data-zh="现在我正在准备 2027 届校招，希望继续做 AI 应用、智能座舱或智能硬件相关的产品工作。">I am currently preparing for 2027 graduate recruitment and hope to continue working on AI applications, smart cockpit or connected hardware products.</p>
       </div>
       <div>
         <div class="a-stats">
@@ -410,9 +399,7 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
           <div class="stack-item"><span class="s-dot"></span>Axure</div>
           <div class="stack-item"><span class="s-dot"></span>Jira</div>
           <div class="stack-item"><span class="s-dot"></span>Excel</div>
-          <div class="stack-item"><span class="s-dot"></span>Codex / Trae</div>
-          <div class="stack-item"><span class="s-dot"></span>DeepSeek API</div>
-          <div class="stack-item"><span class="s-dot"></span>高德地图 API</div>
+          <div class="stack-item"><span class="s-dot"></span>Codex / Trae / Claude Code</div>
         </div>
       </div>
     </div>
@@ -485,7 +472,7 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
             </div>
             <div class="stack-card-foot light">
               <div class="sc-num dk">02 · AIoT HARDWARE</div>
-              <div class="sc-title dk">米家智能项圈</div>
+              <div class="sc-title dk">小米 · 智能宠物项圈</div>
               <div class="sc-sub dk">USER RESEARCH · PRODUCT DEF.</div>
             </div>
           </div>
@@ -522,7 +509,7 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
       <div class="proj-item" id="collar" data-link="files/collar-case-v4.html">
         <div class="proj-num">04</div>
         <div class="proj-info">
-          <div class="proj-name"><span data-en="Xiaomi Smart Pet Collar" data-zh="米家智能宠物项圈">Xiaomi Smart Pet Collar</span><span class="proj-arr">↗</span></div>
+          <div class="proj-name"><span data-en="Xiaomi · Smart Pet Collar" data-zh="小米 · 智能宠物项圈">Xiaomi · Smart Pet Collar</span><span class="proj-arr">↗</span></div>
           <div class="proj-desc" data-en="Repositioned the product from GPS tracker to a daily sensing and companion device through 5 user interviews, market structure research and hardware-boundary trade-offs." data-zh="通过 5 组用户深访、市场结构研究与硬件边界取舍，将产品从 GPS 追踪器重构为日常感知与陪伴设备。">Repositioned the product from GPS tracker to a daily sensing and companion device through 5 user interviews, market structure research and hardware-boundary trade-offs.</div>
           <div class="proj-tags"><span class="proj-tag" data-en="User Research" data-zh="用户研究">User Research</span><span class="proj-tag">AIoT</span><span class="proj-tag" data-en="Product Definition" data-zh="产品定义">Product Definition</span></div>
         </div>
@@ -552,22 +539,22 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
             <div class="exp-co"><div class="exp-logo">NIO</div><span data-en="NIO · Smart Cockpit" data-zh="蔚来 · 智能座舱">NIO · Smart Cockpit</span></div>
             <div class="exp-role" data-en="Product Manager Intern — Smart Cockpit" data-zh="智能座舱产品经理实习生">Product Manager Intern — Smart Cockpit</div>
             <ul class="exp-bullets">
-              <li data-en="Defined a <strong>travel-planning Agent</strong> from vague user intent to an executable in-car itinerary, including capability boundaries, vehicle dependencies, risk controls and validation metrics." data-zh="负责<strong>旅行规划 Agent</strong> 前期产品定义，将模糊出游意图转化为可执行车载行程，拆解能力边界、车端依赖、风险兜底与验证指标。">Defined a <strong>travel-planning Agent</strong> from vague user intent to an executable in-car itinerary, including capability boundaries, vehicle dependencies, risk controls and validation metrics.</li>
-              <li data-en="Rebuilt the <strong>360° panoramic imaging</strong> analytics framework: 6 decision areas, 22 key events, 5 shared dimensions and an acceptance checklist." data-zh="重构<strong>360° 全景影像</strong>数据体系：覆盖 6 类决策问题、22 项关键事件、5 项公共维度与完整验收清单。">Rebuilt the <strong>360° panoramic imaging</strong> analytics framework: 6 decision areas, 22 key events, 5 shared dimensions and an acceptance checklist.</li>
+              <li data-en="<strong>Smart Cockpit Feature Owner · Blind-Spot View & Door-Opening Warning:</strong> Owned the cockpit-side P0 perception-imaging scope for the G1.3 model update. Independently defined the vehicle-level BSV addition and optimized DOW rules and adaptation, covering entry and exit, left/right views, risk prompts, priority and conflict rules, and abnormal recovery; aligned the final solution with cluster, engineering and partner teams and moved it into development." data-zh="<strong>【座舱侧功能 Owner｜盲点影像与开门预警】</strong>承接 G1.3 改款车型 P0 感知影像需求，基于主线能力独立负责盲点影像（BSV）的车型级新增，以及开门预警（DOW）的规则优化与车型适配；完成触发与退出、左右视图、风险提示、优先级与冲突规则、异常恢复等座舱侧方案设计，协同仪表、研发等团队完成方案收口并推进开发。"><strong>Smart Cockpit Feature Owner · Blind-Spot View & Door-Opening Warning:</strong> Owned the cockpit-side P0 perception-imaging scope for the G1.3 model update. Independently defined the vehicle-level BSV addition and optimized DOW rules and adaptation, covering entry and exit, left/right views, risk prompts, priority and conflict rules, and abnormal recovery; aligned the final solution with cluster, engineering and partner teams and moved it into development.</li>
+              <li data-en="<strong>AI Product Definition · Travel Planning Agent:</strong> Identified gaps in the existing destination-dependent approach for vague intent, vehicle charging and in-trip adjustment, and reframed the product as executable, resumable and dynamically adjustable in-car task planning. Evaluated 4 automaker Agents, 4 travel apps and 3 general-purpose models; designed the core flow, functional architecture and technical boundaries, and delivered the pre-proposal." data-zh="<strong>【AI 产品定义｜旅行规划 Agent】</strong>识别现有方案依赖明确目的地、难以覆盖模糊意图、车辆补能与行中调整，将产品定义为可执行、可接续、可动态调整的车载任务规划；评估 4 家车企 Agent、4 款旅行 App 及 3 个大模型，完成核心流程、功能架构与技术边界设计，输出预立项方案。"><strong>AI Product Definition · Travel Planning Agent:</strong> Identified gaps in the existing destination-dependent approach for vague intent, vehicle charging and in-trip adjustment, and reframed the product as executable, resumable and dynamically adjustable in-car task planning. Evaluated 4 automaker Agents, 4 travel apps and 3 general-purpose models; designed the core flow, functional architecture and technical boundaries, and delivered the pre-proposal.</li>
               <li data-en="Conducting early product research for an aftermarket <strong>occupant monitoring system</strong>, defining target users, V1 scope and hardware/software constraints." data-zh="开展后装<strong>舱内乘员监测系统（OMS）</strong>预研，梳理目标用户、V1 范围与软硬件约束。">Conducting early product research for an aftermarket <strong>occupant monitoring system</strong>, defining target users, V1 scope and hardware/software constraints.</li>
             </ul>
           </div>
         </div>
 
         <div class="exp-item">
-          <div class="exp-date">2026.01<br>— 2026.05</div>
+          <div class="exp-date">2025.12<br>— 2026.05</div>
           <div class="exp-r">
             <div class="exp-co"><div class="exp-logo">70m</div><span data-en="70mai · Xiaomi Ecosystem" data-zh="70mai · 小米生态链">70mai · Xiaomi Ecosystem</span></div>
             <div class="exp-role" data-en="Product Manager Intern — Connected Hardware" data-zh="整机产品经理实习生 · 智能硬件">Product Manager Intern — Connected Hardware</div>
             <ul class="exp-bullets">
-              <li data-en="Redesigned smart-feeder <strong>weight and remaining-food logic</strong>, covering calculation rules, calibration, abnormal states and firmware–app–cloud acceptance criteria." data-zh="重构智能喂食器<strong>称重与余粮逻辑</strong>，覆盖计算、校准、异常状态及固件—App—云端验收口径。">Redesigned smart-feeder <strong>weight and remaining-food logic</strong>, covering calculation rules, calibration, abnormal states and firmware–app–cloud acceptance criteria.</li>
-              <li data-en="Led 11 user interviews for a multi-pet feeder, producing 4 user segments, a feature-priority matrix and 2 differentiated product directions." data-zh="主导 11 位用户深访，形成 4 类用户分层、功能优先级矩阵与 2 套差异化多宠喂食器方案。">Led 11 user interviews for a multi-pet feeder, producing 4 user segments, a feature-priority matrix and 2 differentiated product directions.</li>
-              <li data-en="Planned AI health summaries and AIGC content modules, including scope, token-cost structure and tiered-subscription recommendations." data-zh="规划 AI 健康摘要与 AIGC 内容模块，明确功能范围、Token 成本结构与分级订阅建议。">Planned AI health summaries and AIGC content modules, including scope, token-cost structure and tiered-subscription recommendations.</li>
+              <li data-en="<strong>Core Experience Redesign · Weight & Remaining Food:</strong> Weight sensing was a key differentiator, but temperature drift, food density and pet interference caused inaccurate displays and frequent complaints. Independently owned the OTA6 redesign, replacing single readings with a dynamic model using historical state, dispensing and feeding events; defined settlement, calibration and exception rules, split responsibilities across firmware, Mi Home plugin and cloud, and completed the cross-platform PRD review." data-zh="<strong>【核心体验重构｜称重与余粮】</strong>称重是产品差异化卖点，但原有逻辑受温漂、粮食密度及宠物介入等因素干扰，显示偏差并成为高频投诉问题；独立负责 OTA6 重构，将单点读数改为结合历史状态与出粮、进食事件的动态余粮模型，设计结算、校准及异常规则，拆分固件、米家插件与云端职责，输出 PRD 并完成多端评审。"><strong>Core Experience Redesign · Weight & Remaining Food:</strong> Weight sensing was a key differentiator, but temperature drift, food density and pet interference caused inaccurate displays and frequent complaints. Independently owned the OTA6 redesign, replacing single readings with a dynamic model using historical state, dispensing and feeding events; defined settlement, calibration and exception rules, split responsibilities across firmware, Mi Home plugin and cloud, and completed the cross-platform PRD review.</li>
+              <li data-en="<strong>New Product Definition · Xiaomi Smart Pet Collar:</strong> Independently led the pre-proposal after identifying opportunity in owners repurposing children's watches and AirTags for pets. Used market structure, price band, competitor and cross-category substitution research to define the positioning and first product plan, shifting the concept from a locator to a daily sensing and companion device; planned state, route and interaction functions while balancing positioning, IMU, 4G, battery life, weight and waterproofing." data-zh="<strong>【新产品定义｜米家智能宠物项圈】</strong>独立负责新品预立项，从用户将儿童手表、AirTag 用于宠物的替代行为中识别机会，基于市场结构、价格带、竞品及跨品类替代行为研究，独立完成产品定位与首版规划，将产品由定位器定义为日常感知与陪伴设备；围绕状态、轨迹与互动规划功能，并在定位、IMU、4G 与续航、重量、防水约束间收敛边界。"><strong>New Product Definition · Xiaomi Smart Pet Collar:</strong> Independently led the pre-proposal after identifying opportunity in owners repurposing children's watches and AirTags for pets. Used market structure, price band, competitor and cross-category substitution research to define the positioning and first product plan, shifting the concept from a locator to a daily sensing and companion device; planned state, route and interaction functions while balancing positioning, IMU, 4G, battery life, weight and waterproofing.</li>
+              <li data-en="<strong>Quantitative Research & Product Insight · Smart Water Fountain:</strong> Independently designed the survey and analyzed the data, cleaning 380 responses into 297 valid samples. Separated replacement buyers from first-time buyers, identified shared needs around hygiene, cleaning, safety and away-from-home reliability, and translated them into product priorities; the project has been approved and entered development." data-zh="<strong>【定量研究与产品洞察｜智能饮水机】</strong>独立完成问卷设计与数据分析，清洗 380 份问卷并获得 297 份有效样本；区分换机与首次购买用户，识别卫生、清洗、安全及外出托底等共性需求，形成产品优先方向，项目已立项并进入开发。"><strong>Quantitative Research & Product Insight · Smart Water Fountain:</strong> Independently designed the survey and analyzed the data, cleaning 380 responses into 297 valid samples. Separated replacement buyers from first-time buyers, identified shared needs around hygiene, cleaning, safety and away-from-home reliability, and translated them into product priorities; the project has been approved and entered development.</li>
             </ul>
           </div>
         </div>
