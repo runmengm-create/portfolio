@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Renee Ma · PM Portfolio</title>
+<title>Renee Ma · AI & Smart Hardware Product Manager</title>
+<meta name="description" content="Renee Ma（马润萌）的产品经理作品集：智能座舱、AI Agent、智能硬件、数据体系与 0→1 产品实践。">
+<meta name="keywords" content="产品经理, 智能座舱, AI Agent, 智能硬件, AIoT, Product Manager, Renee Ma">
+<meta property="og:title" content="Renee Ma · AI & Smart Hardware Product Manager">
+<meta property="og:description" content="Smart cockpit, AI Agent, connected hardware and data-driven product work.">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -35,6 +40,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15
 #cur-ring{position:fixed;width:30px;height:30px;border:1px solid rgba(61,90,254,.4);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s var(--ease),height .3s var(--ease),opacity .2s,border-color .2s;left:-50px;top:-50px;}
 body.ch #cur{width:40px;height:40px;border-radius:50%;background:var(--blue);opacity:.7;}
 body.ch #cur-ring{opacity:0;}
+
+/* READING PATH */
+.reading-rail{position:fixed;right:24px;top:50%;z-index:180;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:11px;}
+.reading-track{position:absolute;top:0;bottom:0;width:1px;background:var(--border);z-index:-1;}
+.reading-progress{position:absolute;top:0;width:1px;height:0;background:var(--blue);z-index:-1;transition:height .12s linear;}
+.reading-dot{width:7px;height:7px;border-radius:50%;border:1px solid var(--border);background:#fff;transition:transform .3s var(--ease),background .3s,border-color .3s;position:relative;}
+.reading-dot::after{content:attr(data-label);position:absolute;right:14px;top:50%;transform:translateY(-50%) translateX(5px);font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--muted);white-space:nowrap;opacity:0;transition:opacity .2s,transform .2s;}
+.reading-dot:hover::after,.reading-dot.active::after{opacity:1;transform:translateY(-50%) translateX(0);}
+.reading-dot.active{background:var(--blue);border-color:var(--blue);transform:scale(1.35);}
+.mobile-reading{display:none;position:fixed;left:0;right:0;top:0;height:2px;background:var(--border);z-index:500;}
+.mobile-reading-progress{height:100%;width:0;background:var(--blue);transition:width .12s linear;}
+.chapter-pill{display:none;position:fixed;right:18px;bottom:18px;z-index:190;padding:7px 10px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--blue);box-shadow:0 7px 24px rgba(17,17,17,.08);}
 
 /* CANVAS */
 #pc{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;}
@@ -73,6 +90,7 @@ nav.solid{background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bot
 
 /* HERO */
 #hero{padding:130px 0 80px;}
+#hero .wrap{transform:translateY(var(--hero-shift,0px));transition:transform .12s linear;}
 .hero-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
 .hero-est{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em;}
 .hero-name{font-family:var(--serif);font-size:clamp(40px,5.5vw,68px);line-height:1.04;letter-spacing:-.02em;margin-bottom:4px;}
@@ -141,9 +159,12 @@ nav.solid{background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bot
 
 /* EXPERIENCE - with timeline */
 .exp-wrap{position:relative;}
-.exp-wrap::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--border) 0%,var(--blue) 30%,var(--border) 100%);}
+.exp-wrap::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border);}
+.exp-progress{position:absolute;left:0;top:0;width:1px;height:0;background:var(--blue);transition:height .12s linear;z-index:1;}
 .exp-list{display:flex;flex-direction:column;padding-left:28px;}
-.exp-item{position:relative;padding:22px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:130px 1fr;gap:20px;transition:padding .2s;}
+.exp-item{position:relative;padding:22px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:130px 1fr;gap:20px;transition:opacity .45s var(--ease),transform .45s var(--ease),padding .2s;}
+body.motion-ready .exp-item{opacity:.42;transform:translateY(8px);}
+body.motion-ready .exp-item.in-focus{opacity:1;transform:none;}
 .exp-item:first-child{border-top:1px solid var(--border);}
 .exp-item::before{content:'';position:absolute;left:-32px;top:28px;width:8px;height:8px;border-radius:50%;background:var(--bg);border:1.5px solid var(--border);transition:border-color .3s,background .3s;}
 .exp-item:hover::before{border-color:var(--blue);background:var(--blue);}
@@ -181,19 +202,22 @@ nav.solid{background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bot
 .edu-hidden.show{display:flex;flex-direction:column;gap:4px;margin-top:4px;}
 
 /* PROJECT STACK */
-.proj-stack-wrap{perspective:1000px;height:340px;position:relative;margin-bottom:48px;cursor:none;}
-.proj-stack{position:relative;width:100%;height:100%;transform-style:preserve-3d;}
-.stack-card{position:absolute;width:220px;height:300px;border-radius:8px;overflow:hidden;cursor:none;transition:transform .45s var(--ease),box-shadow .45s var(--ease),z-index 0s .45s;will-change:transform;}
-.stack-card:nth-child(1){left:40px;bottom:0;transform:rotate(-5deg) translateY(8px);z-index:1;box-shadow:0 8px 32px rgba(0,0,0,.09);}
-.stack-card:nth-child(2){left:220px;bottom:16px;transform:rotate(3deg) translateY(0px);z-index:2;box-shadow:0 12px 40px rgba(0,0,0,.11);}
-.proj-stack-wrap:hover .stack-card:nth-child(1){transform:rotate(-7deg) translateY(16px) translateX(-12px);box-shadow:0 16px 48px rgba(0,0,0,.12);}
-.proj-stack-wrap:hover .stack-card:nth-child(2){transform:rotate(5deg) translateY(12px) translateX(12px);box-shadow:0 14px 44px rgba(0,0,0,.12);}
-.stack-card:hover{transform:rotate(0deg) translateY(-20px) scale(1.04)!important;z-index:10!important;box-shadow:0 28px 64px rgba(0,0,0,.15)!important;transition:transform .3s var(--ease),box-shadow .3s var(--ease),z-index 0s!important;}
-.stack-card-inner{width:100%;height:100%;position:relative;display:flex;flex-direction:column;justify-content:flex-end;}
-.stack-card-body{position:absolute;inset:0;}
-.cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;z-index:3;}
-.stack-card-foot{position:relative;z-index:2;padding:18px 16px 16px;background:linear-gradient(to top,rgba(255,255,255,.88) 0%,transparent 100%);}
-.stack-card-foot.light{background:linear-gradient(to top,rgba(255,255,255,.92) 0%,transparent 100%);}
+.proj-stack-wrap{height:auto;position:relative;margin-bottom:44px;cursor:none;}
+.proj-stack{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;width:100%;}
+.stack-card{position:relative;width:100%;height:360px;border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:none;background:var(--bg);box-shadow:0 8px 28px rgba(17,17,17,.07);transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s;}
+.stack-card.featured{grid-column:1/-1;height:310px;}
+.stack-card.featured .stack-card-inner{grid-template-columns:1.28fr .72fr;grid-template-rows:1fr;}
+.stack-card.featured .stack-card-foot{border-top:0;border-left:1px solid var(--border);display:flex;flex-direction:column;justify-content:flex-end;padding:26px;}
+.stack-card:hover{transform:translateY(-7px);border-color:rgba(61,90,254,.3);box-shadow:0 18px 44px rgba(17,17,17,.12);}
+body.motion-ready .stack-card{opacity:0;transform:translateY(54px) scale(.96);filter:blur(5px);}
+body.motion-ready .stack-card.card-visible{opacity:1;transform:none;filter:none;transition:opacity .72s var(--ease),transform .72s var(--ease),filter .72s var(--ease),box-shadow .35s var(--ease),border-color .35s;}
+body.motion-ready .stack-card.card-visible:hover{transform:translateY(-7px);}
+.stack-card-inner{width:100%;height:100%;display:grid;grid-template-rows:minmax(0,1fr) auto;}
+.stack-card-body{position:relative;min-height:0;overflow:hidden;}
+.cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;z-index:3;transition:transform .55s var(--ease);}
+.stack-card:hover .cover-img{transform:scale(1.025);}
+.stack-card-foot{position:relative;z-index:4;padding:15px 16px 16px;background:#fff;border-top:1px solid var(--border);}
+.stack-card-foot.light{background:#fff;}
 .sc-num{font-family:var(--mono);font-size:9px;color:rgba(17,17,17,.35);letter-spacing:.12em;margin-bottom:4px;}
 .sc-num.dk{color:rgba(17,17,17,.4);}
 .sc-title{font-family:var(--serif);font-size:16px;color:var(--text);line-height:1.2;margin-bottom:3px;}
@@ -231,6 +255,19 @@ nav.solid{background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bot
 .cover-agent .cv-node-big{width:44px;height:44px;border-radius:50%;border:1px solid rgba(61,90,254,.35);margin:0 auto;display:flex;align-items:center;justify-content:center;}
 .cover-agent .cv-label{display:none;}
 
+/* BSV / DOW cover */
+.cover-bsv{background:#111827;color:#fff;}
+.bsv-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:30px 30px;}
+.bsv-road{position:absolute;left:50%;top:-12%;width:48%;height:124%;transform:translateX(-50%);border-left:1px dashed rgba(255,255,255,.16);border-right:1px dashed rgba(255,255,255,.16);}
+.bsv-car{position:absolute;left:50%;top:50%;width:70px;height:126px;transform:translate(-50%,-50%);border:1.5px solid rgba(255,255,255,.7);border-radius:22px 22px 16px 16px;}
+.bsv-car::before,.bsv-car::after{content:'';position:absolute;top:30px;width:28px;height:60px;background:rgba(61,90,254,.16);border:1px solid rgba(92,124,255,.52);filter:drop-shadow(0 0 12px rgba(61,90,254,.34));}
+.bsv-car::before{right:100%;clip-path:polygon(100% 0,0 30%,0 70%,100% 100%);}
+.bsv-car::after{left:100%;clip-path:polygon(0 0,100% 30%,100% 70%,0 100%);}
+.bsv-risk{position:absolute;right:16%;top:28%;width:12px;height:12px;border-radius:50%;background:#ff5b5b;box-shadow:0 0 0 8px rgba(255,91,91,.12);animation:risk-pulse 1.8s ease-in-out infinite;}
+.bsv-risk::after{content:'RISK';position:absolute;left:18px;top:-2px;font-family:var(--mono);font-size:8px;letter-spacing:.12em;color:#ff8b8b;}
+.bsv-rule{position:absolute;left:18px;bottom:16px;font-family:var(--mono);font-size:8px;letter-spacing:.1em;color:rgba(255,255,255,.48);}
+@keyframes risk-pulse{50%{box-shadow:0 0 0 16px rgba(255,91,91,0);transform:scale(1.12)}}
+
 @keyframes pulse-ring{0%,100%{box-shadow:0 0 0 0 rgba(61,90,254,.15)}50%{box-shadow:0 0 0 7px rgba(61,90,254,0)}}
 
 /* CONTACT */
@@ -248,8 +285,14 @@ nav.solid{background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bot
 footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--muted);}
 
 /* REVEAL */
-.rv{opacity:0;transform:translateY(14px);transition:opacity .65s var(--ease),transform .65s var(--ease);}
-.rv.on{opacity:1;transform:none;}
+.rv{opacity:0;transform:translateY(30px);filter:blur(5px);transition:opacity .72s var(--ease),transform .72s var(--ease),filter .72s var(--ease);}
+.rv.on{opacity:1;transform:none;filter:none;}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
+  .rv,.exp-item,.stack-card{opacity:1!important;transform:none!important;filter:none!important;}
+}
 
 /* ===================== MOBILE FIXES ===================== */
 @media(max-width:768px){
@@ -264,22 +307,19 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
   .nav-links{display:none;}
   .nav-r{gap:12px;}
   .clock{font-size:10px;}
+  .reading-rail{display:none;}
+  .mobile-reading,.chapter-pill{display:block;}
 
-  /* ✅ FIX 2: 堆叠卡片居中 */
-  .proj-stack-wrap{
-    height:280px;
-    display:flex;
-    justify-content:center;
-    align-items:flex-end;
-  }
-  .proj-stack{
-    position:relative;
-    width:260px;
-    height:100%;
-  }
-  .stack-card{width:180px;height:240px;}
-  .stack-card:nth-child(1){left:10px;bottom:0;transform:rotate(-5deg) translateY(8px);}
-  .stack-card:nth-child(2){left:70px;bottom:16px;transform:rotate(3deg) translateY(0px);}
+  /* 案例卡片保持清晰、互不遮挡 */
+  .proj-stack-wrap{height:auto;}
+  .proj-stack{width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .stack-card{width:100%;height:320px;}
+  .stack-card.featured{height:280px;}
+  .stack-card.featured .stack-card-inner{grid-template-columns:1fr 210px;}
+  .stack-card.featured .stack-card-foot{padding:18px;}
+  .stack-card-foot{padding:13px 12px 14px;}
+  .sc-title{font-size:15px;}
+  .sc-sub{line-height:1.45;}
 
   /* 其他布局修复 */
   .about-grid{grid-template-columns:1fr;}
@@ -289,6 +329,13 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
   .proj-cards{grid-template-columns:1fr;}
   .proj-cards-right{flex-direction:row;}
   .hero-meta{flex-direction:column;gap:4px;align-items:flex-start;}
+}
+@media(max-width:520px){
+  .proj-stack{grid-template-columns:1fr;}
+  .stack-card{height:380px;}
+  .stack-card.featured{height:430px;}
+  .stack-card.featured .stack-card-inner{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;}
+  .stack-card.featured .stack-card-foot{border-left:0;border-top:1px solid var(--border);}
 }
 </style>
   <!-- Microsoft Clarity --> 
@@ -304,6 +351,18 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
 <div id="cur"></div>
 <div id="cur-ring"></div>
 <canvas id="pc"></canvas>
+<div class="reading-rail" id="readingRail" aria-label="阅读进度">
+  <div class="reading-track"></div>
+  <div class="reading-progress" id="readingProgress"></div>
+  <a class="reading-dot active" href="#hero" data-section="hero" data-label="INTRO" aria-label="介绍"></a>
+  <a class="reading-dot" href="#about" data-section="about" data-label="ABOUT" aria-label="关于"></a>
+  <a class="reading-dot" href="#work" data-section="work" data-label="WORK" aria-label="项目"></a>
+  <a class="reading-dot" href="#experience" data-section="experience" data-label="EXPERIENCE" aria-label="经历"></a>
+  <a class="reading-dot" href="#education" data-section="education" data-label="EDUCATION" aria-label="教育"></a>
+  <a class="reading-dot" href="#contact" data-section="contact" data-label="CONTACT" aria-label="联系"></a>
+</div>
+<div class="mobile-reading" aria-hidden="true"><div class="mobile-reading-progress" id="mobileReadingProgress"></div></div>
+<div class="chapter-pill" id="chapterPill" aria-live="polite">INTRO · 01</div>
 
 <!-- ENTRY -->
 <div id="entry">
@@ -339,9 +398,6 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
 <!-- HERO -->
 <section id="hero">
   <div class="wrap">
-    <div class="hero-meta rv">
-      <span class="hero-est" data-en="EST. 2002" data-zh="生于 2002">EST. 2002</span>
-    </div>
     <h1 class="hero-name rv" style="transition-delay:.04s" data-en="Ma Runmeng" data-zh="马润萌">Ma Runmeng</h1>
     <p class="hero-en rv" style="transition-delay:.07s">Renee</p>
     <p class="rv" style="transition-delay:.09s;font-family:var(--serif);font-size:clamp(17px,2vw,24px);color:var(--mid);margin-bottom:28px;font-style:italic;" data-en="Hi, I'm Renee." data-zh="你好，我是马润萌。">Hi, I'm Renee.</p>
@@ -357,10 +413,10 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
             马润萌 · Renee
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="6.5" fill="#3D5AFE"/><path d="M3.5 6.5l2 2 4-4" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <div class="hc-role" data-en="Product Manager · 2027 Graduate" data-zh="产品经理 · 2027届">Product Manager · 2027 Graduate</div>
+          <div class="hc-role" data-en="AI & Smart Hardware PM · 2027 Graduate" data-zh="AI 与智能硬件产品经理 · 2027届">AI & Smart Hardware PM · 2027 Graduate</div>
         </div>
       </div>
-      <p class="hc-bio" data-en="From industrial design to AI products — I make things that work.<br>Currently at <strong>70mai (Xiaomi ecosystem)</strong>, defining AIoT smart hardware. I also ship ideas with AI tools independently." data-zh="从有形到有感，做真正以体验为内核的 AI 产品。<br>目前在<strong>70mai（小米生态链）</strong>做 AIoT 智能硬件产品，也独立用 AI 工具把想法做成产品。">From industrial design to AI products — I make things that work.<br>Currently at <strong>70mai (Xiaomi ecosystem)</strong>, defining AIoT smart hardware. I also ship ideas with AI tools independently.</p>
+      <p class="hc-bio" data-en="Currently a <strong>Smart Cockpit Product Manager Intern at NIO</strong>, working across in-car experiences and AI product exploration. I focus on understanding real user scenarios, shaping clear product rules and working with cross-functional teams to move ideas toward delivery. Outside work, I keep building small products of my own." data-zh="目前在<strong>蔚来担任智能座舱产品经理实习生</strong>，参与座舱体验与 AI 产品方向的探索和落地。工作中，我关注真实用户场景、产品规则与跨团队协作，也持续通过个人项目练习把想法做成真正可用的产品。">Currently a <strong>Smart Cockpit Product Manager Intern at NIO</strong>, working across in-car experiences and AI product exploration. I focus on understanding real user scenarios, shaping clear product rules and working with cross-functional teams to move ideas toward delivery. Outside work, I keep building small products of my own.</p>
       <div class="hc-shortcut" id="copyEmail">
         <span data-en="Press" data-zh="按">Press</span>
         <span class="key">C</span>
@@ -370,10 +426,11 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
     </div>
 
     <div class="chips rv" style="transition-delay:.14s;">
-      <span class="chip b" data-en="AIoT Hardware PM" data-zh="AIoT 硬件产品">AIoT Hardware PM</span>
-      <span class="chip b" data-en="LLM Agent" data-zh="LLM Agent">LLM Agent</span>
+      <span class="chip b" data-en="Smart Cockpit" data-zh="智能座舱">Smart Cockpit</span>
+      <span class="chip b" data-en="AI Agent" data-zh="AI Agent">AI Agent</span>
+      <span class="chip" data-en="Connected Hardware" data-zh="智能硬件">Connected Hardware</span>
+      <span class="chip" data-en="Data Instrumentation" data-zh="埋点与数据体系">Data Instrumentation</span>
       <span class="chip" data-en="User Research" data-zh="用户研究">User Research</span>
-      <span class="chip" data-en="Donghua University" data-zh="东华大学">Donghua University</span>
       <span class="chip" data-en="Shanghai" data-zh="上海">Shanghai</span>
     </div>
   </div>
@@ -385,27 +442,25 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
     <span class="sec-label rv" data-en="ABOUT" data-zh="关于我">ABOUT</span>
     <div class="about-grid rv" style="transition-delay:.05s;">
       <div class="about-text">
-        <p data-en="I used to think designers could define products." data-zh="我曾以为，设计师可以定义产品。">I used to think designers could define products.</p>
-        <p data-en="My time at <strong>Li-Ning</strong> changed that. The key decisions happen upstream of design. That pushed me toward product." data-zh="在<strong>李宁</strong>的实习让我意识到并非如此。外观、功能的关键判断发生在设计上游，这推动我转向产品。">My time at <strong>Li-Ning</strong> changed that. The key decisions happen upstream of design. That pushed me toward product.</p>
-        <p data-en="At <strong>70mai</strong>, I learned that AI needs to be constrained and scoped for specific contexts — its capability boundary is part of the product design." data-zh="在<strong>70mai</strong>，我理解到 AI 需要被合理约束——能力边界本身，也是产品设计的一部分。">At <strong>70mai</strong>, I learned that AI needs to be constrained and scoped — its capability boundary is part of the product design.</p>
-        <p data-en="<strong>PoopNow</strong> came from a real complaint. I built it from concept to launch with AI tools, no engineers. It confirmed what I want to do." data-zh="<strong>PoopNow</strong> 来自一个真实的抱怨。我独立用 AI 工具完成了从想法到上线的全过程，确认了自己想做的方向。"><strong>PoopNow</strong> came from a real complaint. I built it from concept to launch with AI tools, no engineers. It confirmed what I want to do.</p>
-        <p data-en="Open to <strong>AIPM internships or 2027 graduate roles</strong> in Shanghai." data-zh="寻找<strong>上海 AIPM 方向实习或 2027 届校招机会</strong>，随时到岗。">Open to <strong>AIPM internships or 2027 graduate roles</strong> in Shanghai.</p>
+        <p data-en="I moved from industrial design into product management because I wanted to take part in the decisions that happen before a product takes shape: what people actually need, why it is worth building and how it can work in the real world." data-zh="我从工业设计转向产品经理，是因为比起只关注产品最后呈现出来的样子，我更想参与前面的判断：用户真正需要什么、为什么要做，以及怎样才能落地。">I moved from industrial design into product management because I wanted to take part in the decisions that happen before a product takes shape: what people actually need, why it is worth building and how it can work in the real world.</p>
+        <p data-en="I am now working on smart-cockpit products at <strong>NIO</strong>. Before that, I worked on connected pet hardware at <strong>70mai</strong>. Across these experiences, I have done user research, new-product definition, core-experience redesign and data analysis, and learned how to carry a problem from discovery into delivery." data-zh="目前我在<strong>蔚来</strong>做智能座舱产品，之前在<strong>70mai</strong>参与智能宠物硬件。在这些项目里，我做过用户研究、新产品定义、核心体验重构和数据分析，也逐渐形成了从发现问题到推动落地的工作方式。">I am now working on smart-cockpit products at <strong>NIO</strong>. Before that, I worked on connected pet hardware at <strong>70mai</strong>. Across these experiences, I have done user research, new-product definition, core-experience redesign and data analysis, and learned how to carry a problem from discovery into delivery.</p>
+        <p data-en="Outside work, I use AI coding tools to build my own products. <strong>PoopNow</strong> started with a very ordinary problem from daily life, and I independently took it through product definition, design, development and launch." data-zh="工作之外，我会用 AI 编程工具做自己的产品。<strong>PoopNow</strong> 从生活里一个很具体的需求出发，由我独立完成产品定义、设计、开发和上线。">Outside work, I use AI coding tools to build my own products. <strong>PoopNow</strong> started with a very ordinary problem from daily life, and I independently took it through product definition, design, development and launch.</p>
+        <p data-en="I am currently preparing for 2027 graduate recruitment and hope to continue working on AI applications, smart cockpit or connected hardware products." data-zh="现在我正在准备 2027 届校招，希望继续做 AI 应用、智能座舱或智能硬件相关的产品工作。">I am currently preparing for 2027 graduate recruitment and hope to continue working on AI applications, smart cockpit or connected hardware products.</p>
       </div>
       <div>
         <div class="a-stats">
-          <div class="a-stat"><div class="a-stat-n">3+</div><div class="a-stat-l" data-en="internships" data-zh="段实习经历">internships</div></div>
-          <div class="a-stat"><div class="a-stat-n">5</div><div class="a-stat-l" data-en="user interviews" data-zh="组用户访谈">user interviews</div></div>
-          <div class="a-stat"><div class="a-stat-n">0→1</div><div class="a-stat-l" data-en="shipped solo" data-zh="独立上线">shipped solo</div></div>
-          <div class="a-stat"><div class="a-stat-n">'27</div><div class="a-stat-l" data-en="graduate" data-zh="届毕业生">graduate</div></div>
+          <div class="a-stat"><div class="a-stat-n">4</div><div class="a-stat-l" data-en="product internships" data-zh="段产品实习">product internships</div></div>
+          <div class="a-stat"><div class="a-stat-n">11+</div><div class="a-stat-l" data-en="user interviews" data-zh="位用户深访">user interviews</div></div>
+          <div class="a-stat"><div class="a-stat-n">22</div><div class="a-stat-l" data-en="analytics events" data-zh="项埋点事件">analytics events</div></div>
+          <div class="a-stat"><div class="a-stat-n">0→1</div><div class="a-stat-l" data-en="product shipped" data-zh="独立产品上线">product shipped</div></div>
         </div>
         <div class="sec-label" style="margin-top:28px;margin-bottom:12px;" data-en="STACK" data-zh="工具链">STACK</div>
         <div class="stack-grid" style="margin-top:0;">
-          <div class="stack-item"><span class="s-dot"></span>Trae / Claude Code</div>
-          <div class="stack-item"><span class="s-dot"></span>Coze</div>
           <div class="stack-item"><span class="s-dot"></span>Figma</div>
           <div class="stack-item"><span class="s-dot"></span>Axure</div>
-          <div class="stack-item"><span class="s-dot"></span>MidJourney</div>
-          <div class="stack-item"><span class="s-dot"></span>卖家精灵</div>
+          <div class="stack-item"><span class="s-dot"></span>Jira</div>
+          <div class="stack-item"><span class="s-dot"></span>Excel</div>
+          <div class="stack-item"><span class="s-dot"></span>Codex / Trae / Claude Code</div>
         </div>
       </div>
     </div>
@@ -416,11 +471,29 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
 <section class="section" id="work">
   <div class="wrap">
     <span class="sec-label rv" data-en="WORK" data-zh="项目">WORK</span>
-    <p class="rv" style="font-size:14px;color:var(--mid);margin-bottom:32px;transition-delay:.04s;" data-en="Below are select projects. Full walkthroughs on request." data-zh="以下是部分项目，完整介绍可随时沟通。">Below are select projects. Full walkthroughs on request.</p>
+    <p class="rv" style="font-size:14px;color:var(--mid);margin-bottom:32px;transition-delay:.04s;" data-en="Three complete case studies across smart cockpit, connected hardware and an independently shipped AI-native product. Company work is summarized with confidential details removed." data-zh="三个完整案例，覆盖智能座舱、智能硬件与独立上线的 AI 原生产品；公司项目仅展示已脱敏的职责、方法与阶段成果。">Three complete case studies across smart cockpit, connected hardware and an independently shipped AI-native product. Company work is summarized with confidential details removed.</p>
 
     <!-- Project stack -->
     <div class="proj-stack-wrap rv" style="transition-delay:.07s;">
       <div class="proj-stack">
+
+        <!-- Featured: BSV & DOW -->
+        <div class="stack-card featured" data-link="files/bsv-dow-case.html">
+          <div class="stack-card-inner">
+            <div class="stack-card-body cover-bsv">
+              <div class="bsv-grid"></div>
+              <div class="bsv-road"></div>
+              <div class="bsv-car"></div>
+              <div class="bsv-risk"></div>
+              <div class="bsv-rule">TRIGGER → PRIORITY → RECOVERY</div>
+            </div>
+            <div class="stack-card-foot">
+              <div class="sc-num">01 · SMART COCKPIT</div>
+              <div class="sc-title">BSV × DOW</div>
+              <div class="sc-sub">FEATURE OWNER · SYSTEM RULES</div>
+            </div>
+          </div>
+        </div>
 
         <!-- Card 1: PoopNow -->
         <div class="stack-card" data-link="files/poopnow-case-v6.html">
@@ -442,7 +515,7 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
               </div>
             </div>
             <div class="stack-card-foot">
-              <div class="sc-num">01 · WECHAT MINI PROGRAM</div>
+              <div class="sc-num">02 · WECHAT MINI PROGRAM</div>
               <div class="sc-title">PoopNow</div>
               <div class="sc-sub">ZERO-CLICK · AI-NATIVE</div>
             </div>
@@ -477,8 +550,8 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
               </div>
             </div>
             <div class="stack-card-foot light">
-              <div class="sc-num dk">02 · AIoT HARDWARE</div>
-              <div class="sc-title dk">米家智能项圈</div>
+              <div class="sc-num dk">03 · AIoT HARDWARE</div>
+              <div class="sc-title dk">小米 · 智能宠物项圈</div>
               <div class="sc-sub dk">USER RESEARCH · PRODUCT DEF.</div>
             </div>
           </div>
@@ -488,20 +561,52 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
     </div>
 
     <div class="proj-list rv" style="transition-delay:.1s;">
-      <div class="proj-item" id="poopnow" data-link="files/poopnow-case-v6.html">
+      <div class="proj-item" data-link="files/bsv-dow-case.html">
         <div class="proj-num">01</div>
         <div class="proj-info">
-          <div class="proj-name"><span data-en="PoopNow — WeChat Mini Program" data-zh="PoopNow 微信小程序">PoopNow — WeChat Mini Program</span><span class="proj-arr">↗</span></div>
-          <div class="proj-desc" data-en="Zero-Click UX toilet finder. AI state sensing + self-cleaning data. Built end-to-end with AI tools — no engineers." data-zh="城市寻厕决策引擎。Zero-Click 交互 + AI 三态感知。PM 独立全流程 AI 编程完成。">Zero-Click UX toilet finder. AI state sensing + self-cleaning data. Built end-to-end with AI tools — no engineers.</div>
-          <div class="proj-tags"><span class="proj-tag">Zero-Click UX</span><span class="proj-tag">AI-Native</span><span class="proj-tag">Vibe Coding</span></div>
+          <div class="proj-name"><span data-en="Blind-Spot View & Door-Opening Warning · NIO" data-zh="盲点影像与开门预警 · 蔚来">Blind-Spot View & Door-Opening Warning · NIO</span><span class="proj-arr">↗</span></div>
+          <div class="proj-desc" data-en="Owned the cockpit-side feature definition across triggers, left/right views, risk prompts, priority conflicts and abnormal recovery, then aligned the solution with cluster and engineering teams." data-zh="负责座舱侧功能定义，覆盖触发与退出、左右视图、风险提示、优先级冲突与异常恢复，并协同仪表、研发完成方案收口。">Owned the cockpit-side feature definition across triggers, left/right views, risk prompts, priority conflicts and abnormal recovery, then aligned the solution with cluster and engineering teams.</div>
+          <div class="proj-tags"><span class="proj-tag">Feature Owner</span><span class="proj-tag" data-en="System Rules" data-zh="系统规则">System Rules</span><span class="proj-tag" data-en="Cross-team" data-zh="跨团队协同">Cross-team</span></div>
+        </div>
+      </div>
+      <div class="proj-item">
+        <div class="proj-num">02</div>
+        <div class="proj-info">
+          <div class="proj-name"><span data-en="Travel Planning Agent · NIO" data-zh="旅行规划 Agent · 蔚来">Travel Planning Agent · NIO</span></div>
+          <div class="proj-desc" data-en="Reframed the product from travel-content generation to an executable in-car planning task. Defined the end-to-end chain, 5 MVP capabilities, 8 vehicle dependencies and 7 validation metrics." data-zh="将产品从「旅行内容生成」重新定义为可执行的车载规划任务；设计端到端链路，拆解 5 类 MVP 能力、8 项车端依赖与 7 项验证指标。">Reframed the product from travel-content generation to an executable in-car planning task. Defined the end-to-end chain, 5 MVP capabilities, 8 vehicle dependencies and 7 validation metrics.</div>
+          <div class="proj-tags"><span class="proj-tag">AI Agent</span><span class="proj-tag">MVP</span><span class="proj-tag" data-en="Capability Boundary" data-zh="能力边界">Capability Boundary</span></div>
+        </div>
+      </div>
+      <div class="proj-item">
+        <div class="proj-num">03</div>
+        <div class="proj-info">
+          <div class="proj-name"><span data-en="360° Panoramic Imaging · NIO" data-zh="360° 全景影像 · 蔚来">360° Panoramic Imaging · NIO</span></div>
+          <div class="proj-desc" data-en="Built a decision-oriented analytics system across 6 question areas, redesigning 22 key events and 5 shared dimensions with a complete acceptance checklist." data-zh="围绕 6 类产品决策问题重构数据体系，设计与重构 22 项关键事件、5 项公共维度，并形成完整验收清单。">Built a decision-oriented analytics system across 6 question areas, redesigning 22 key events and 5 shared dimensions with a complete acceptance checklist.</div>
+          <div class="proj-tags"><span class="proj-tag" data-en="Instrumentation" data-zh="埋点设计">Instrumentation</span><span class="proj-tag" data-en="Metrics" data-zh="指标体系">Metrics</span><span class="proj-tag" data-en="Cross-team" data-zh="跨团队协同">Cross-team</span></div>
+        </div>
+      </div>
+      <div class="proj-item">
+        <div class="proj-num">04</div>
+        <div class="proj-info">
+          <div class="proj-name"><span data-en="Smart Feeder Weight System · 70mai" data-zh="智能喂食器称重与余粮 · 70mai">Smart Feeder Weight System · 70mai</span></div>
+          <div class="proj-desc" data-en="Replaced fragile single-reading logic with a dynamic model using historical state, dispensing and feeding events; aligned firmware, app, cloud and acceptance rules in one OTA6 PRD." data-zh="将易受温漂和粮食密度影响的单点读数重构为结合历史状态、出粮与进食事件的动态模型，并在 OTA6 PRD 中统一固件、App、云端与验收规则。">Replaced fragile single-reading logic with a dynamic model using historical state, dispensing and feeding events; aligned firmware, app, cloud and acceptance rules in one OTA6 PRD.</div>
+          <div class="proj-tags"><span class="proj-tag">AIoT</span><span class="proj-tag" data-en="System Rules" data-zh="系统规则">System Rules</span><span class="proj-tag" data-en="Device–Cloud" data-zh="端云协同">Device–Cloud</span></div>
         </div>
       </div>
       <div class="proj-item" id="collar" data-link="files/collar-case-v4.html">
-        <div class="proj-num">02</div>
+        <div class="proj-num">05</div>
         <div class="proj-info">
-          <div class="proj-name"><span data-en="Xiaomi Smart Pet Collar" data-zh="米家智能宠物项圈">Xiaomi Smart Pet Collar</span><span class="proj-arr">↗</span></div>
-          <div class="proj-desc" data-en="Repositioned from GPS tracker to 'daily companion sensing device' via 5 user interviews + full market analysis." data-zh="通过5组用户访谈+市场分析，将产品从「GPS追踪」重构为「日常伴侣感知」。">Repositioned from GPS tracker to 'daily companion sensing device' via 5 user interviews + full market analysis.</div>
+          <div class="proj-name"><span data-en="Xiaomi · Smart Pet Collar" data-zh="小米 · 智能宠物项圈">Xiaomi · Smart Pet Collar</span><span class="proj-arr">↗</span></div>
+          <div class="proj-desc" data-en="Repositioned the product from GPS tracker to a daily sensing and companion device through 5 user interviews, market structure research and hardware-boundary trade-offs." data-zh="通过 5 组用户深访、市场结构研究与硬件边界取舍，将产品从 GPS 追踪器重构为日常感知与陪伴设备。">Repositioned the product from GPS tracker to a daily sensing and companion device through 5 user interviews, market structure research and hardware-boundary trade-offs.</div>
           <div class="proj-tags"><span class="proj-tag" data-en="User Research" data-zh="用户研究">User Research</span><span class="proj-tag">AIoT</span><span class="proj-tag" data-en="Product Definition" data-zh="产品定义">Product Definition</span></div>
+        </div>
+      </div>
+      <div class="proj-item" id="poopnow" data-link="files/poopnow-case-v6.html">
+        <div class="proj-num">06</div>
+        <div class="proj-info">
+          <div class="proj-name"><span data-en="PoopNow — WeChat Mini Program" data-zh="PoopNow 微信小程序">PoopNow — WeChat Mini Program</span><span class="proj-arr">↗</span></div>
+          <div class="proj-desc" data-en="A city toilet decision engine with transport-specific recommendation weights, DeepSeek and AMap APIs. Defined, built and shipped independently with AI coding tools." data-zh="面向驾车、地铁和步行场景的城市寻厕决策引擎，接入 DeepSeek 与高德地图 API，由 PM 独立完成定义、开发与上线。">A city toilet decision engine with transport-specific recommendation weights, DeepSeek and AMap APIs. Defined, built and shipped independently with AI coding tools.</div>
+          <div class="proj-tags"><span class="proj-tag">Zero-Click UX</span><span class="proj-tag">AI-Native</span><span class="proj-tag">0→1</span></div>
         </div>
       </div>
     </div>
@@ -513,52 +618,53 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
   <div class="wrap">
     <span class="sec-label rv" data-en="EXPERIENCE" data-zh="实习经历">EXPERIENCE</span>
     <div class="exp-wrap rv" style="transition-delay:.05s;">
+      <div class="exp-progress" id="experienceProgress" aria-hidden="true"></div>
       <div class="exp-list">
 
         <div class="exp-item">
-          <div class="exp-date">2026.1<br>— NOW</div>
+          <div class="exp-date">2026.05<br>— NOW</div>
+          <div class="exp-r">
+            <div class="exp-co"><div class="exp-logo">NIO</div><span data-en="NIO · Smart Cockpit" data-zh="蔚来 · 智能座舱">NIO · Smart Cockpit</span></div>
+            <div class="exp-role" data-en="Product Manager Intern — Smart Cockpit" data-zh="智能座舱产品经理实习生">Product Manager Intern — Smart Cockpit</div>
+            <ul class="exp-bullets">
+              <li data-en="<strong>Smart Cockpit Feature Owner · Blind-Spot View & Door-Opening Warning:</strong> Owned the cockpit-side P0 perception-imaging scope for the G1.3 model update. Independently defined the vehicle-level BSV addition and optimized DOW rules and adaptation, covering entry and exit, left/right views, risk prompts, priority and conflict rules, and abnormal recovery; aligned the final solution with cluster, engineering and partner teams and moved it into development." data-zh="<strong>【座舱侧功能 Owner｜盲点影像与开门预警】</strong>承接 G1.3 改款车型 P0 感知影像需求，基于主线能力独立负责盲点影像（BSV）的车型级新增，以及开门预警（DOW）的规则优化与车型适配；完成触发与退出、左右视图、风险提示、优先级与冲突规则、异常恢复等座舱侧方案设计，协同仪表、研发等团队完成方案收口并推进开发。"><strong>Smart Cockpit Feature Owner · Blind-Spot View & Door-Opening Warning:</strong> Owned the cockpit-side P0 perception-imaging scope for the G1.3 model update. Independently defined the vehicle-level BSV addition and optimized DOW rules and adaptation, covering entry and exit, left/right views, risk prompts, priority and conflict rules, and abnormal recovery; aligned the final solution with cluster, engineering and partner teams and moved it into development.</li>
+              <li data-en="<strong>AI Product Definition · Travel Planning Agent:</strong> Identified gaps in the existing destination-dependent approach for vague intent, vehicle charging and in-trip adjustment, and reframed the product as executable, resumable and dynamically adjustable in-car task planning. Evaluated 4 automaker Agents, 4 travel apps and 3 general-purpose models; designed the core flow, functional architecture and technical boundaries, and delivered the pre-proposal." data-zh="<strong>【AI 产品定义｜旅行规划 Agent】</strong>识别现有方案依赖明确目的地、难以覆盖模糊意图、车辆补能与行中调整，将产品定义为可执行、可接续、可动态调整的车载任务规划；评估 4 家车企 Agent、4 款旅行 App 及 3 个大模型，完成核心流程、功能架构与技术边界设计，输出预立项方案。"><strong>AI Product Definition · Travel Planning Agent:</strong> Identified gaps in the existing destination-dependent approach for vague intent, vehicle charging and in-trip adjustment, and reframed the product as executable, resumable and dynamically adjustable in-car task planning. Evaluated 4 automaker Agents, 4 travel apps and 3 general-purpose models; designed the core flow, functional architecture and technical boundaries, and delivered the pre-proposal.</li>
+              <li data-en="<strong>Early Product Research · Aftermarket OMS:</strong> Conducting early product research for an aftermarket occupant monitoring system, defining target users, V1 scope and hardware/software constraints." data-zh="<strong>【产品预研｜后装 OMS】</strong>开展后装舱内乘员监测系统预研，梳理目标用户、V1 范围与软硬件约束。"><strong>Early Product Research · Aftermarket OMS:</strong> Conducting early product research for an aftermarket occupant monitoring system, defining target users, V1 scope and hardware/software constraints.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-date">2025.12<br>— 2026.05</div>
           <div class="exp-r">
             <div class="exp-co"><div class="exp-logo">70m</div><span data-en="70mai · Xiaomi Ecosystem" data-zh="70mai · 小米生态链">70mai · Xiaomi Ecosystem</span></div>
-            <div class="exp-role" data-en="PM Intern — AIoT Smart Hardware" data-zh="产品经理实习生（AIoT 智能硬件）">PM Intern — AIoT Smart Hardware</div>
+            <div class="exp-role" data-en="Product Manager Intern — Connected Hardware" data-zh="整机产品经理实习生 · 智能硬件">Product Manager Intern — Connected Hardware</div>
             <ul class="exp-bullets">
-              <li data-en="Led full pre-proposal for <strong>Xiaomi Smart Pet Collar</strong>: interviews → market analysis → repositioning from GPS tracker to companion sensing device. Targeting 2026.5 approval." data-zh="主导<strong>米家智能宠物项圈</strong>预立项全链路，完成用户访谈→市场分析→产品方向重定义，从「GPS追踪」重构为「日常伴侣感知」，预计2026.5立项。">Led full pre-proposal for <strong>Xiaomi Smart Pet Collar</strong>: interviews → market analysis → repositioning from GPS tracker to companion sensing device. Targeting 2026.5.</li>
-              <li data-en="Defined <strong>multi-cat CV recognition</strong> feature logic: modeled multi-pet feeding behavior, wrote PRD, identified 5 pain point categories, supported algorithm team through full OTA launch." data-zh="负责<strong>「多猫识别」CV功能</strong>逻辑定义，对多宠家庭喂食场景进行用户行为建模，独立撰写PRD，梳理5类用户痛点，协助算法团队推动OTA全部上线。">Defined <strong>multi-cat CV recognition</strong> logic: modeled multi-pet feeding behavior, wrote PRD, 5 pain-point categories, supported full OTA launch.</li>
-              <li data-en="Proactively wrote network-config UX report; recognized by product director and adopted into cross-team process." data-zh="主动撰写配网模块产品体验报告，获产品总监认可并推动跨团队协作机制建立。">Proactively wrote network-config UX report; recognized by director and adopted cross-team.</li>
+              <li data-en="<strong>Core Experience Redesign · Weight & Remaining Food:</strong> Weight sensing was a key differentiator, but temperature drift, food density and pet interference caused inaccurate displays and frequent complaints. Independently owned the OTA6 redesign, replacing single readings with a dynamic model using historical state, dispensing and feeding events; defined settlement, calibration and exception rules, split responsibilities across firmware, Mi Home plugin and cloud, and completed the cross-platform PRD review." data-zh="<strong>【核心体验重构｜称重与余粮】</strong>称重是产品差异化卖点，但原有逻辑受温漂、粮食密度及宠物介入等因素干扰，显示偏差并成为高频投诉问题；独立负责 OTA6 重构，将单点读数改为结合历史状态与出粮、进食事件的动态余粮模型，设计结算、校准及异常规则，拆分固件、米家插件与云端职责，输出 PRD 并完成多端评审。"><strong>Core Experience Redesign · Weight & Remaining Food:</strong> Weight sensing was a key differentiator, but temperature drift, food density and pet interference caused inaccurate displays and frequent complaints. Independently owned the OTA6 redesign, replacing single readings with a dynamic model using historical state, dispensing and feeding events; defined settlement, calibration and exception rules, split responsibilities across firmware, Mi Home plugin and cloud, and completed the cross-platform PRD review.</li>
+              <li data-en="<strong>New Product Definition · Xiaomi Smart Pet Collar:</strong> Independently led the pre-proposal after identifying opportunity in owners repurposing children's watches and AirTags for pets. Used market structure, price band, competitor and cross-category substitution research to define the positioning and first product plan, shifting the concept from a locator to a daily sensing and companion device; planned state, route and interaction functions while balancing positioning, IMU, 4G, battery life, weight and waterproofing." data-zh="<strong>【新产品定义｜米家智能宠物项圈】</strong>独立负责新品预立项，从用户将儿童手表、AirTag 用于宠物的替代行为中识别机会，基于市场结构、价格带、竞品及跨品类替代行为研究，独立完成产品定位与首版规划，将产品由定位器定义为日常感知与陪伴设备；围绕状态、轨迹与互动规划功能，并在定位、IMU、4G 与续航、重量、防水约束间收敛边界。"><strong>New Product Definition · Xiaomi Smart Pet Collar:</strong> Independently led the pre-proposal after identifying opportunity in owners repurposing children's watches and AirTags for pets. Used market structure, price band, competitor and cross-category substitution research to define the positioning and first product plan, shifting the concept from a locator to a daily sensing and companion device; planned state, route and interaction functions while balancing positioning, IMU, 4G, battery life, weight and waterproofing.</li>
+              <li data-en="<strong>Quantitative Research & Product Insight · Smart Water Fountain:</strong> Independently designed the survey and analyzed the data, cleaning 380 responses into 297 valid samples. Separated replacement buyers from first-time buyers, identified shared needs around hygiene, cleaning, safety and away-from-home reliability, and translated them into product priorities; the project has been approved and entered development." data-zh="<strong>【定量研究与产品洞察｜智能饮水机】</strong>独立完成问卷设计与数据分析，清洗 380 份问卷并获得 297 份有效样本；区分换机与首次购买用户，识别卫生、清洗、安全及外出托底等共性需求，形成产品优先方向，项目已立项并进入开发。"><strong>Quantitative Research & Product Insight · Smart Water Fountain:</strong> Independently designed the survey and analyzed the data, cleaning 380 responses into 297 valid samples. Separated replacement buyers from first-time buyers, identified shared needs around hygiene, cleaning, safety and away-from-home reliability, and translated them into product priorities; the project has been approved and entered development.</li>
             </ul>
           </div>
         </div>
 
         <div class="exp-item">
-          <div class="exp-date">2025.9<br>— 2025.12</div>
+          <div class="exp-date">2025.08<br>— 2025.12</div>
           <div class="exp-r">
-            <div class="exp-co"><div class="exp-logo">NIO</div><span data-en="NIO · NIOLife" data-zh="蔚来 · NIOLife">NIO · NIOLife</span></div>
-            <div class="exp-role" data-en="Product Strategy Intern" data-zh="产品策略实习生（项目制）">Product Strategy Intern</div>
+            <div class="exp-co"><div class="exp-logo">VF</div><span data-en="VF Corp · Dickies" data-zh="美国威富 · Dickies">VF Corp · Dickies</span></div>
+            <div class="exp-role" data-en="Product Intern" data-zh="产品实习生">Product Intern</div>
             <ul class="exp-bullets">
-              <li data-en="Contributed to <strong>NIO Mobile First-Class Cabin</strong>: mapped aviation-to-car experience migration logic, benchmarked Emirates; identified dual-user positioning (existing owners vs. potential buyers) to inform product strategy." data-zh="参与 <strong>NIO 移动头等舱</strong>跨品类项目，拆解「飞机头等舱→车内空间」的体验迁移逻辑，调研阿联酋航空等标杆案例，梳理已购车用户与潜在用户双线需求，协助制定差异化产品策略。">Contributed to <strong>NIO Mobile First-Class Cabin</strong>: mapped aviation-to-car experience migration, benchmarked Emirates; identified dual-user positioning to inform strategy.</li>
+              <li data-en="<strong>Merchandise Development · FW26:</strong> Supported development of 20+ Mainline and SMU/MFO SKUs, owned China-market user positioning and coordinated design, supply chain and marketing through sampling." data-zh="<strong>【商品开发｜FW26】</strong>参与 Mainline 与 SMU/MFO 约 20+ SKU 开发，负责中国市场用户定位，并协同设计、供应链与营销推进打样。"><strong>Merchandise Development · FW26:</strong> Supported development of 20+ Mainline and SMU/MFO SKUs, owned China-market user positioning and coordinated design, supply chain and marketing through sampling.</li>
             </ul>
           </div>
         </div>
 
         <div class="exp-item">
-          <div class="exp-date">2025.3<br>— 2025.9</div>
+          <div class="exp-date">2025.03<br>— 2025.06</div>
           <div class="exp-r">
             <div class="exp-co"><div class="exp-logo">LN</div><span data-en="Li-Ning" data-zh="李宁">Li-Ning</span></div>
-            <div class="exp-role" data-en="Product Strategy & Consumer Insights Intern" data-zh="产品策略与用户洞察实习生">Product Strategy & Consumer Insights Intern</div>
+            <div class="exp-role" data-en="Running Footwear Product Intern" data-zh="跑鞋产品实习生">Running Footwear Product Intern</div>
             <ul class="exp-bullets">
-              <li data-en="Researched WGSN and Pantone; translated macro trends into <strong>CMF strategy</strong> for Wuzi Dengke collection, launching 2026.6." data-zh="深度调研 WGSN、Pantone 等数据库，将宏观趋势转化为<strong>CMF策略方案</strong>，为吾子登科系列新品提供数据支撑，预计2026.6上市。">Researched WGSN + Pantone; translated trends into <strong>CMF strategy</strong> for Wuzi Dengke collection, launching 2026.6.</li>
-              <li data-en="Shifted from design execution toward upstream product definition, feeding user needs into strategy earlier." data-zh="推动从设计执行转向定义，将用户需求向上游产品策略环节介入。">Shifted from design execution toward upstream product definition.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="exp-item">
-          <div class="exp-date">2024.9<br>— 2025.3</div>
-          <div class="exp-r">
-            <div class="exp-co"><div class="exp-logo">VF</div><span data-en="VF Corp · Dickies" data-zh="VF Corporation · Dickies">VF Corp · Dickies</span></div>
-            <div class="exp-role" data-en="Product Strategy & Consumer Insights Intern" data-zh="产品策略与用户洞察实习生">Product Strategy & Consumer Insights Intern</div>
-            <ul class="exp-bullets">
-              <li data-en="Coordinated design, engineering and supply chain to drive FW26 from research through production." data-zh="统筹设计、工程及供应链资源，推动 FW26 系列从调研逻辑到量产落地的全流程。">Coordinated design, engineering + supply chain for FW26 end-to-end.</li>
-              <li data-en="Practiced <strong>global cross-functional collaboration</strong>, liaising between North America HQ and domestic teams." data-zh="深度实践<strong>全球化产品的跨部门协作机制</strong>，对接北美总部与国内团队，协调多线并行。">Practiced <strong>global cross-functional collaboration</strong>, liaising between NA HQ and domestic teams.</li>
+              <li data-en="<strong>User & Trend Research · Women's Running:</strong> Led trend and preference research; the proposed Forbidden City collaboration direction was adopted and moved into production." data-zh="<strong>【用户与趋势研究｜女子跑鞋】</strong>主导趋势与用户偏好研究；提出的「吾子登科—故宫联名」方向获采纳并进入量产。"><strong>User & Trend Research · Women's Running:</strong> Led trend and preference research; the proposed Forbidden City collaboration direction was adopted and moved into production.</li>
             </ul>
           </div>
         </div>
@@ -653,7 +759,7 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
 <section class="section" id="contact">
   <div class="wrap">
     <span class="sec-label rv" data-en="CONTACT" data-zh="联系我">CONTACT</span>
-    <p class="rv" style="font-size:14px;color:var(--mid);transition-delay:.04s;" data-en="Open to AIPM internships or 2027 graduate roles in Shanghai. Let's talk." data-zh="欢迎聊 AIPM、AIoT 硬件产品，或者任何有意思的 idea。">Open to AIPM internships or 2027 graduate roles in Shanghai. Let's talk.</p>
+    <p class="rv" style="font-size:14px;color:var(--mid);transition-delay:.04s;" data-en="Open to 2027 graduate roles in AI applications, smart cockpit and smart hardware. Let's talk." data-zh="寻找 AI 应用、智能座舱与智能硬件方向的 2027 届校招机会，欢迎联系。">Open to 2027 graduate roles in AI applications, smart cockpit and smart hardware. Let's talk.</p>
     <div class="contact-links rv" style="transition-delay:.08s;">
       <a class="c-row" href="mailto:runmengM@outlook.com">
         <div class="c-label"><div class="c-icon">✉</div><span>Email</span></div>
@@ -663,9 +769,9 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
         <div class="c-label"><div class="c-icon">💬</div><span data-en="WeChat" data-zh="微信">WeChat</span></div>
         <div class="c-val">155-3992-0387 <span class="c-arr">↗</span></div>
       </div>
-      <a class="c-row" id="resume-row" href="public/resume.pdf" target="_blank">
+      <a class="c-row" id="resume-row" href="mailto:runmengM@outlook.com?subject=Resume%20Request">
         <div class="c-label"><div class="c-icon">📄</div><span data-en="Resume" data-zh="简历">Resume</span></div>
-        <div class="c-val" data-en="Download PDF" data-zh="下载简历">Download PDF <span class="c-arr">↓</span></div>
+        <div class="c-val" data-en="Request latest PDF" data-zh="索取最新版 PDF">Request latest PDF <span class="c-arr">↗</span></div>
       </a>
     </div>
   </div>
@@ -679,7 +785,7 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
 
 <footer>
   <span>© 2026 马润萌 · Renee Ma</span>
-  <span>Shanghai · Available Now</span>
+  <span>Shanghai · 2027 Graduate</span>
 </footer>
 
 <!-- MODAL -->
@@ -781,8 +887,38 @@ function tick(){
 }
 tick();setInterval(tick,1000);
 
-// NAV SCROLL
-window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('solid',scrollY>50);});
+// NAV + READING PATH
+const readingProgress=document.getElementById('readingProgress');
+const mobileReadingProgress=document.getElementById('mobileReadingProgress');
+const chapterPill=document.getElementById('chapterPill');
+const experienceWrap=document.querySelector('#experience .exp-wrap');
+const experienceProgress=document.getElementById('experienceProgress');
+const heroWrap=document.querySelector('#hero .wrap');
+const readingDots=Array.from(document.querySelectorAll('.reading-dot'));
+const readingSections=readingDots.map(dot=>document.getElementById(dot.dataset.section)).filter(Boolean);
+function updateReadingPath(){
+  document.getElementById('nav').classList.toggle('solid',scrollY>50);
+  const max=document.documentElement.scrollHeight-innerHeight;
+  const pct=max>0?Math.min(1,Math.max(0,scrollY/max)):0;
+  if(readingProgress)readingProgress.style.height=`${pct*100}%`;
+  if(mobileReadingProgress)mobileReadingProgress.style.width=`${pct*100}%`;
+  let active=readingSections[0]?.id;
+  readingSections.forEach(section=>{if(section.getBoundingClientRect().top<=innerHeight*.42)active=section.id;});
+  readingDots.forEach(dot=>dot.classList.toggle('active',dot.dataset.section===active));
+  const activeIndex=Math.max(0,readingDots.findIndex(dot=>dot.dataset.section===active));
+  if(chapterPill)chapterPill.textContent=`${readingDots[activeIndex]?.dataset.label||'INTRO'} · ${String(activeIndex+1).padStart(2,'0')}`;
+  if(experienceWrap&&experienceProgress){
+    const rect=experienceWrap.getBoundingClientRect();
+    const travel=Math.min(1,Math.max(0,(innerHeight*.44-rect.top)/(rect.height||1)));
+    experienceProgress.style.height=`${travel*100}%`;
+  }
+  if(heroWrap&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    heroWrap.style.setProperty('--hero-shift',`${Math.max(-42,scrollY*-.08)}px`);
+  }
+}
+window.addEventListener('scroll',updateReadingPath,{passive:true});
+window.addEventListener('resize',updateReadingPath);
+updateReadingPath();
 
 // LANG TOGGLE
 let lang='zh';
@@ -836,6 +972,17 @@ if(window.location.hash){
 // REVEAL
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.08});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+document.body.classList.add('motion-ready');
+const cardObs=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  const cards=Array.from(document.querySelectorAll('.stack-card'));
+  const delay=Math.max(0,cards.indexOf(e.target))*130;
+  setTimeout(()=>e.target.classList.add('card-visible'),delay);
+  cardObs.unobserve(e.target);
+}),{threshold:.18});
+document.querySelectorAll('.stack-card').forEach(el=>cardObs.observe(el));
+const expObs=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('in-focus',e.isIntersecting)),{rootMargin:'-28% 0px -42% 0px',threshold:0});
+document.querySelectorAll('.exp-item').forEach(el=>expObs.observe(el));
 
 // COPY EMAIL
 function doCopy(){
