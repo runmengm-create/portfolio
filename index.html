@@ -244,7 +244,467 @@ body.motion-ready .exp-item.in-focus{opacity:1;transform:none;}
 .cover-agent .cv-code .str{color:rgba(17,17,17,.28);}
 .cover-agent .cv-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(242,241,239,.2) 0%,transparent 40%,rgba(242,241,239,.6) 100%);}
 .cover-agent .cv-center{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);text-align:center;}
-.cover-agent .cv-node-big{width:44px;height:44px;border-radius:50%;border:1px solid rgba(61,90,254,.35);margin:0 auto;display:flex;align-items:center;justify-content:cen…10587 tokens truncated…家级 · 佳作奖 · 排名第二 · 2022</span>
+.cover-agent .cv-node-big{width:44px;height:44px;border-radius:50%;border:1px solid rgba(61,90,254,.35);margin:0 auto;display:flex;align-items:center;justify-content:center;}
+.cover-agent .cv-label{display:none;}
+
+/* BSV / DOW cover */
+.cover-bsv{background:#111827;color:#fff;}
+.bsv-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:30px 30px;}
+.bsv-road{position:absolute;left:50%;top:-12%;width:48%;height:124%;transform:translateX(-50%);border-left:1px dashed rgba(255,255,255,.16);border-right:1px dashed rgba(255,255,255,.16);}
+.bsv-car{position:absolute;left:50%;top:50%;width:70px;height:126px;transform:translate(-50%,-50%);border:1.5px solid rgba(255,255,255,.7);border-radius:22px 22px 16px 16px;}
+.bsv-car::before,.bsv-car::after{content:'';position:absolute;top:30px;width:28px;height:60px;background:rgba(61,90,254,.16);border:1px solid rgba(92,124,255,.52);filter:drop-shadow(0 0 12px rgba(61,90,254,.34));}
+.bsv-car::before{right:100%;clip-path:polygon(100% 0,0 30%,0 70%,100% 100%);}
+.bsv-car::after{left:100%;clip-path:polygon(0 0,100% 30%,100% 70%,0 100%);}
+.bsv-risk{position:absolute;right:16%;top:28%;width:12px;height:12px;border-radius:50%;background:#ff5b5b;box-shadow:0 0 0 8px rgba(255,91,91,.12);animation:risk-pulse 1.8s ease-in-out infinite;}
+.bsv-risk::after{content:'RISK';position:absolute;left:18px;top:-2px;font-family:var(--mono);font-size:8px;letter-spacing:.12em;color:#ff8b8b;}
+.bsv-rule{position:absolute;left:18px;bottom:16px;font-family:var(--mono);font-size:8px;letter-spacing:.1em;color:rgba(255,255,255,.48);}
+@keyframes risk-pulse{50%{box-shadow:0 0 0 16px rgba(255,91,91,0);transform:scale(1.12)}}
+
+@keyframes pulse-ring{0%,100%{box-shadow:0 0 0 0 rgba(61,90,254,.15)}50%{box-shadow:0 0 0 7px rgba(61,90,254,0)}}
+
+/* CONTACT */
+.contact-links{display:flex;flex-direction:column;margin-top:28px;}
+.c-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);cursor:none;transition:padding .2s;text-decoration:none;color:inherit;}
+.c-row:first-child{border-top:1px solid var(--border);}
+.c-row:hover{padding-left:5px;}
+.c-label{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:9px;}
+.c-icon{width:26px;height:26px;border:1px solid var(--border);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;}
+.c-val{font-family:var(--mono);font-size:11px;color:var(--mid);display:flex;align-items:center;gap:5px;transition:color .2s;}
+.c-row:hover .c-val{color:var(--blue);}
+.c-arr{font-size:11px;color:var(--muted);transition:transform .2s,color .2s;}
+.c-row:hover .c-arr{transform:translate(2px,-2px);color:var(--blue);}
+
+footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--muted);}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .65s var(--ease),transform .65s var(--ease);}
+.rv.on{opacity:1;transform:none;}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
+  .rv,.exp-item{opacity:1!important;transform:none!important;}
+}
+
+/* ===================== MOBILE FIXES ===================== */
+@media(max-width:768px){
+  /* 基础间距 */
+  nav,#hero,.section{padding-left:24px;padding-right:24px;}
+  nav{padding-top:12px;padding-bottom:12px;}
+  nav.solid{padding-left:24px;padding-right:24px;padding-top:9px;padding-bottom:9px;}
+  .wrap{padding:0 24px;}
+  footer{padding:16px 24px;flex-direction:column;gap:6px;}
+
+  /* ✅ FIX 1: 导航栏 - 隐藏文字链接，只保留 logo + 语言切换 + 时钟 */
+  .nav-links{display:none;}
+  .nav-r{gap:12px;}
+  .clock{font-size:10px;}
+  .reading-rail{display:none;}
+
+  /* 案例卡片保持清晰、互不遮挡 */
+  .proj-stack-wrap{height:auto;}
+  .proj-stack{width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .stack-card{width:100%;height:320px;}
+  .stack-card.featured{height:280px;}
+  .stack-card.featured .stack-card-inner{grid-template-columns:1fr 210px;}
+  .stack-card.featured .stack-card-foot{padding:18px;}
+  .stack-card-foot{padding:13px 12px 14px;}
+  .sc-title{font-size:15px;}
+  .sc-sub{line-height:1.45;}
+
+  /* 其他布局修复 */
+  .about-grid{grid-template-columns:1fr;}
+  .exp-item{grid-template-columns:1fr;gap:4px;}
+  .edu-item{grid-template-columns:1fr;gap:4px;padding-left:20px;}
+  .edu-item::before{left:0;}
+  .proj-cards{grid-template-columns:1fr;}
+  .proj-cards-right{flex-direction:row;}
+  .hero-meta{flex-direction:column;gap:4px;align-items:flex-start;}
+}
+@media(max-width:520px){
+  .proj-stack{grid-template-columns:1fr;}
+  .stack-card{height:380px;}
+  .stack-card.featured{height:430px;}
+  .stack-card.featured .stack-card-inner{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;}
+  .stack-card.featured .stack-card-foot{border-left:0;border-top:1px solid var(--border);}
+}
+</style>
+  <!-- Microsoft Clarity --> 
+  <script type="text/javascript"> 
+      (function(c,l,a,r,i,t,y){ 
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; 
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i; 
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); 
+      })(window, document, "clarity", "script", "wbuorffjoy"); 
+  </script> 
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-ring"></div>
+<canvas id="pc"></canvas>
+<div class="reading-rail" id="readingRail" aria-label="阅读进度">
+  <div class="reading-track"></div>
+  <div class="reading-progress" id="readingProgress"></div>
+  <a class="reading-dot active" href="#hero" data-section="hero" data-label="INTRO" aria-label="介绍"></a>
+  <a class="reading-dot" href="#about" data-section="about" data-label="ABOUT" aria-label="关于"></a>
+  <a class="reading-dot" href="#work" data-section="work" data-label="WORK" aria-label="项目"></a>
+  <a class="reading-dot" href="#experience" data-section="experience" data-label="EXPERIENCE" aria-label="经历"></a>
+  <a class="reading-dot" href="#education" data-section="education" data-label="EDUCATION" aria-label="教育"></a>
+  <a class="reading-dot" href="#contact" data-section="contact" data-label="CONTACT" aria-label="联系"></a>
+</div>
+
+<!-- ENTRY -->
+<div id="entry">
+  <div style="text-align:center;">
+    <div class="e-name">Renee<span>.</span></div>
+    <div class="e-sub" data-en="Product Manager · Shanghai" data-zh="产品经理 · 上海">Product Manager · Shanghai<span class="e-cursor"></span></div>
+  </div>
+  <div class="e-hint" data-en="<span class=&quot;ekey&quot;>Enter</span> or click anywhere to continue" data-zh="<span class=&quot;ekey&quot;>回车</span> 或点击任意位置继续"><span class="ekey">Enter</span> or click anywhere to continue</div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">renee.pm</div>
+  <div class="nav-r">
+    <div class="nav-links">
+      <a href="#about" data-en="About" data-zh="关于">About</a>
+      <a href="#work" data-en="Work" data-zh="项目">Work</a>
+      <a href="#experience" data-en="Experience" data-zh="经历">Experience</a>
+      <a href="#education" data-en="Education" data-zh="教育">Education</a>
+      <a href="#contact" data-en="Contact" data-zh="联系">Contact</a>
+    </div>
+    <div class="lang-tog" id="langTog">
+      <span data-lang="en">EN</span>
+      <span class="active" data-lang="zh">中文</span>
+    </div>
+    <div class="clock" id="clock"></div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap">
+    <h1 class="hero-name rv" style="transition-delay:.04s" data-en="Ma Runmeng" data-zh="马润萌">Ma Runmeng</h1>
+    <p class="hero-en rv" style="transition-delay:.07s">Renee</p>
+    <p class="rv" style="transition-delay:.09s;font-family:var(--serif);font-size:clamp(17px,2vw,24px);color:var(--mid);margin-bottom:28px;font-style:italic;" data-en="Hi, I'm Renee." data-zh="你好，我是马润萌。">Hi, I'm Renee.</p>
+
+    <div class="hero-card rv" style="transition-delay:.1s">
+      <div class="hc-top">
+        <div style="position:relative;flex-shrink:0;">
+          <img class="hc-photo" src="public/images/avatar.jpg" alt="Renee"/>
+          <div style="width:9px;height:9px;background:#22c55e;border-radius:50%;border:2px solid #fff;position:absolute;bottom:1px;right:1px;"></div>
+        </div>
+        <div class="hc-id">
+          <div class="hc-name">
+            马润萌 · Renee
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="6.5" fill="#3D5AFE"/><path d="M3.5 6.5l2 2 4-4" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="hc-role" data-en="AI & Smart Hardware PM · 2027 Graduate" data-zh="AI 与智能硬件产品经理 · 2027届">AI & Smart Hardware PM · 2027 Graduate</div>
+        </div>
+      </div>
+      <p class="hc-bio" data-en="Currently a <strong>Smart Cockpit Product Manager Intern at NIO</strong>, working across in-car experiences and AI product exploration. I focus on understanding real user scenarios, shaping clear product rules and working with cross-functional teams to move ideas toward delivery. Outside work, I keep building small products of my own." data-zh="目前在<strong>蔚来担任智能座舱产品经理实习生</strong>，参与座舱体验与 AI 产品方向的探索和落地。工作中，我关注真实用户场景、产品规则与跨团队协作，也持续通过个人项目练习把想法做成真正可用的产品。">Currently a <strong>Smart Cockpit Product Manager Intern at NIO</strong>, working across in-car experiences and AI product exploration. I focus on understanding real user scenarios, shaping clear product rules and working with cross-functional teams to move ideas toward delivery. Outside work, I keep building small products of my own.</p>
+      <div class="hc-shortcut" id="copyEmail">
+        <span data-en="Press" data-zh="按">Press</span>
+        <span class="key">C</span>
+        <span data-en="to copy email" data-zh="复制邮箱">to copy email</span>
+        <span class="copy-fb" id="copyFb">✓ Copied</span>
+      </div>
+    </div>
+
+    <div class="chips rv" style="transition-delay:.14s;">
+      <span class="chip b" data-en="Smart Cockpit" data-zh="智能座舱">Smart Cockpit</span>
+      <span class="chip b" data-en="AI Agent" data-zh="AI Agent">AI Agent</span>
+      <span class="chip" data-en="Connected Hardware" data-zh="智能硬件">Connected Hardware</span>
+      <span class="chip" data-en="Data Instrumentation" data-zh="埋点与数据体系">Data Instrumentation</span>
+      <span class="chip" data-en="User Research" data-zh="用户研究">User Research</span>
+      <span class="chip" data-en="Shanghai" data-zh="上海">Shanghai</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="wrap">
+    <span class="sec-label rv" data-en="ABOUT" data-zh="关于我">ABOUT</span>
+    <div class="about-grid rv" style="transition-delay:.05s;">
+      <div class="about-text">
+        <p data-en="I moved from industrial design into product management because I wanted to take part in the decisions that happen before a product takes shape: what people actually need, why it is worth building and how it can work in the real world." data-zh="我从工业设计转向产品经理，是因为比起只关注产品最后呈现出来的样子，我更想参与前面的判断：用户真正需要什么、为什么要做，以及怎样才能落地。">I moved from industrial design into product management because I wanted to take part in the decisions that happen before a product takes shape: what people actually need, why it is worth building and how it can work in the real world.</p>
+        <p data-en="I am now working on smart-cockpit products at <strong>NIO</strong>. Before that, I worked on connected pet hardware at <strong>70mai</strong>. Across these experiences, I have done user research, new-product definition, core-experience redesign and data analysis, and learned how to carry a problem from discovery into delivery." data-zh="目前我在<strong>蔚来</strong>做智能座舱产品，之前在<strong>70mai</strong>参与智能宠物硬件。在这些项目里，我做过用户研究、新产品定义、核心体验重构和数据分析，也逐渐形成了从发现问题到推动落地的工作方式。">I am now working on smart-cockpit products at <strong>NIO</strong>. Before that, I worked on connected pet hardware at <strong>70mai</strong>. Across these experiences, I have done user research, new-product definition, core-experience redesign and data analysis, and learned how to carry a problem from discovery into delivery.</p>
+        <p data-en="Outside work, I use AI coding tools to build my own products. <strong>PoopNow</strong> started with a very ordinary problem from daily life, and I independently took it through product definition, design, development and launch." data-zh="工作之外，我会用 AI 编程工具做自己的产品。<strong>PoopNow</strong> 从生活里一个很具体的需求出发，由我独立完成产品定义、设计、开发和上线。">Outside work, I use AI coding tools to build my own products. <strong>PoopNow</strong> started with a very ordinary problem from daily life, and I independently took it through product definition, design, development and launch.</p>
+        <p data-en="I am currently preparing for 2027 graduate recruitment and hope to continue working on AI applications, smart cockpit or connected hardware products." data-zh="现在我正在准备 2027 届校招，希望继续做 AI 应用、智能座舱或智能硬件相关的产品工作。">I am currently preparing for 2027 graduate recruitment and hope to continue working on AI applications, smart cockpit or connected hardware products.</p>
+      </div>
+      <div>
+        <div class="a-stats">
+          <div class="a-stat"><div class="a-stat-n">4</div><div class="a-stat-l" data-en="product internships" data-zh="段产品实习">product internships</div></div>
+          <div class="a-stat"><div class="a-stat-n">11+</div><div class="a-stat-l" data-en="user interviews" data-zh="位用户深访">user interviews</div></div>
+          <div class="a-stat"><div class="a-stat-n">22</div><div class="a-stat-l" data-en="analytics events" data-zh="项埋点事件">analytics events</div></div>
+          <div class="a-stat"><div class="a-stat-n">0→1</div><div class="a-stat-l" data-en="product shipped" data-zh="独立产品上线">product shipped</div></div>
+        </div>
+        <div class="sec-label" style="margin-top:28px;margin-bottom:12px;" data-en="STACK" data-zh="工具链">STACK</div>
+        <div class="stack-grid" style="margin-top:0;">
+          <div class="stack-item"><span class="s-dot"></span>Figma</div>
+          <div class="stack-item"><span class="s-dot"></span>Axure</div>
+          <div class="stack-item"><span class="s-dot"></span>Jira</div>
+          <div class="stack-item"><span class="s-dot"></span>Excel</div>
+          <div class="stack-item"><span class="s-dot"></span>Codex / Trae / Claude Code</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="section" id="work">
+  <div class="wrap">
+    <span class="sec-label rv" data-en="WORK" data-zh="项目">WORK</span>
+    <p class="rv" style="font-size:14px;color:var(--mid);margin-bottom:32px;transition-delay:.04s;" data-en="Three complete case studies across smart cockpit, connected hardware and an independently shipped AI-native product. Company work is summarized with confidential details removed." data-zh="三个完整案例，覆盖智能座舱、智能硬件与独立上线的 AI 原生产品；公司项目仅展示已脱敏的职责、方法与阶段成果。">Three complete case studies across smart cockpit, connected hardware and an independently shipped AI-native product. Company work is summarized with confidential details removed.</p>
+
+    <!-- Project stack -->
+    <div class="proj-stack-wrap rv" style="transition-delay:.07s;">
+      <div class="proj-stack">
+
+        <!-- Featured: BSV & DOW -->
+        <div class="stack-card featured" data-link="files/bsv-dow-case.html">
+          <div class="stack-card-inner">
+            <div class="stack-card-body cover-bsv">
+              <div class="bsv-grid"></div>
+              <div class="bsv-road"></div>
+              <div class="bsv-car"></div>
+              <div class="bsv-risk"></div>
+              <div class="bsv-rule">TRIGGER → PRIORITY → RECOVERY</div>
+            </div>
+            <div class="stack-card-foot">
+              <div class="sc-num">01 · SMART COCKPIT</div>
+              <div class="sc-title">BSV × DOW</div>
+              <div class="sc-sub">FEATURE OWNER · SYSTEM RULES</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 1: PoopNow -->
+        <div class="stack-card" data-link="files/poopnow-case-v6.html">
+          <div class="stack-card-inner">
+            <div class="stack-card-body cover-poop">
+              <img class="cover-img" src="public/images/cover-poopnow.jpg" alt="PoopNow cover"/>
+              <div class="cv-grid"></div>
+              <div class="cv-icon">
+                <div style="position:relative;display:flex;align-items:center;justify-content:center;width:84px;height:84px;">
+                  <div class="cv-ring-outer"></div>
+                  <div class="cv-ring"><div class="cv-dot"></div></div>
+                </div>
+              </div>
+              <div class="cv-bars">
+                <div class="cv-bar" style="height:35%"></div><div class="cv-bar" style="height:55%"></div>
+                <div class="cv-bar" style="height:45%"></div><div class="cv-bar" style="height:70%"></div>
+                <div class="cv-bar" style="height:50%"></div><div class="cv-bar" style="height:40%"></div>
+                <div class="cv-bar" style="height:65%"></div><div class="cv-bar" style="height:48%"></div>
+              </div>
+            </div>
+            <div class="stack-card-foot">
+              <div class="sc-num">02 · WECHAT MINI PROGRAM</div>
+              <div class="sc-title">PoopNow</div>
+              <div class="sc-sub">ZERO-CLICK · AI-NATIVE</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Collar -->
+        <div class="stack-card" data-link="files/collar-case-v4.html">
+          <div class="stack-card-inner">
+            <div class="stack-card-body cover-collar">
+              <img class="cover-img" src="public/images/cover-collar.jpg" alt="Xiaomi Smart Pet Collar cover"/>
+              <svg viewBox="0 0 200 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
+                <line x1="0" y1="70" x2="200" y2="70" stroke="#e8e6e0" stroke-width=".8"/>
+                <line x1="0" y1="140" x2="200" y2="140" stroke="#e8e6e0" stroke-width=".8"/>
+                <line x1="0" y1="210" x2="200" y2="210" stroke="#e8e6e0" stroke-width=".8"/>
+                <line x1="50" y1="0" x2="50" y2="280" stroke="#e8e6e0" stroke-width=".8"/>
+                <line x1="100" y1="0" x2="100" y2="280" stroke="#e8e6e0" stroke-width=".8"/>
+                <line x1="150" y1="0" x2="150" y2="280" stroke="#e8e6e0" stroke-width=".8"/>
+              </svg>
+              <div class="cv-shape">
+                <svg viewBox="0 0 70 70" width="70" height="70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <polygon points="35,4 62,19.5 62,50.5 35,66 8,50.5 8,19.5" stroke="#3D5AFE" stroke-width="1.2" fill="rgba(61,90,254,.06)"/>
+                  <polygon points="35,14 54,24.5 54,45.5 35,56 16,45.5 16,24.5" stroke="rgba(61,90,254,.4)" stroke-width=".8" fill="none"/>
+                  <circle cx="35" cy="35" r="5" fill="#3D5AFE" opacity=".8"/>
+                  <circle cx="35" cy="4" r="2.5" fill="#3D5AFE" opacity=".5"/>
+                  <circle cx="62" cy="19.5" r="2.5" fill="#3D5AFE" opacity=".5"/>
+                  <circle cx="62" cy="50.5" r="2.5" fill="#3D5AFE" opacity=".5"/>
+                  <circle cx="35" cy="66" r="2.5" fill="#3D5AFE" opacity=".5"/>
+                  <circle cx="8" cy="50.5" r="2.5" fill="#3D5AFE" opacity=".5"/>
+                  <circle cx="8" cy="19.5" r="2.5" fill="#3D5AFE" opacity=".5"/>
+                </svg>
+              </div>
+            </div>
+            <div class="stack-card-foot light">
+              <div class="sc-num dk">03 · AIoT HARDWARE</div>
+              <div class="sc-title dk">小米 · 智能宠物项圈</div>
+              <div class="sc-sub dk">USER RESEARCH · PRODUCT DEF.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="proj-list rv" style="transition-delay:.1s;">
+      <div class="proj-item" data-link="files/bsv-dow-case.html">
+        <div class="proj-num">01</div>
+        <div class="proj-info">
+          <div class="proj-name"><span data-en="Blind-Spot View & Door-Opening Warning · NIO" data-zh="盲点影像与开门预警 · 蔚来">Blind-Spot View & Door-Opening Warning · NIO</span><span class="proj-arr">↗</span></div>
+          <div class="proj-desc" data-en="Owned the cockpit-side feature definition across triggers, left/right views, risk prompts, priority conflicts and abnormal recovery, then aligned the solution with cluster and engineering teams." data-zh="负责座舱侧功能定义，覆盖触发与退出、左右视图、风险提示、优先级冲突与异常恢复，并协同仪表、研发完成方案收口。">Owned the cockpit-side feature definition across triggers, left/right views, risk prompts, priority conflicts and abnormal recovery, then aligned the solution with cluster and engineering teams.</div>
+          <div class="proj-tags"><span class="proj-tag">Feature Owner</span><span class="proj-tag" data-en="System Rules" data-zh="系统规则">System Rules</span><span class="proj-tag" data-en="Cross-team" data-zh="跨团队协同">Cross-team</span></div>
+        </div>
+      </div>
+      <div class="proj-item">
+        <div class="proj-num">02</div>
+        <div class="proj-info">
+          <div class="proj-name"><span data-en="Travel Planning Agent · NIO" data-zh="旅行规划 Agent · 蔚来">Travel Planning Agent · NIO</span></div>
+          <div class="proj-desc" data-en="Reframed the product from travel-content generation to an executable in-car planning task. Defined the end-to-end chain, 5 MVP capabilities, 8 vehicle dependencies and 7 validation metrics." data-zh="将产品从「旅行内容生成」重新定义为可执行的车载规划任务；设计端到端链路，拆解 5 类 MVP 能力、8 项车端依赖与 7 项验证指标。">Reframed the product from travel-content generation to an executable in-car planning task. Defined the end-to-end chain, 5 MVP capabilities, 8 vehicle dependencies and 7 validation metrics.</div>
+          <div class="proj-tags"><span class="proj-tag">AI Agent</span><span class="proj-tag">MVP</span><span class="proj-tag" data-en="Capability Boundary" data-zh="能力边界">Capability Boundary</span></div>
+        </div>
+      </div>
+      <div class="proj-item">
+        <div class="proj-num">03</div>
+        <div class="proj-info">
+          <div class="proj-name"><span data-en="360° Panoramic Imaging · NIO" data-zh="360° 全景影像 · 蔚来">360° Panoramic Imaging · NIO</span></div>
+          <div class="proj-desc" data-en="Built a decision-oriented analytics system across 6 question areas, redesigning 22 key events and 5 shared dimensions with a complete acceptance checklist." data-zh="围绕 6 类产品决策问题重构数据体系，设计与重构 22 项关键事件、5 项公共维度，并形成完整验收清单。">Built a decision-oriented analytics system across 6 question areas, redesigning 22 key events and 5 shared dimensions with a complete acceptance checklist.</div>
+          <div class="proj-tags"><span class="proj-tag" data-en="Instrumentation" data-zh="埋点设计">Instrumentation</span><span class="proj-tag" data-en="Metrics" data-zh="指标体系">Metrics</span><span class="proj-tag" data-en="Cross-team" data-zh="跨团队协同">Cross-team</span></div>
+        </div>
+      </div>
+      <div class="proj-item">
+        <div class="proj-num">04</div>
+        <div class="proj-info">
+          <div class="proj-name"><span data-en="Smart Feeder Weight System · 70mai" data-zh="智能喂食器称重与余粮 · 70mai">Smart Feeder Weight System · 70mai</span></div>
+          <div class="proj-desc" data-en="Replaced fragile single-reading logic with a dynamic model using historical state, dispensing and feeding events; aligned firmware, app, cloud and acceptance rules in one OTA6 PRD." data-zh="将易受温漂和粮食密度影响的单点读数重构为结合历史状态、出粮与进食事件的动态模型，并在 OTA6 PRD 中统一固件、App、云端与验收规则。">Replaced fragile single-reading logic with a dynamic model using historical state, dispensing and feeding events; aligned firmware, app, cloud and acceptance rules in one OTA6 PRD.</div>
+          <div class="proj-tags"><span class="proj-tag">AIoT</span><span class="proj-tag" data-en="System Rules" data-zh="系统规则">System Rules</span><span class="proj-tag" data-en="Device–Cloud" data-zh="端云协同">Device–Cloud</span></div>
+        </div>
+      </div>
+      <div class="proj-item" id="collar" data-link="files/collar-case-v4.html">
+        <div class="proj-num">05</div>
+        <div class="proj-info">
+          <div class="proj-name"><span data-en="Xiaomi · Smart Pet Collar" data-zh="小米 · 智能宠物项圈">Xiaomi · Smart Pet Collar</span><span class="proj-arr">↗</span></div>
+          <div class="proj-desc" data-en="Repositioned the product from GPS tracker to a daily sensing and companion device through 5 user interviews, market structure research and hardware-boundary trade-offs." data-zh="通过 5 组用户深访、市场结构研究与硬件边界取舍，将产品从 GPS 追踪器重构为日常感知与陪伴设备。">Repositioned the product from GPS tracker to a daily sensing and companion device through 5 user interviews, market structure research and hardware-boundary trade-offs.</div>
+          <div class="proj-tags"><span class="proj-tag" data-en="User Research" data-zh="用户研究">User Research</span><span class="proj-tag">AIoT</span><span class="proj-tag" data-en="Product Definition" data-zh="产品定义">Product Definition</span></div>
+        </div>
+      </div>
+      <div class="proj-item" id="poopnow" data-link="files/poopnow-case-v6.html">
+        <div class="proj-num">06</div>
+        <div class="proj-info">
+          <div class="proj-name"><span data-en="PoopNow — WeChat Mini Program" data-zh="PoopNow 微信小程序">PoopNow — WeChat Mini Program</span><span class="proj-arr">↗</span></div>
+          <div class="proj-desc" data-en="A city toilet decision engine with transport-specific recommendation weights, DeepSeek and AMap APIs. Defined, built and shipped independently with AI coding tools." data-zh="面向驾车、地铁和步行场景的城市寻厕决策引擎，接入 DeepSeek 与高德地图 API，由 PM 独立完成定义、开发与上线。">A city toilet decision engine with transport-specific recommendation weights, DeepSeek and AMap APIs. Defined, built and shipped independently with AI coding tools.</div>
+          <div class="proj-tags"><span class="proj-tag">Zero-Click UX</span><span class="proj-tag">AI-Native</span><span class="proj-tag">0→1</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="section" id="experience">
+  <div class="wrap">
+    <span class="sec-label rv" data-en="EXPERIENCE" data-zh="实习经历">EXPERIENCE</span>
+    <div class="exp-wrap rv" style="transition-delay:.05s;">
+      <div class="exp-list">
+
+        <div class="exp-item">
+          <div class="exp-date">2026.05<br>— NOW</div>
+          <div class="exp-r">
+            <div class="exp-co"><div class="exp-logo">NIO</div><span data-en="NIO · Smart Cockpit" data-zh="蔚来 · 智能座舱">NIO · Smart Cockpit</span></div>
+            <div class="exp-role" data-en="Product Manager Intern — Smart Cockpit" data-zh="智能座舱产品经理实习生">Product Manager Intern — Smart Cockpit</div>
+            <ul class="exp-bullets">
+              <li data-en="<strong>Smart Cockpit Feature Owner · Blind-Spot View & Door-Opening Warning:</strong> Owned the cockpit-side P0 perception-imaging scope for the G1.3 model update. Independently defined the vehicle-level BSV addition and optimized DOW rules and adaptation, covering entry and exit, left/right views, risk prompts, priority and conflict rules, and abnormal recovery; aligned the final solution with cluster, engineering and partner teams and moved it into development." data-zh="<strong>【座舱侧功能 Owner｜盲点影像与开门预警】</strong>承接 G1.3 改款车型 P0 感知影像需求，基于主线能力独立负责盲点影像（BSV）的车型级新增，以及开门预警（DOW）的规则优化与车型适配；完成触发与退出、左右视图、风险提示、优先级与冲突规则、异常恢复等座舱侧方案设计，协同仪表、研发等团队完成方案收口并推进开发。"><strong>Smart Cockpit Feature Owner · Blind-Spot View & Door-Opening Warning:</strong> Owned the cockpit-side P0 perception-imaging scope for the G1.3 model update. Independently defined the vehicle-level BSV addition and optimized DOW rules and adaptation, covering entry and exit, left/right views, risk prompts, priority and conflict rules, and abnormal recovery; aligned the final solution with cluster, engineering and partner teams and moved it into development.</li>
+              <li data-en="<strong>AI Product Definition · Travel Planning Agent:</strong> Identified gaps in the existing destination-dependent approach for vague intent, vehicle charging and in-trip adjustment, and reframed the product as executable, resumable and dynamically adjustable in-car task planning. Evaluated 4 automaker Agents, 4 travel apps and 3 general-purpose models; designed the core flow, functional architecture and technical boundaries, and delivered the pre-proposal." data-zh="<strong>【AI 产品定义｜旅行规划 Agent】</strong>识别现有方案依赖明确目的地、难以覆盖模糊意图、车辆补能与行中调整，将产品定义为可执行、可接续、可动态调整的车载任务规划；评估 4 家车企 Agent、4 款旅行 App 及 3 个大模型，完成核心流程、功能架构与技术边界设计，输出预立项方案。"><strong>AI Product Definition · Travel Planning Agent:</strong> Identified gaps in the existing destination-dependent approach for vague intent, vehicle charging and in-trip adjustment, and reframed the product as executable, resumable and dynamically adjustable in-car task planning. Evaluated 4 automaker Agents, 4 travel apps and 3 general-purpose models; designed the core flow, functional architecture and technical boundaries, and delivered the pre-proposal.</li>
+              <li data-en="<strong>Early Product Research · Aftermarket OMS:</strong> Conducting early product research for an aftermarket occupant monitoring system, defining target users, V1 scope and hardware/software constraints." data-zh="<strong>【产品预研｜后装 OMS】</strong>开展后装舱内乘员监测系统预研，梳理目标用户、V1 范围与软硬件约束。"><strong>Early Product Research · Aftermarket OMS:</strong> Conducting early product research for an aftermarket occupant monitoring system, defining target users, V1 scope and hardware/software constraints.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-date">2025.12<br>— 2026.05</div>
+          <div class="exp-r">
+            <div class="exp-co"><div class="exp-logo">70m</div><span data-en="70mai · Xiaomi Ecosystem" data-zh="70mai · 小米生态链">70mai · Xiaomi Ecosystem</span></div>
+            <div class="exp-role" data-en="Product Manager Intern — Connected Hardware" data-zh="整机产品经理实习生 · 智能硬件">Product Manager Intern — Connected Hardware</div>
+            <ul class="exp-bullets">
+              <li data-en="<strong>Core Experience Redesign · Weight & Remaining Food:</strong> Weight sensing was a key differentiator, but temperature drift, food density and pet interference caused inaccurate displays and frequent complaints. Independently owned the OTA6 redesign, replacing single readings with a dynamic model using historical state, dispensing and feeding events; defined settlement, calibration and exception rules, split responsibilities across firmware, Mi Home plugin and cloud, and completed the cross-platform PRD review." data-zh="<strong>【核心体验重构｜称重与余粮】</strong>称重是产品差异化卖点，但原有逻辑受温漂、粮食密度及宠物介入等因素干扰，显示偏差并成为高频投诉问题；独立负责 OTA6 重构，将单点读数改为结合历史状态与出粮、进食事件的动态余粮模型，设计结算、校准及异常规则，拆分固件、米家插件与云端职责，输出 PRD 并完成多端评审。"><strong>Core Experience Redesign · Weight & Remaining Food:</strong> Weight sensing was a key differentiator, but temperature drift, food density and pet interference caused inaccurate displays and frequent complaints. Independently owned the OTA6 redesign, replacing single readings with a dynamic model using historical state, dispensing and feeding events; defined settlement, calibration and exception rules, split responsibilities across firmware, Mi Home plugin and cloud, and completed the cross-platform PRD review.</li>
+              <li data-en="<strong>New Product Definition · Xiaomi Smart Pet Collar:</strong> Independently led the pre-proposal after identifying opportunity in owners repurposing children's watches and AirTags for pets. Used market structure, price band, competitor and cross-category substitution research to define the positioning and first product plan, shifting the concept from a locator to a daily sensing and companion device; planned state, route and interaction functions while balancing positioning, IMU, 4G, battery life, weight and waterproofing." data-zh="<strong>【新产品定义｜米家智能宠物项圈】</strong>独立负责新品预立项，从用户将儿童手表、AirTag 用于宠物的替代行为中识别机会，基于市场结构、价格带、竞品及跨品类替代行为研究，独立完成产品定位与首版规划，将产品由定位器定义为日常感知与陪伴设备；围绕状态、轨迹与互动规划功能，并在定位、IMU、4G 与续航、重量、防水约束间收敛边界。"><strong>New Product Definition · Xiaomi Smart Pet Collar:</strong> Independently led the pre-proposal after identifying opportunity in owners repurposing children's watches and AirTags for pets. Used market structure, price band, competitor and cross-category substitution research to define the positioning and first product plan, shifting the concept from a locator to a daily sensing and companion device; planned state, route and interaction functions while balancing positioning, IMU, 4G, battery life, weight and waterproofing.</li>
+              <li data-en="<strong>Quantitative Research & Product Insight · Smart Water Fountain:</strong> Independently designed the survey and analyzed the data, cleaning 380 responses into 297 valid samples. Separated replacement buyers from first-time buyers, identified shared needs around hygiene, cleaning, safety and away-from-home reliability, and translated them into product priorities; the project has been approved and entered development." data-zh="<strong>【定量研究与产品洞察｜智能饮水机】</strong>独立完成问卷设计与数据分析，清洗 380 份问卷并获得 297 份有效样本；区分换机与首次购买用户，识别卫生、清洗、安全及外出托底等共性需求，形成产品优先方向，项目已立项并进入开发。"><strong>Quantitative Research & Product Insight · Smart Water Fountain:</strong> Independently designed the survey and analyzed the data, cleaning 380 responses into 297 valid samples. Separated replacement buyers from first-time buyers, identified shared needs around hygiene, cleaning, safety and away-from-home reliability, and translated them into product priorities; the project has been approved and entered development.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-date">2025.08<br>— 2025.12</div>
+          <div class="exp-r">
+            <div class="exp-co"><div class="exp-logo">VF</div><span data-en="VF Corp · Dickies" data-zh="美国威富 · Dickies">VF Corp · Dickies</span></div>
+            <div class="exp-role" data-en="Product Intern" data-zh="产品实习生">Product Intern</div>
+            <ul class="exp-bullets">
+              <li data-en="<strong>Merchandise Development · FW26:</strong> Supported development of 20+ Mainline and SMU/MFO SKUs, owned China-market user positioning and coordinated design, supply chain and marketing through sampling." data-zh="<strong>【商品开发｜FW26】</strong>参与 Mainline 与 SMU/MFO 约 20+ SKU 开发，负责中国市场用户定位，并协同设计、供应链与营销推进打样。"><strong>Merchandise Development · FW26:</strong> Supported development of 20+ Mainline and SMU/MFO SKUs, owned China-market user positioning and coordinated design, supply chain and marketing through sampling.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-date">2025.03<br>— 2025.06</div>
+          <div class="exp-r">
+            <div class="exp-co"><div class="exp-logo">LN</div><span data-en="Li-Ning" data-zh="李宁">Li-Ning</span></div>
+            <div class="exp-role" data-en="Running Footwear Product Intern" data-zh="跑鞋产品实习生">Running Footwear Product Intern</div>
+            <ul class="exp-bullets">
+              <li data-en="<strong>User & Trend Research · Women's Running:</strong> Led trend and preference research; the proposed Forbidden City collaboration direction was adopted and moved into production." data-zh="<strong>【用户与趋势研究｜女子跑鞋】</strong>主导趋势与用户偏好研究；提出的「吾子登科—故宫联名」方向获采纳并进入量产。"><strong>User & Trend Research · Women's Running:</strong> Led trend and preference research; the proposed Forbidden City collaboration direction was adopted and moved into production.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="section" id="education">
+  <div class="wrap">
+    <span class="sec-label rv" data-en="EDUCATION" data-zh="教育经历">EDUCATION</span>
+    <div class="exp-wrap rv" style="transition-delay:.05s;">
+      <div class="edu-wrap exp-list">
+
+        <div class="edu-item">
+          <div class="edu-date">2024.9<br>— 2027</div>
+          <div class="edu-r">
+            <div class="edu-school">
+              <div class="edu-logo">DHU</div>
+              <span data-en="Donghua University" data-zh="东华大学">Donghua University</span>
+            </div>
+            <div class="edu-major" data-en="Master's · Industrial Design (Mechanical Engineering)" data-zh="硕士研究生 · 工业设计（机械大类）">Master's · Industrial Design (Mechanical Engineering)</div>
+            <div style="font-size:12px;color:var(--mid);line-height:1.65;" data-en="Focusing on product strategy and AI-driven design systems." data-zh="研究方向：产品策略与 AI 驱动的设计系统。">Focusing on product strategy and AI-driven design systems.</div>
+            <div class="edu-awards" style="margin-top:8px;">
+              <div class="edu-award">
+                <strong data-en='"Huichuang Youth" Cultural Creative Exhibition' data-zh='"汇创青春"上海大学生文化创意作品展示活动'>"汇创青春" 上海大学生文化创意展示</strong>
+                <span class="aw-level" data-en="Municipal · 1st Prize · 2025" data-zh="市级 · 一等奖 · 2025">市级 · 一等奖 · 2025</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="edu-item">
+          <div class="edu-date">2020.9<br>— 2024.6</div>
+          <div class="edu-r">
+            <div class="edu-school">
+              <div class="edu-logo">SMU</div>
+              <span data-en="Shanghai Maritime University" data-zh="上海海事大学">Shanghai Maritime University</span>
+            </div>
+            <div class="edu-major" data-en="B.Eng · Industrial Design" data-zh="工学学士 · 工业设计">B.Eng · Industrial Design</div>
+            <div class="edu-gpa">GPA 3.85 / 4.0</div>
+
+            <div class="edu-awards">
+              <div class="edu-award">
+                <strong data-en="China Good Creativity · National Digital Art Design Competition" data-zh="中国好创意暨全国数字艺术设计大赛">中国好创意暨全国数字艺术设计大赛</strong>
+                <span class="aw-level nat" data-en="National · 3rd Prize · 2022" data-zh="国家级 · 三等奖 · 2022">国家级 · 三等奖 · 2022</span>
+              </div>
+              <div class="edu-award">
+                <strong data-en="National Undergraduate Ocean Culture Creative Design Competition" data-zh="全国大学生海洋文化创意设计大赛">全国大学生海洋文化创意设计大赛</strong>
+                <span class="aw-level nat" data-en="National · Excellence Award · Rank #2 · 2022" data-zh="国家级 · 佳作奖 · 排名第二 · 2022">国家级 · 佳作奖 · 排名第二 · 2022</span>
               </div>
               <div class="edu-award">
                 <strong data-en='Shanghai Undergraduate Industrial Design Competition' data-zh='上海市大学生工业设计大赛'>上海市大学生工业设计大赛</strong>
@@ -554,4 +1014,3 @@ document.querySelectorAll('[data-link]').forEach(bindLink);
 </script>
 </body>
 </html>
-
