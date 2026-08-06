@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f2efe7">
+  <meta name="description" content="马润萌，智能硬件产品经理个人作品集本地预览。">
+  <title>马润萌 | 产品经理作品集</title>
+  <link rel="preload" as="image" href="assets/works-background-base.png">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body class="is-locked">
+  <div class="paper-grain" aria-hidden="true"></div>
+
+  <section class="entry" id="entry" aria-label="作品集入口">
+    <div class="entry-copy">
+      <button class="entry-interface" id="enterButton" type="button" aria-label="进入马润萌的作品集">
+        <canvas id="entryContours" aria-hidden="true"></canvas>
+        <span class="entry-center" aria-hidden="true">进入</span>
+        <span class="entry-name" aria-hidden="true">runmeng</span>
+        <span class="entry-role" aria-hidden="true">从复杂系统中，做出产品判断。</span>
+        <span class="entry-hint" aria-hidden="true">移动圆环，点击进入</span>
+      </button>
+    </div>
+  </section>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="回到首页">RUNMENG MA</a>
+    <nav class="primary-nav" aria-label="主导航">
+      <a href="#about">ABOUT</a>
+      <a href="#works">WORKS</a>
+      <a href="#experience">ROLE OVERVIEW</a>
+      <a href="#chat">CHAT</a>
+      <a href="assets/resume.pdf" target="_blank" rel="noopener">RESUME</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <p class="identity">马润萌 / RENEE MA</p>
+        <h1 id="heroTitle">
+          <span>从复杂系统中，</span>
+          <span>做出产品判断。</span>
+        </h1>
+        <p class="hero-intro">从真实场景出发，定义产品定位、系统规则和软硬件边界。</p>
+        <div class="hero-actions">
+          <a class="text-link text-link-primary" href="#about">认识我</a>
+          <a class="text-link" href="assets/resume.pdf" target="_blank" rel="noopener">简历 PDF</a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="ring-interface" id="heroRing" aria-label="可用鼠标互动的产品思考圆环">
+          <canvas id="heroContours" aria-hidden="true"></canvas>
+          <div class="ring-note">
+            <span>PRODUCT THINKING</span>
+            <strong>让判断在约束中成形</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about" id="about" aria-labelledby="aboutTitle">
+      <div class="about-lede reveal">
+        <h2 id="aboutTitle">我不把硬件读数直接当成用户结论。</h2>
+        <p>我更关心数据何时可信、系统如何运行，以及用户此刻真正需要判断什么。</p>
+      </div>
+
+      <div class="about-detail reveal">
+        <p>工业设计的训练让我习惯从用户、场景和物理产品出发理解问题。进入产品实践后，我意识到，决定体验的不只是界面与形态，更是背后的产品定位、系统规则和能力边界。</p>
+        <p>我面对过传感器偏差、环境干扰、续航、重量与通信方式等真实约束。我习惯把模糊需求拆成可执行、可验证的规则，再推动团队完成方案收敛。</p>
+      </div>
+
+      <div class="focus-list reveal" aria-label="关注方向">
+        <div><span>用户洞察</span><strong>从真实场景识别问题</strong></div>
+        <div><span>系统规则</span><strong>把模糊需求变成判断</strong></div>
+        <div><span>软硬件边界</span><strong>让方案可执行、可验证</strong></div>
+      </div>
+    </section>
+
+    <section class="works" id="works" aria-labelledby="worksTitle">
+      <h2 class="sr-only" id="worksTitle">SELECTED WORKS</h2>
+
+      <div class="works-board reveal" id="project01Scene">
+        <img class="works-background" src="assets/works-background-base.png" width="1004" height="1567" alt="四张手绘项目卡沿蓝色 S 形路线向下排列">
+        <canvas class="works-contour works-contour-right" id="worksContourRight" aria-hidden="true"></canvas>
+        <canvas class="works-contour works-contour-left" id="worksContourLeft" aria-hidden="true"></canvas>
+        <div class="works-route-layer" id="worksRouteLayer" aria-hidden="true">
+          <img src="assets/works-route.png" width="1004" height="1567" alt="">
+        </div>
+        <span class="project-route-focus project-route-focus-01" aria-hidden="true"></span>
+        <span class="project-route-focus project-route-focus-02" aria-hidden="true"></span>
+        <span class="project-route-focus project-route-focus-03" aria-hidden="true"></span>
+        <span class="project-route-focus project-route-focus-04" aria-hidden="true"></span>
+        <span class="works-route-end" id="worksRouteEnd" aria-hidden="true"></span>
+
+        <button class="project-hotspot" id="project01Card" type="button" aria-pressed="false" aria-describedby="project01Hint">
+          <span class="project-info">
+            <span class="project-title">A 柱补盲</span>
+            <span class="project-tags">复杂规则设计 / 跨系统协同 / 安全体验</span>
+            <span class="project-action">查看项目</span>
+          </span>
+        </button>
+        <p class="sr-only" id="project01Hint">进入项目区后蓝色路径会依次经过项目卡片，卡片会短暂亮起；移入卡片查看项目名称和标签。</p>
+      </div>
+    </section>
+
+    <section class="record-section experience-section" id="experience" aria-labelledby="experienceTitle">
+      <div class="record-heading reveal">
+        <div class="record-heading-mark" aria-hidden="true"><span>02</span><i></i></div>
+        <div>
+          <h2 id="experienceTitle">角色概览</h2>
+          <p>我在不同团队里承担的角色，以及持续积累的产品判断。</p>
+        </div>
+      </div>
+
+      <div class="role-board reveal" aria-label="实习角色概览">
+        <div class="role-board-note role-board-note-left">
+          <span>把复杂问题，拆成可以推进的判断。</span>
+          <i></i>
+        </div>
+        <div class="role-thread" aria-hidden="true">
+          <span class="role-thread-node role-thread-node-01"></span>
+          <span class="role-thread-node role-thread-node-02"></span>
+          <span class="role-thread-node role-thread-node-03"></span>
+        </div>
+        <article class="role-strip role-strip-01">
+          <div class="role-strip-year">2026.05<br>至今</div>
+          <div class="role-strip-copy">
+            <p>蔚来</p>
+            <h3>智能座舱产品经理实习生</h3>
+            <span>规则定义 / 跨系统协同 / 数据闭环</span>
+          </div>
+          <b class="role-strip-tape" aria-hidden="true"></b>
+        </article>
+        <article class="role-strip role-strip-02">
+          <div class="role-strip-year">2025.12<br>2026.05</div>
+          <div class="role-strip-copy">
+            <p>70mai</p>
+            <h3>整机产品经理实习生</h3>
+            <span>体验重构 / 软硬件协同 / 新品定义</span>
+          </div>
+          <b class="role-strip-pin" aria-hidden="true"></b>
+        </article>
+        <article class="role-strip role-strip-03">
+          <div class="role-strip-year">2025</div>
+          <div class="role-strip-copy">
+            <p>Dickies / 李宁</p>
+            <h3>产品实习生</h3>
+            <span>用户洞察 / 产品定位 / 开发协作</span>
+          </div>
+          <b class="role-strip-tape" aria-hidden="true"></b>
+        </article>
+        <div class="role-board-note role-board-note-right">
+          <span>从研究<br>到定义</span>
+          <i></i>
+        </div>
+      </div>
+    </section>
+
+    <section class="record-section education-section" id="education" aria-labelledby="educationTitle">
+      <div class="record-heading reveal">
+        <div class="record-heading-mark" aria-hidden="true"><span>03</span><i></i></div>
+        <div>
+          <h2 id="educationTitle">教育经历</h2>
+          <p>工业设计训练，和后来对系统与产品的持续学习。</p>
+        </div>
+      </div>
+
+      <div class="education-board reveal" aria-label="教育经历档案">
+        <div class="education-paper">
+          <span class="education-note">design<br><i>to</i> systems</span>
+          <article class="school-slip school-slip-01">
+            <p class="school-year">2024 - 2027</p>
+            <h3>东华大学</h3>
+            <p>机械硕士</p>
+            <p class="school-focus">研究方向：工业设计工程</p>
+            <span class="school-stamp">记录 01</span>
+          </article>
+          <article class="school-slip school-slip-02">
+            <p class="school-year">2020 - 2024</p>
+            <h3>上海海事大学</h3>
+            <p>工业设计 · 学士</p>
+            <span class="school-stamp">记录 02</span>
+          </article>
+        </div>
+        <aside class="education-index-card">
+          <span>学习索引</span>
+          <strong>从设计训练，走向产品判断。</strong>
+          <i aria-hidden="true"></i>
+        </aside>
+      </div>
+    </section>
+
+    <section class="digital-twin" id="chat" aria-labelledby="chatTitle">
+      <div class="twin-copy reveal">
+        <p class="twin-label">数字分身 / 交流预留</p>
+        <h2 id="chatTitle">想知道我怎么做判断？</h2>
+        <p>可以和我的数字分身聊项目、取舍，以及我如何把复杂问题拆成可执行的方案。</p>
+      </div>
+      <div class="twin-console reveal" aria-label="数字分身交流预留区域">
+        <div class="twin-console-head"><span>数字分身交流位</span><span>准备中</span></div>
+        <div class="twin-console-body">
+          <span class="twin-orbit" aria-hidden="true"></span>
+          <p>从一个项目开始，问我为什么这样判断。</p>
+        </div>
+        <div class="twin-input-preview" aria-hidden="true"><span>问我一个项目问题...</span><button type="button" disabled>即将开放</button></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>© 2026 马润萌</span>
+    <span>SMART HARDWARE PRODUCT MANAGER</span>
+  </footer>
+</body>
+</html>
