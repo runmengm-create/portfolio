@@ -1014,11 +1014,14 @@ body.site-ready .hero-copy {
 
 .project-hotspot .project-info {
   position: absolute;
-  right: 7%;
-  bottom: 7.5%;
-  left: 10%;
+  right: 9%;
+  bottom: 6.5%;
+  left: 9%;
   z-index: 1;
   display: grid;
+  width: auto;
+  max-width: 82%;
+  min-width: 0;
   height: auto;
   gap: clamp(0.18rem, 0.45vw, 0.34rem);
   padding: 0;
@@ -1031,31 +1034,46 @@ body.site-ready .hero-copy {
 }
 
 .project-hotspot .project-title {
-  max-width: 14ch;
-  font-size: clamp(0.86rem, 1.68vw, 1.26rem);
+  max-width: 100%;
+  min-width: 0;
+  font-size: clamp(0.78rem, 1.58vw, 1.2rem);
   font-weight: 680;
   letter-spacing: -0.045em;
   line-height: 1.05;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
 .project-hotspot .project-tags {
   max-width: 100%;
+  min-width: 0;
   color: var(--ink);
-  font-size: clamp(0.5rem, 0.92vw, 0.68rem);
+  font-size: clamp(0.44rem, 0.82vw, 0.62rem);
   font-weight: 620;
-  line-height: 1.35;
+  line-height: 1.28;
+  letter-spacing: -0.012em;
   overflow-wrap: anywhere;
 }
 
 .project-hotspot .project-action {
   width: max-content;
   max-width: 100%;
+  min-width: 0;
   padding-bottom: 0.08rem;
   color: var(--blue);
   font-size: clamp(0.52rem, 0.96vw, 0.7rem);
   font-weight: 700;
   line-height: 1.2;
   white-space: nowrap;
+}
+
+.project-hotspot-01 .project-title {
+  font-size: clamp(0.84rem, 1.68vw, 1.26rem);
+}
+
+.project-hotspot-02 .project-title,
+.project-hotspot-03 .project-title {
+  font-size: clamp(0.7rem, 1.42vw, 1.08rem);
 }
 
 .project-hotspot:hover .project-info,
