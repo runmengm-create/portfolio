@@ -965,16 +965,51 @@ body.site-ready .hero-copy {
   color: var(--ink);
   text-align: left;
   cursor: pointer;
-  transform: rotate(-1.1deg);
+  transform: rotate(var(--project-rotation, -1.1deg));
   transform-origin: 50% 50%;
+  transition: transform 0.42s var(--ease);
 }
 
 .project-hotspot:active {
-  transform: rotate(-1.1deg) scale(0.992);
+  transform: rotate(var(--project-rotation, -1.1deg)) scale(0.992);
 }
 
 .project-hotspot:focus-visible {
-  outline: none;
+  outline: 1px solid var(--blue);
+  outline-offset: 0.25rem;
+}
+
+.project-hotspot-01 {
+  --project-rotation: -1.1deg;
+}
+
+.project-hotspot-02 {
+  top: 34.95%;
+  left: 56.35%;
+  width: 24.8%;
+  height: 22.6%;
+  --project-rotation: 7.6deg;
+}
+
+.project-hotspot-03 {
+  top: 52.9%;
+  left: 28.2%;
+  width: 23.3%;
+  height: 21.2%;
+  --project-rotation: -4.7deg;
+}
+
+.project-hotspot-04 {
+  top: 74.1%;
+  left: 49.2%;
+  width: 24%;
+  height: 21.4%;
+  --project-rotation: 5.4deg;
+}
+
+.project-hotspot:hover,
+.project-hotspot.is-active {
+  transform: rotate(var(--project-rotation, -1.1deg)) scale(1.012);
 }
 
 .project-hotspot .project-info {
@@ -996,7 +1031,8 @@ body.site-ready .hero-copy {
 }
 
 .project-hotspot .project-title {
-  font-size: clamp(0.92rem, 1.8vw, 1.34rem);
+  max-width: 14ch;
+  font-size: clamp(0.86rem, 1.68vw, 1.26rem);
   font-weight: 680;
   letter-spacing: -0.045em;
   line-height: 1.05;
@@ -1022,9 +1058,9 @@ body.site-ready .hero-copy {
   white-space: nowrap;
 }
 
-.works-board.is-active .project-info,
 .project-hotspot:hover .project-info,
-.project-hotspot:focus-visible .project-info {
+.project-hotspot:focus-visible .project-info,
+.project-hotspot.is-active .project-info {
   opacity: 1;
   transform: translateY(0);
 }

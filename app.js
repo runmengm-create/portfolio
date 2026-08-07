@@ -264,27 +264,26 @@ if (worksBoard && worksRouteLayer) {
   routeStartObserver.observe(worksBoard);
 }
 
-const project01Scene = document.getElementById("project01Scene");
-const project01Card = document.getElementById("project01Card");
+const projectCards = [...document.querySelectorAll(".project-hotspot")];
 
-if (project01Scene && project01Card) {
+projectCards.forEach((card) => {
   let isPinned = false;
 
-  const setProject01Active = (active) => {
-    project01Scene.classList.toggle("is-active", active);
+  const setActive = (active) => {
+    card.classList.toggle("is-active", active);
   };
 
-  project01Card.addEventListener("pointerenter", () => setProject01Active(true));
-  project01Card.addEventListener("pointerleave", () => {
-    if (!isPinned) setProject01Active(false);
+  card.addEventListener("pointerenter", () => setActive(true));
+  card.addEventListener("pointerleave", () => {
+    if (!isPinned) setActive(false);
   });
-  project01Card.addEventListener("focus", () => setProject01Active(true));
-  project01Card.addEventListener("blur", () => {
-    if (!isPinned) setProject01Active(false);
+  card.addEventListener("focus", () => setActive(true));
+  card.addEventListener("blur", () => {
+    if (!isPinned) setActive(false);
   });
-  project01Card.addEventListener("click", () => {
+  card.addEventListener("click", () => {
     isPinned = !isPinned;
-    project01Card.setAttribute("aria-pressed", String(isPinned));
-    setProject01Active(isPinned);
+    card.setAttribute("aria-pressed", String(isPinned));
+    setActive(isPinned);
   });
-}
+});
