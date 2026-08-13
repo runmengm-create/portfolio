@@ -384,23 +384,24 @@ body.site-ready .hero-copy {
 }
 
 .about-lede {
-  max-width: 55rem;
+  max-width: 48rem;
 }
 
 .about-lede h2 {
-  max-width: 17ch;
-  font-size: clamp(2.25rem, 4.3vw, 4.35rem);
-  font-weight: 570;
-  letter-spacing: -0.055em;
-  line-height: 1.08;
+  max-width: 15ch;
+  font-size: clamp(2rem, 3.35vw, 3.45rem);
+  font-weight: 590;
+  letter-spacing: -0.06em;
+  line-height: 1.12;
 }
 
 .about-lede p {
-  max-width: 38rem;
-  margin-top: 1.5rem;
+  max-width: 28rem;
+  margin-top: 1.25rem;
   color: var(--blue);
-  font-size: clamp(1.08rem, 1.7vw, 1.55rem);
-  line-height: 1.45;
+  font-size: clamp(0.96rem, 1.35vw, 1.18rem);
+  font-weight: 600;
+  line-height: 1.55;
 }
 
 .walk-stage {
@@ -1275,13 +1276,30 @@ body.site-ready .hero-copy {
   min-height: clamp(31rem, 48vw, 39rem);
   margin: clamp(3.5rem, 7vw, 6.5rem) auto 0;
   overflow: hidden;
+  isolation: isolate;
+  background-image:
+    linear-gradient(90deg, transparent 0 9%, rgba(47, 99, 233, 0.11) 9% 9.12%, transparent 9.12%),
+    url("assets/paper-texture.png");
+  background-repeat: no-repeat, repeat;
+  background-size: 100% 100%, 200px 200px;
+}
+
+.role-board::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid color-mix(in srgb, var(--ink) 28%, transparent);
+  background: color-mix(in srgb, var(--paper) 30%, transparent);
+  mix-blend-mode: multiply;
+  clip-path: polygon(0.5% 0.8%, 99.5% 0, 99.8% 99.3%, 0 100%);
 }
 
 .role-thread {
   position: absolute;
   top: 8%;
   bottom: 8%;
-  left: 31%;
+  left: 14%;
   width: 1rem;
   border-left: 1px solid var(--ink);
   border-radius: 50%;
@@ -1326,17 +1344,18 @@ body.site-ready .hero-copy {
 
 .role-strip {
   position: absolute;
-  left: 33%;
+  left: 16%;
   display: grid;
   grid-template-columns: 5.4rem minmax(0, 1fr);
-  width: min(49rem, 60%);
+  width: min(63rem, 78%);
   min-height: 6.5rem;
   padding: 0.9rem 2rem 0.9rem 1rem;
-  border: 1px solid color-mix(in srgb, var(--ink) 55%, transparent);
-  background-color: color-mix(in srgb, var(--paper) 92%, #fff 8%);
+  border: 1px solid color-mix(in srgb, var(--ink) 48%, transparent);
+  background-color: color-mix(in srgb, var(--paper) 74%, #fff 26%);
   mix-blend-mode: multiply;
   transform-origin: 1.5rem 50%;
   transition: transform 0.5s var(--ease), filter 0.5s var(--ease);
+  clip-path: polygon(0.3% 2%, 99.6% 0, 100% 97.8%, 0 100%);
 }
 
 .role-strip::before {
@@ -1394,6 +1413,11 @@ body.site-ready .hero-copy {
   line-height: 1.25;
 }
 
+.role-strip-copy p {
+  color: var(--blue);
+  font-weight: 650;
+}
+
 .role-strip-copy span {
   color: var(--ink);
   font-size: 0.6rem;
@@ -1444,7 +1468,7 @@ body.site-ready .hero-copy {
 
 .role-board-note-left {
   top: 21%;
-  left: 2%;
+  left: 3%;
   max-width: 11rem;
 }
 
@@ -1454,7 +1478,7 @@ body.site-ready .hero-copy {
 }
 
 .role-board-note-right {
-  right: 1%;
+  right: 3%;
   bottom: 10%;
   text-align: right;
 }
@@ -1858,12 +1882,12 @@ body.site-ready .hero-copy {
   }
 
   .role-thread {
-    left: 31%;
+    left: 14%;
   }
 
   .role-strip {
-    left: 33%;
-    width: 64%;
+    left: 16%;
+    width: 78%;
   }
 
   .role-board-note-left {
