@@ -1,5 +1,11 @@
 # 个人形象视觉素材
 
+## 当前导航
+
+- [ASSET_INDEX.md](ASSET_INDEX.md)：图片状态、用途与版本索引
+- [IMAGE_SOURCES.md](IMAGE_SOURCES.md)：不可覆盖母版与清晰度规则
+- [../HANDOFF_2026-08-13.md](../HANDOFF_2026-08-13.md)：新对话完整交接摘要
+
 ## 素材溯源
 
 Works 横版母版、校验值与衍生规则见 [IMAGE_SOURCES.md](IMAGE_SOURCES.md)。
@@ -17,6 +23,7 @@ Works 横版母版、校验值与衍生规则见 [IMAGE_SOURCES.md](IMAGE_SOURCE
 ## generated/approved
 
 - `character-style-anchor.png`: 已确认的手绘画风与人物身份锚点
+- `works-open-fields-master-v1.png`: 已确认的新版项目概览构图母版。正式网页必须拆分图形、蓝线与 HTML 真文字，禁止整张带字图片直接作为网页背景。
 
 ## generated/rejected
 
