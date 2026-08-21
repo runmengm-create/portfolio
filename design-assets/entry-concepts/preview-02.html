@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entry Concept 02</title>
+  <style>
+    :root { --paper: #f2efe7; --ink: #171715; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body { overflow: hidden; background: var(--paper) url("../../assets/paper-texture.png") repeat; color: var(--ink); }
+    .stage { position: relative; min-height: 100dvh; overflow: hidden; }
+    .stage::after { content: ""; position: absolute; inset: 1rem; border: 1px solid rgba(23,23,21,.12); pointer-events: none; }
+    .morph-window { position: absolute; inset: 0; overflow: hidden; }
+    .morph-board { position: absolute; top: 0; left: 0; width: 200%; height: 100%; max-width: none; object-fit: cover; object-position: left center; transform: translateX(0); transition: transform 1.65s cubic-bezier(.16,.84,.22,1); }
+    .node-hit { position: absolute; z-index: 3; left: 46%; top: 66%; width: 10rem; height: 10rem; border: 0; border-radius: 50%; background: transparent; cursor: default; }
+    .node-hit:focus { outline: none; }
+    .stage.is-near .morph-board { transform: translateX(-1%) scale(1.01); }
+    .stage.is-near .node-hit { cursor: pointer; }
+    .stage.is-opening .morph-board { transform: translateX(-50%); }
+    .note { position: absolute; z-index: 3; right: 2rem; bottom: 1.6rem; color: rgba(23,23,21,.46); font: .6rem/1 Arial, sans-serif; letter-spacing: .14em; }
+    @media (max-width: 700px) {
+      .node-hit { left: 37%; top: 65%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" id="stage" aria-label="开屏方案二预览">
+    <div class="morph-window"><img class="morph-board" src="entry-concept-02-morph-storyboard.png" alt="图案状态变成 Renee 的两状态概念图"></div>
+    <button class="node-hit" id="node" type="button" aria-label="让图案变成 Renee"></button>
+    <span class="note">CONCEPT 02 / MORPH INTO NAME</span>
+  </main>
+  <script>
+    const stage = document.getElementById('stage');
+    const node = document.getElementById('node');
+    node.addEventListener('pointermove', () => stage.classList.add('is-near'));
+    node.addEventListener('pointerleave', () => stage.classList.remove('is-near'));
+    node.addEventListener('click', () => stage.classList.add('is-opening'));
+  </script>
+</body>
+</html>
