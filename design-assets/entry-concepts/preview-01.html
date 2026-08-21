@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entry Concept 01</title>
+  <style>
+    :root { --paper: #f2efe7; --ink: #171715; --blue: #2f63e9; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body { overflow: hidden; background: var(--paper) url("../../assets/paper-texture.png") repeat; color: var(--ink); }
+    .stage { position: relative; min-height: 100dvh; overflow: hidden; }
+    .stage::after { content: ""; position: absolute; inset: 1rem; border: 1px solid rgba(23,23,21,.12); pointer-events: none; }
+    .art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(.22,.8,.22,1), opacity .8s ease; }
+    .copy { position: absolute; z-index: 2; top: 50%; left: 11vw; transform: translateY(-50%); pointer-events: none; }
+    .kicker { margin: 0 0 .8rem; color: rgba(23,23,21,.58); font: .62rem/1.2 Arial, sans-serif; letter-spacing: .16em; }
+    .name { margin: 0; font: 400 clamp(4rem, 10vw, 8rem)/.85 Georgia, serif; letter-spacing: -.08em; }
+    .node-hit { position: absolute; z-index: 3; top: 57%; right: 4%; width: 9rem; height: 9rem; border: 0; border-radius: 50%; background: transparent; cursor: default; }
+    .stage.is-near .art { transform: translate3d(-.5%, -.4%, 0) scale(1.015); }
+    .stage.is-near .node-hit { cursor: pointer; }
+    .stage.is-opening .art { transform: translate3d(-4%, 1%, 0) scale(1.08); opacity: .08; }
+    .stage.is-opening .copy { opacity: .12; transition: opacity .8s ease; }
+    .note { position: absolute; z-index: 3; right: 2rem; bottom: 1.6rem; color: rgba(23,23,21,.46); font: .6rem/1 Arial, sans-serif; letter-spacing: .14em; }
+    @media (max-width: 700px) {
+      .copy { left: 8vw; top: 46%; }
+      .name { font-size: clamp(3.4rem, 17vw, 5.6rem); }
+      .node-hit { top: 57%; right: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" id="stage" aria-label="开屏方案一预览">
+    <img class="art" src="entry-concept-01-flat-silhouettes.png" alt="纸张上的颗粒剪影与蓝色路径">
+    <div class="copy"><p class="kicker">PRODUCT MANAGER / 产品经理</p><h1 class="name">Renee</h1></div>
+    <button class="node-hit" id="node" type="button" aria-label="打开作品集"></button>
+    <span class="note">CONCEPT 01 / QUIET PULL</span>
+  </main>
+  <script>
+    const stage = document.getElementById('stage');
+    const node = document.getElementById('node');
+    node.addEventListener('pointermove', () => stage.classList.add('is-near'));
+    node.addEventListener('pointerleave', () => stage.classList.remove('is-near'));
+    node.addEventListener('click', () => stage.classList.add('is-opening'));
+  </script>
+</body>
+</html>

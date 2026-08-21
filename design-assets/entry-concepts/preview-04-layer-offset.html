@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>开屏动效方案 B · SVG 环层错位</title>
+  <style>
+    :root { --paper:#f2efe7; --ink:#1b1b18; --blue:#2f63e9; }
+    * { box-sizing:border-box; }
+    html,body { margin:0; min-width:320px; min-height:100%; background:var(--paper); }
+    body { overflow:hidden; background:var(--paper) url('../../assets/paper-texture.png') repeat; }
+    .stage { position:relative; width:calc(100vw - 2rem); height:calc(100dvh - 2rem); margin:1rem; overflow:hidden; border:1px solid rgba(27,27,24,.7); cursor:crosshair; }
+    svg { display:block; width:100%; height:100%; }
+    .contour { fill:none; stroke:rgba(27,27,24,.28); stroke-width:1.25; vector-effect:non-scaling-stroke; transform-box:fill-box; transform-origin:center; }
+    .contour.accent { stroke:rgba(47,99,233,.86); stroke-width:1.55; }
+    .copy { position:absolute; z-index:2; top:46.5%; left:73.7%; pointer-events:none; }
+    .label { display:block; margin-bottom:1.1rem; color:rgba(27,27,24,.56); font:500 .72rem/1 Arial,sans-serif; letter-spacing:.1em; }
+    .name { margin:0; color:var(--ink); font:400 clamp(3rem,5.1vw,5.4rem)/.86 Arial,sans-serif; letter-spacing:-.075em; }
+    .caption { margin:1.15rem 0 0; color:var(--ink); font:400 clamp(.84rem,1.05vw,1rem)/1.4 'Songti SC','STSong',serif; }
+    @media (max-width:700px) { .stage { width:calc(100vw - 1.2rem); height:calc(100dvh - 1.2rem); margin:.6rem; } .copy { top:45%; left:69%; } .label { font-size:.58rem; } .name { font-size:clamp(2.7rem,13vw,4.6rem); } .caption { font-size:.74rem; } }
+  </style>
+</head>
+<body>
+  <main class="stage" id="stage" aria-label="环层错位开屏动效预览">
+    <svg id="field" viewBox="0 0 1721 914" preserveAspectRatio="none" aria-hidden="true"><g id="rings"></g></svg>
+    <div class="copy"><span class="label">上海·2027</span><p class="name">Renee</p><p class="caption">对人和产品，都还有很多好奇。</p></div>
+  </main>
+  <script>
+    const stage=document.getElementById('stage'),group=document.getElementById('rings');
+    const W=1721,H=914,cx=700,cy=455,count=9,paths=[];
+    const state={x:cx,y:cy,tx:cx,ty:cy,energy:0,pulse:0,pulseAt:0,active:false};
+    const mid=(a,b)=>({x:(a.x+b.x)/2,y:(a.y+b.y)/2});
+    const smooth=(points)=>{let d=`M${mid(points[points.length-1],points[0]).x.toFixed(1)} ${mid(points[points.length-1],points[0]).y.toFixed(1)}`;points.forEach((p,i)=>{const q=mid(p,points[(i+1)%points.length]);d+=` Q${p.x.toFixed(1)} ${p.y.toFixed(1)} ${q.x.toFixed(1)} ${q.y.toFixed(1)}`;});return d+' Z';};
+    const makePoints=(index)=>{const ringCx=cx-index*10,ringCy=cy-index*1.5;return Array.from({length:64},(_,i)=>{const a=i/64*Math.PI*2,rx=34+index*63.3,ry=35+index*48,w=Math.sin(a*2.15+index*.48)*(4.5+index*.85)+Math.cos(a*3.7-index*.25)*(2.5+index*.4)+Math.sin(a*5.2+index*.9)*1.4;return{x:ringCx+Math.cos(a)*(rx+w),y:ringCy+Math.sin(a)*(ry+w*.7)};});};
+    const base=Array.from({length:count},(_,index)=>makePoints(index));
+    base.forEach((points,index)=>{const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.classList.add('contour');if(index===2)path.classList.add('accent');path.setAttribute('d',smooth(points));group.appendChild(path);paths.push(path);});
+    const viewPoint=(event)=>{const r=stage.getBoundingClientRect();return{x:(event.clientX-r.left)/r.width*W,y:(event.clientY-r.top)/r.height*H};};
+    stage.addEventListener('pointermove',(event)=>{const p=viewPoint(event);state.tx=p.x;state.ty=p.y;state.active=true;});
+    stage.addEventListener('pointerleave',()=>{state.active=false;});
+    stage.addEventListener('click',()=>{state.pulse=1;state.pulseAt=performance.now();});
+    const frame=window.requestAnimationFrame||((fn)=>setTimeout(()=>fn(performance.now()),33));
+    const draw=(now)=>{state.x+=(state.tx-state.x)*.1;state.y+=(state.ty-state.y)*.1;state.energy+=((state.active?1:0)-state.energy)*.08;const px=(state.x-cx)/440,py=(state.y-cy)/360,age=state.pulseAt?(now-state.pulseAt)/1500:99;state.pulse=state.pulseAt?Math.max(0,1-age):0;paths.forEach((path,index)=>{const layer=index/(count-1),lag=(.3+layer*.95)*state.energy,offset=Math.sin(index*.85)*state.pulse*18,dx=px*lag*26+offset,dy=py*lag*19+Math.cos(index*.72)*state.pulse*12,rot=px*layer*2.2+Math.sin(index*.7)*state.pulse*1.7;path.setAttribute('d',smooth(base[index]));path.setAttribute('transform',`translate(${dx.toFixed(2)} ${dy.toFixed(2)}) rotate(${rot.toFixed(2)} ${cx} ${cy})`);});frame(draw);};
+    draw(performance.now());
+  </script>
+</body>
+</html>

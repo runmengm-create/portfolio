@@ -29,8 +29,11 @@ jobs:
       - name: Prepare static site
         run: |
           mkdir -p _site
-          cp index.html styles.css app.js _site/
+          mkdir -p _site/design-assets/generated
+          cp index.html preview.html preview.css preview.js styles.css app.js _site/
           cp -R assets _site/assets
+          cp -R projects _site/projects
+          cp -R design-assets/generated/approved _site/design-assets/generated/approved
           touch _site/.nojekyll
 
       - name: Configure GitHub Pages
