@@ -18,13 +18,13 @@ class ContourField {
     this.pointer = { x: 0, y: 0, targetX: 0, targetY: 0, energy: 0, targetEnergy: 0 };
     this.visible = true;
     this.frame = null;
-    this.resizeObserver = new ResizeObserver(() => this.resize());
-    this.resizeObserver.observe(canvas);
-    this.intersectionObserver = new IntersectionObserver((entries) => {
+    this.resizeObserver = typeof ResizeObserver === "function" ? new ResizeObserver(() => this.resize()) : null;
+    this.resizeObserver?.observe(canvas);
+    this.intersectionObserver = typeof IntersectionObserver === "function" ? new IntersectionObserver((entries) => {
       this.visible = entries[0].isIntersecting;
       if (this.options.animated && this.visible && !this.frame && !reducedMotion) this.animate(performance.now());
-    });
-    this.intersectionObserver.observe(canvas);
+    }) : null;
+    this.intersectionObserver?.observe(canvas);
     this.resize();
   }
 
@@ -86,7 +86,9 @@ class ContourField {
     this.pointer.y += (this.pointer.targetY - this.pointer.y) * 0.075;
     this.pointer.energy += (this.pointer.targetEnergy - this.pointer.energy) * 0.09;
     this.draw(time);
-    this.frame = requestAnimationFrame(this.animate);
+    this.frame = typeof requestAnimationFrame === "function"
+      ? requestAnimationFrame(this.animate)
+      : window.setTimeout(() => this.animate(performance.now()), 33);
   };
 
   bindPointer(element) {
@@ -105,30 +107,46 @@ class ContourField {
   }
 
   start() {
-    if (this.options.animated && !reducedMotion && !this.frame) this.frame = requestAnimationFrame(this.animate);
+    if (this.options.animated && !reducedMotion && !this.frame) {
+      this.frame = typeof requestAnimationFrame === "function"
+        ? requestAnimationFrame(this.animate)
+        : window.setTimeout(() => this.animate(performance.now()), 33);
+    }
   }
 }
 
+const entryCanvas = document.getElementById("entryContours");
+const entryField = typeof entryCanvas?.getContext === "function" ? new ContourField(entryCanvas, {
+  rings: 24,
+  spacing: 34,
+  centerX: 0.48,
+  centerY: 0.55,
+  speed: 0.00009,
+  accentRing: 4,
+  opacity: 0.18
+}) : null;
+
 const entry = document.getElementById("entry");
 const enterButton = document.getElementById("enterButton");
-const entryHint = enterButton?.querySelector(".entry-hint");
 let hasEntered = false;
+
+if (entryField) {
+  entry.classList.add("has-contours");
+  entryField.bindPointer(enterButton);
+  entryField.start();
+}
 
 function enterSite() {
   if (hasEntered) return;
   hasEntered = true;
-  enterButton.classList.add("is-unwinding");
-  enterButton.setAttribute("aria-label", "正在打开马润萌的作品集");
-  if (entryHint) entryHint.textContent = "线条正在展开";
-  const unwindDelay = reducedMotion ? 20 : 1120;
+  entry.classList.add("is-leaving");
+  document.body.classList.add("site-ready");
+
+  const delay = reducedMotion ? 20 : 950;
   window.setTimeout(() => {
-    entry.classList.add("is-leaving");
-    document.body.classList.add("site-ready");
-    window.setTimeout(() => {
-      entry.hidden = true;
-      document.body.classList.remove("is-locked");
-    }, reducedMotion ? 20 : 950);
-  }, unwindDelay);
+    entry.hidden = true;
+    document.body.classList.remove("is-locked");
+  }, delay);
 }
 
 enterButton.addEventListener("click", enterSite);
@@ -136,15 +154,18 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Enter" && !hasEntered) enterSite();
 });
 
-const revealObserver = new IntersectionObserver((entries, observer) => {
+const revealObserver = typeof IntersectionObserver === "function" ? new IntersectionObserver((entries, observer) => {
   entries.forEach((entryItem) => {
     if (!entryItem.isIntersecting) return;
     entryItem.target.classList.add("is-visible");
     observer.unobserve(entryItem.target);
   });
-}, { threshold: 0.12 });
+}, { threshold: 0.12 }) : null;
 
-document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
+document.querySelectorAll(".reveal").forEach((element) => {
+  if (revealObserver) revealObserver.observe(element);
+  else element.classList.add("is-visible");
+});
 
 const roleCopy = {
   dickies: {
@@ -229,39 +250,75 @@ function setupDrawer({ triggerSelector, drawerId, contentId, kickerId, copyMap }
   close?.addEventListener("click", closeDrawer);
 }
 
+function setupHeroInteraction() {
+  const panel = document.querySelector(".hero-panel");
+  if (!panel || reducedMotion) return;
+
+  panel.addEventListener("pointermove", (event) => {
+    const rect = panel.getBoundingClientRect();
+    panel.style.setProperty("--hero-offset-x", `${(((event.clientX - rect.left) / rect.width) - 0.5) * 7}px`);
+    panel.style.setProperty("--hero-offset-y", `${(((event.clientY - rect.top) / rect.height) - 0.5) * 7}px`);
+    panel.dataset.heroState = "attending";
+  });
+  panel.addEventListener("pointerleave", () => {
+    panel.style.setProperty("--hero-offset-x", "0px");
+    panel.style.setProperty("--hero-offset-y", "0px");
+    panel.dataset.heroState = "idle";
+  });
+}
+
 function setupRoleHoverDrawer() {
   const region = document.querySelector(".role-labels");
   const drawer = document.getElementById("roleDrawer");
   const content = document.getElementById("roleDrawerContent");
   const kicker = document.getElementById("roleDrawerKicker");
+  const section = document.querySelector(".role-overview");
   const triggers = [...document.querySelectorAll(".role-trigger")];
-  if (!region || !drawer || !content || !kicker) return;
+  const labels = [...document.querySelectorAll(".role-label")];
+  if (!region || !drawer || !content || !kicker || !section) return;
 
   let hideTimer;
+  let lockedTrigger = null;
   const clearHide = () => window.clearTimeout(hideTimer);
-  const closeDrawer = () => {
+  const setFocus = (trigger) => {
+    section.dataset.roleFocus = trigger?.dataset.role || "";
+    labels.forEach((label) => label.classList.toggle("is-focus", label.contains(trigger)));
+  };
+  const closeDrawer = ({ unlock = true } = {}) => {
     drawer.hidden = true;
+    drawer.dataset.state = "closed";
     triggers.forEach((trigger) => trigger.setAttribute("aria-expanded", "false"));
+    labels.forEach((label) => label.classList.remove("is-focus", "is-locked"));
+    if (unlock) lockedTrigger = null;
+    if (!lockedTrigger) delete section.dataset.roleFocus;
   };
   const scheduleClose = () => {
     clearHide();
+    if (lockedTrigger) return;
     hideTimer = window.setTimeout(() => {
-      if (!region.matches(":hover") && !drawer.matches(":hover")) closeDrawer();
-    }, 120);
+      if (!region.matches(":hover") && !drawer.matches(":hover")) closeDrawer({ unlock: false });
+    }, 160);
   };
-  const openDrawer = (trigger) => {
+  const openDrawer = (trigger, { lock = false } = {}) => {
     const data = roleCopy[trigger.dataset.role];
     if (!data) return;
     clearHide();
+    setFocus(trigger);
+    drawer.style.gridColumn = String(triggers.indexOf(trigger) + 1);
+    drawer.style.gridRow = "2";
     triggers.forEach((item) => item.setAttribute("aria-expanded", item === trigger ? "true" : "false"));
+    labels.forEach((label) => label.classList.toggle("is-locked", lock && label.contains(trigger)));
     kicker.textContent = `${data.title} / 详情`;
     renderDrawerContent(content, data);
     drawer.hidden = false;
+    drawer.dataset.state = lock ? "locked" : "preview";
+    if (lock) lockedTrigger = trigger;
   };
 
   region.addEventListener("pointerover", (event) => {
     const trigger = event.target.closest(".role-trigger");
     if (!trigger || !region.contains(trigger)) return;
+    if (lockedTrigger) return;
     if (event.relatedTarget && trigger.contains(event.relatedTarget)) return;
     openDrawer(trigger);
   });
@@ -269,12 +326,107 @@ function setupRoleHoverDrawer() {
   drawer.addEventListener("pointerenter", clearHide);
   drawer.addEventListener("pointerleave", scheduleClose);
   triggers.forEach((trigger) => {
-    trigger.addEventListener("focus", () => openDrawer(trigger));
-    trigger.addEventListener("click", () => openDrawer(trigger));
+    trigger.addEventListener("focus", () => {
+      if (!lockedTrigger) openDrawer(trigger);
+    });
+    trigger.addEventListener("click", () => {
+      if (lockedTrigger === trigger) {
+        closeDrawer();
+        return;
+      }
+      openDrawer(trigger, { lock: true });
+    });
   });
+  drawer.querySelector(".drawer-close")?.addEventListener("click", () => closeDrawer());
 }
 
 setupRoleHoverDrawer();
+setupHeroInteraction();
+
+function setupRoleArtworkFlow() {
+  const section = document.querySelector(".role-overview");
+  const artwork = document.querySelector(".role-artwork-flow");
+  if (!section || !artwork) return;
+
+  const start = () => section.classList.add("is-role-flow-started");
+  if (reducedMotion) {
+    start();
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries, instance) => {
+    if (!entries[0].isIntersecting) return;
+    start();
+    instance.disconnect();
+  }, { threshold: 0.2 });
+  observer.observe(section);
+}
+
+setupRoleArtworkFlow();
+
+function setupAboutFocus() {
+  const section = document.querySelector(".about");
+  const items = [...document.querySelectorAll(".focus-list [data-about-key]")];
+  const phrases = [...document.querySelectorAll(".about-phrase[data-about-phrase]")];
+  const guideDot = document.querySelector("[data-about-guide-dot]");
+  const guideWrap = document.querySelector(".focus-list-wrap");
+  if (!section || !items.length || !phrases.length || !guideDot || !guideWrap) return;
+
+  let lockedKey = null;
+  let guideTimer;
+  const moveGuideDot = (item, { immediate = false } = {}) => {
+    const anchor = item.querySelector(".focus-dot");
+    if (!anchor) return;
+    const wrapRect = guideWrap.getBoundingClientRect();
+    const anchorRect = anchor.getBoundingClientRect();
+    const x = anchorRect.left - wrapRect.left;
+    const y = anchorRect.top - wrapRect.top;
+    guideDot.style.setProperty("--about-guide-x", `${x}px`);
+    guideDot.style.setProperty("--about-guide-y", `${y}px`);
+    guideDot.classList.toggle("is-immediate", immediate);
+    guideDot.classList.add("is-visible");
+    window.clearTimeout(guideTimer);
+    guideTimer = window.setTimeout(() => guideDot.classList.remove("is-immediate"), 620);
+  };
+  const setFocus = (key) => {
+    section.dataset.aboutFocus = key || "";
+    items.forEach((item) => {
+      const isFocus = item.dataset.aboutKey === key;
+      item.classList.toggle("is-focus", isFocus);
+      if (isFocus) moveGuideDot(item);
+    });
+    phrases.forEach((phrase) => phrase.classList.toggle("is-focus", phrase.dataset.aboutPhrase === key));
+  };
+  const clearFocus = () => {
+    if (lockedKey) return;
+    delete section.dataset.aboutFocus;
+    items.forEach((item) => item.classList.remove("is-focus"));
+    phrases.forEach((phrase) => phrase.classList.remove("is-focus"));
+    moveGuideDot(items[0]);
+  };
+
+  moveGuideDot(items[0], { immediate: true });
+
+  items.forEach((item) => {
+    item.addEventListener("pointerenter", () => { if (!lockedKey) setFocus(item.dataset.aboutKey); });
+    item.addEventListener("focus", () => { if (!lockedKey) setFocus(item.dataset.aboutKey); });
+    item.addEventListener("pointerleave", clearFocus);
+    item.addEventListener("blur", clearFocus);
+    item.addEventListener("click", () => {
+      const key = item.dataset.aboutKey;
+      lockedKey = lockedKey === key ? null : key;
+      if (lockedKey) setFocus(lockedKey);
+      else clearFocus();
+    });
+    item.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      item.click();
+    });
+  });
+}
+
+setupAboutFocus();
 
 setupDrawer({
   triggerSelector: ".work-label",
@@ -284,41 +436,172 @@ setupDrawer({
   copyMap: projectCopy
 });
 
-const worksBoard = document.getElementById("worksBoard");
-const route = document.getElementById("worksRoutePath");
-const routeNodes = [...document.querySelectorAll(".works-route-node")];
+function setupWorksInteractions() {
+  const stage = document.querySelector("[data-works-stage]");
+  const paths = [...document.querySelectorAll(".works-route-segment")];
+  const nodes = [...document.querySelectorAll(".works-route-node")];
+  const projects = [...document.querySelectorAll(".works-project[data-project]")];
+  const dot = document.querySelector("[data-works-guide-dot]");
+  if (!stage || !paths.length || !projects.length || !dot) return;
 
-if (worksBoard && route) {
-  const length = route.getTotalLength();
-  route.style.strokeDasharray = length;
-  route.style.strokeDashoffset = length;
-  const routeObserver = new IntersectionObserver((entries, observer) => {
-    if (!entries[0].isIntersecting) return;
-    observer.disconnect();
-    worksBoard.classList.add("is-route-complete");
-    if (!reducedMotion) {
-      worksBoard.querySelector(".works-route").classList.add("is-drawing");
-      routeNodes.forEach((node, index) => {
-        window.setTimeout(() => node.classList.add("is-hit"), 430 + index * 620);
-      });
-    } else {
-      route.style.strokeDashoffset = 0;
-      routeNodes.forEach((node) => node.classList.add("is-hit"));
+  const pathsByProject = new Map(paths.map((path) => [path.dataset.project, path]));
+  let guideFrame = null;
+  let guideToken = 0;
+  let activeProject = null;
+
+  paths.forEach((path, index) => {
+    const length = path.getTotalLength();
+    path.style.strokeDasharray = "1";
+    path.style.strokeDashoffset = reducedMotion ? "0" : "1";
+    path.style.setProperty("--route-delay", `${index * 520}ms`);
+    path.dataset.length = String(length);
+  });
+
+  const pointAt = (path, progress) => path.getPointAtLength(Number(path.dataset.length) * progress);
+  const placeDot = (path, progress) => {
+    const point = pointAt(path, progress);
+    dot.setAttribute("cx", point.x.toFixed(2));
+    dot.setAttribute("cy", point.y.toFixed(2));
+  };
+  const animateDot = (path, from, to, duration = 560) => {
+    guideToken += 1;
+    const token = guideToken;
+    if (guideFrame) cancelAnimationFrame(guideFrame);
+    const started = performance.now();
+    const tick = (now) => {
+      if (token !== guideToken) return;
+      const progress = Math.min(1, (now - started) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      placeDot(path, from + (to - from) * eased);
+      if (progress < 1 && !reducedMotion) guideFrame = requestAnimationFrame(tick);
+    };
+    if (reducedMotion) placeDot(path, to);
+    else guideFrame = requestAnimationFrame(tick);
+  };
+
+  const setActiveProject = (project, { moving = true } = {}) => {
+    activeProject = project;
+    stage.dataset.activeProject = project || "";
+    stage.classList.add("has-active-project");
+    paths.forEach((path) => path.classList.toggle("is-active", path.dataset.project === project));
+    nodes.forEach((node) => node.classList.toggle("is-active", node.dataset.project === project));
+    projects.forEach((card) => card.classList.toggle("is-active", card.dataset.project === project));
+    const path = pathsByProject.get(project);
+    if (path) {
+      dot.classList.add("is-visible");
+      if (moving) animateDot(path, 0.08, 0.94);
+      else placeDot(path, 0.94);
     }
-  }, { threshold: 0.14 });
-  routeObserver.observe(worksBoard);
+  };
+
+  const clearActiveProject = (card) => {
+    if (document.activeElement === card || activeProject !== card.dataset.project) return;
+    activeProject = null;
+    stage.dataset.activeProject = "";
+    stage.classList.remove("has-active-project");
+    paths.forEach((path) => path.classList.remove("is-active"));
+    nodes.forEach((node) => node.classList.remove("is-active"));
+    projects.forEach((item) => item.classList.remove("is-active"));
+    dot.classList.remove("is-visible");
+    const lastPath = paths[paths.length - 1];
+    if (lastPath) animateDot(lastPath, 0.9, 1, 360);
+  };
+
+  projects.forEach((card) => {
+    card.addEventListener("pointerenter", () => setActiveProject(card.dataset.project));
+    card.addEventListener("pointerleave", () => clearActiveProject(card));
+    card.addEventListener("focus", () => setActiveProject(card.dataset.project, { moving: false }));
+    card.addEventListener("blur", () => clearActiveProject(card));
+  });
+
+  const observer = new IntersectionObserver((entries, instance) => {
+    if (!entries[0].isIntersecting) return;
+    instance.disconnect();
+    stage.classList.add("is-route-started");
+    if (reducedMotion) {
+      stage.classList.add("is-route-complete");
+      paths.forEach((path) => { path.style.strokeDashoffset = "0"; });
+      dot.classList.add("is-visible");
+      placeDot(paths[paths.length - 1], 1);
+      return;
+    }
+    window.setTimeout(() => {
+      stage.classList.add("is-route-complete");
+      dot.classList.add("is-visible");
+      placeDot(paths[paths.length - 1], 1);
+    }, 4900);
+  }, { threshold: 0.2 });
+  observer.observe(stage);
 }
+
+setupWorksInteractions();
 
 document.querySelector(".role-question")?.addEventListener("click", () => {
   document.getElementById("chat")?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" });
 });
 
-const fontToggle = document.getElementById("fontToggle");
-const savedFont = window.localStorage?.getItem("runmeng-font");
-if (savedFont === "sans" || savedFont === "songti") document.body.dataset.font = savedFont;
-fontToggle?.addEventListener("click", () => {
-  const next = document.body.dataset.font === "songti" ? "sans" : "songti";
-  document.body.dataset.font = next;
-  window.localStorage?.setItem("runmeng-font", next);
-  fontToggle.textContent = next === "songti" ? "宋体 / Sans" : "Sans / 宋体";
+const twinInput = document.querySelector(".twin-input");
+document.querySelectorAll(".twin-guide-row").forEach((row) => {
+  row.addEventListener("click", () => {
+    if (!twinInput) return;
+    twinInput.value = row.dataset.prompt || "";
+    twinInput.focus({ preventScroll: true });
+  });
+});
+
+const twinChatForm = document.getElementById("twinChatForm");
+const twinMessages = document.getElementById("twinMessages");
+const twinStatus = document.getElementById("twinStatus");
+const twinSend = document.getElementById("twinSend");
+const twinChatEndpoint = window.PREVIEW_CHAT_ENDPOINT || window.PORTFOLIO_CHAT_ENDPOINT || "/api/chat";
+const twinChatHistory = [];
+let twinReplyCount = 0;
+const twinReplyLimit = 8;
+
+function addTwinMessage(text, role = "assistant", extra = "") {
+  if (!twinMessages) return null;
+  const message = document.createElement("p");
+  message.className = `twin-chat-message ${role} ${extra}`.trim();
+  message.textContent = text;
+  twinMessages.appendChild(message);
+  twinMessages.scrollTop = twinMessages.scrollHeight;
+  return message;
+}
+
+twinChatForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const message = twinInput?.value.trim();
+  if (!message || !twinMessages || !twinSend || twinReplyCount >= twinReplyLimit) return;
+
+  addTwinMessage(message, "user");
+  twinChatHistory.push({ role: "user", content: message });
+  twinInput.value = "";
+  twinSend.disabled = true;
+  if (twinStatus) twinStatus.textContent = "连接中…";
+  const loading = addTwinMessage("正在想想…", "assistant", "loading");
+
+  try {
+    const response = await fetch(twinChatEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ messages: twinChatHistory })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || `HTTP ${response.status}`);
+    loading?.remove();
+    const reply = typeof data.reply === "string" ? data.reply : "我暂时没有拿到有效回答。";
+    addTwinMessage(reply, "assistant");
+    twinChatHistory.push({ role: "assistant", content: reply });
+    twinReplyCount += 1;
+    if (twinStatus) twinStatus.textContent = twinReplyCount >= twinReplyLimit ? "本次已聊完" : "已连接";
+  } catch (error) {
+    loading?.remove();
+    addTwinMessage("安全服务尚未连接，请稍后再试。", "assistant", "error");
+    twinInput.value = message;
+    if (twinStatus) twinStatus.textContent = "未连接";
+  } finally {
+    twinSend.disabled = false;
+    if (twinReplyCount >= twinReplyLimit) twinSend.disabled = true;
+    twinInput?.focus({ preventScroll: true });
+  }
 });
