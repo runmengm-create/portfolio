@@ -3,7 +3,8 @@
   "builds": [
     { "src": "index.html", "use": "@vercel/static" },
     { "src": "files/**", "use": "@vercel/static" },
-    { "src": "public/**", "use": "@vercel/static" }
+    { "src": "public/**", "use": "@vercel/static" },
+    { "src": "visual-check/**", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/", "dest": "/index.html" },

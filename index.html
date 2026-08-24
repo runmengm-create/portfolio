@@ -49,6 +49,9 @@ body.ch #cur-ring{opacity:0;}
 .e-cursor{display:inline-block;width:2px;height:13px;background:var(--text);animation:blink 1s step-end infinite;margin-left:1px;vertical-align:middle;}
 .e-hint{position:absolute;bottom:44px;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;display:flex;align-items:center;gap:7px;opacity:0;animation:fu .5s .85s var(--ease) forwards;}
 .ekey{border:1px solid var(--border);padding:2px 7px;border-radius:3px;font-size:10px;background:var(--bg2);}
+.visual-check-switch{position:absolute;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));width:32px;height:32px;display:grid;place-items:center;border:1px solid rgba(17,17,17,.16);border-radius:50%;color:rgba(17,17,17,.38);font-family:var(--mono);font-size:16px;line-height:1;text-decoration:none;opacity:0;animation:fu .5s 1.05s var(--ease) forwards;transition:color .2s,border-color .2s,transform .2s,background .2s;}
+.visual-check-switch:hover,.visual-check-switch:focus-visible{color:var(--blue);border-color:rgba(61,90,254,.55);background:rgba(61,90,254,.05);transform:rotate(-8deg);}
+.visual-check-switch:active{transform:rotate(-8deg) scale(.94);}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 @keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
@@ -313,6 +316,7 @@ footer{border-top:1px solid var(--border);padding:22px 60px;display:flex;justify
     <div class="e-sub" data-en="Smart Hardware Product Manager · Class of 2027" data-zh="智能硬件产品经理 · 2027届">Smart Hardware Product Manager · Class of 2027<span class="e-cursor"></span></div>
   </div>
   <div class="e-hint" data-en="<span class=&quot;ekey&quot;>Enter</span> or click anywhere to continue" data-zh="<span class=&quot;ekey&quot;>回车</span> 或点击任意位置继续"><span class="ekey">Enter</span> or click anywhere to continue</div>
+  <a class="visual-check-switch" id="visualCheckSwitch" href="visual-check/" aria-label="打开视觉检查版本" title="视觉检查">⌁</a>
 </div>
 
 <!-- NAV -->
@@ -760,6 +764,7 @@ const pts=Array.from({length:45},()=>new P());
 
 // ENTRY
 const entry=document.getElementById('entry'),main=document.getElementById('main');
+const visualCheckSwitch=document.getElementById('visualCheckSwitch');
 function setEntered(){
   entry.style.display='none';
   main.classList.add('on');
@@ -774,7 +779,12 @@ function enter(){
   ring.style.borderColor='rgba(17,17,17,.25)';
   setTimeout(()=>{entry.style.display='none';main.classList.add('on');},900);
 }
-document.addEventListener('keydown',e=>{if(e.key==='Enter')enter();});
+visualCheckSwitch.addEventListener('click',e=>{
+  e.stopPropagation();
+  try{localStorage.setItem('runmeng-visual-review','1');}catch(error){}
+});
+visualCheckSwitch.addEventListener('keydown',e=>e.stopPropagation());
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target!==visualCheckSwitch)enter();});
 entry.addEventListener('click',enter);
 
 // CLOCK
