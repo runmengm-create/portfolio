@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ending motion / C</title>
+  <style>
+    :root {
+      --paper: #f2efe7;
+      --ink: #1b1b18;
+      --ink-soft: #6f6b63;
+      --blue: #2f63e9;
+      --ease: cubic-bezier(.16, 1, .3, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      min-width: 320px;
+      background: var(--paper) url("../../assets/paper-texture.png") repeat;
+      background-size: 200px 200px;
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100dvh;
+      margin: 0;
+      color: var(--ink);
+      font-family: "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+    }
+
+    .prototype {
+      display: grid;
+      min-height: 100dvh;
+      place-items: center;
+      padding: clamp(2rem, 7vw, 6rem) 1.2rem;
+      text-align: center;
+    }
+
+    .scene {
+      display: grid;
+      width: min(100%, 1100px);
+      justify-items: center;
+      gap: 1.4rem;
+    }
+
+    .kicker {
+      color: var(--blue);
+      font-size: .78rem;
+      letter-spacing: .12em;
+    }
+
+    .copy {
+      display: grid;
+      gap: .1em;
+      max-width: 14ch;
+      margin: 0;
+      font-size: clamp(2.2rem, 6vw, 5.5rem);
+      font-weight: 400;
+      letter-spacing: -.06em;
+      line-height: 1.08;
+    }
+
+    .copy span { display: block; }
+
+    .art {
+      display: none;
+      width: min(100%, 1060px);
+      overflow: visible;
+    }
+
+    .art.is-visible { display: block; }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    .frame { display: none; }
+    .frame.is-active { display: block; }
+
+    .outline {
+      fill: var(--paper);
+      stroke: var(--ink);
+      stroke-width: 2.3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .ink-patch { fill: var(--ink); opacity: .96; }
+
+    .route {
+      fill: none;
+      stroke: var(--blue);
+      stroke-width: 2.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+    }
+
+    .frame.is-active .route {
+      animation: drawRoute .72s var(--ease) both;
+    }
+
+    .bead {
+      fill: var(--blue);
+      opacity: 0;
+    }
+
+    .frame.is-active .bead {
+      animation: beadIn .4s .45s var(--ease) both;
+    }
+
+    .prompt,
+    .final-copy {
+      display: none;
+    }
+
+    .prompt.is-visible,
+    .final-copy.is-visible { display: block; }
+
+    .prompt {
+      color: var(--blue);
+      font-size: .82rem;
+    }
+
+    .final-copy {
+      max-width: 28ch;
+      color: var(--ink-soft);
+      font-size: clamp(1.2rem, 2.4vw, 2rem);
+      line-height: 1.65;
+    }
+
+    .final-copy strong {
+      display: block;
+      margin-top: .65rem;
+      color: var(--blue);
+      font-weight: 400;
+    }
+
+    button {
+      border: 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--blue) 60%, transparent);
+      padding: .25rem 0;
+      background: transparent;
+      color: var(--blue);
+      font: inherit;
+      font-size: .78rem;
+      cursor: pointer;
+      transition: gap .3s var(--ease), color .3s ease;
+    }
+
+    button:hover,
+    button:focus-visible { color: var(--ink); }
+
+    @keyframes drawRoute {
+      from { stroke-dashoffset: 1; opacity: .15; }
+      to { stroke-dashoffset: 0; opacity: 1; }
+    }
+
+    @keyframes beadIn {
+      from { opacity: 0; transform: scale(.5); transform-origin: center; }
+      to { opacity: 1; transform: scale(1); transform-origin: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="prototype">
+    <section class="scene" aria-label="结尾动效原型">
+      <p class="kicker">NEXT / 继续往前</p>
+      <h1 class="copy" id="openingCopy"><span>还有很多东西，</span><span>我想继续把它做好。</span></h1>
+
+      <div class="art" id="art" aria-label="六帧手绘动效">
+        <svg viewBox="0 0 1200 560" role="img" aria-labelledby="artTitle">
+          <title id="artTitle">两只抽象手从捏住到摊开，蓝线缠绕并落入掌心</title>
+
+          <g class="frame is-active" data-frame="1">
+            <path class="outline" d="M328 286 C311 226 350 175 407 162 C456 151 500 182 508 226 C515 264 490 289 458 282 C430 276 417 251 397 253 C373 256 369 282 393 298 C417 314 446 310 454 337 C462 370 428 391 388 386 C345 381 315 332 328 286Z"/>
+            <path class="outline" d="M872 286 C889 226 850 175 793 162 C744 151 700 182 692 226 C685 264 710 289 742 282 C770 276 783 251 803 253 C827 256 831 282 807 298 C783 314 754 310 746 337 C738 370 772 391 812 386 C855 381 885 332 872 286Z"/>
+            <path class="ink-patch" d="M385 166 C424 153 456 165 476 193 C451 203 422 202 398 190Z"/>
+            <path class="ink-patch" d="M815 166 C776 153 744 165 724 193 C749 203 778 202 802 190Z"/>
+            <path class="ink-patch" d="M362 335 C378 314 404 311 426 329 C415 365 385 378 362 335Z"/>
+            <path class="ink-patch" d="M838 335 C822 314 796 311 774 329 C785 365 815 378 838 335Z"/>
+          </g>
+
+          <g class="frame" data-frame="2">
+            <path class="outline" d="M245 294 C220 214 270 140 355 126 C430 114 496 157 508 214 C520 272 479 309 426 298 C384 290 361 253 325 260 C283 268 278 313 320 335 C362 358 418 348 431 392 C443 435 388 472 320 455 C262 440 228 359 245 294Z"/>
+            <path class="outline" d="M955 294 C980 214 930 140 845 126 C770 114 704 157 692 214 C680 272 721 309 774 298 C816 290 839 253 875 260 C917 268 922 313 880 335 C838 358 782 348 769 392 C757 435 812 472 880 455 C938 440 972 359 955 294Z"/>
+            <path class="ink-patch" d="M330 132 C382 115 431 130 466 169 C423 186 377 181 340 162Z"/>
+            <path class="ink-patch" d="M870 132 C818 115 769 130 734 169 C777 186 823 181 860 162Z"/>
+            <path class="ink-patch" d="M288 391 C321 352 369 350 407 382 C391 438 335 452 288 391Z"/>
+            <path class="ink-patch" d="M912 391 C879 352 831 350 793 382 C809 438 865 452 912 391Z"/>
+            <path class="route" d="M452 303 C510 280 555 320 600 302 C645 284 690 325 748 303"/>
+          </g>
+
+          <g class="frame" data-frame="3">
+            <path class="outline" d="M155 314 C124 216 186 121 295 105 C388 92 470 146 480 219 C488 282 438 316 380 295 C333 278 304 236 266 255 C221 278 233 329 280 346 C332 365 386 350 401 398 C413 446 351 491 270 470 C200 450 166 383 155 314Z"/>
+            <path class="outline" d="M1045 314 C1076 216 1014 121 905 105 C812 92 730 146 720 219 C712 282 762 316 820 295 C867 278 896 236 934 255 C979 278 967 329 920 346 C868 365 814 350 799 398 C787 446 849 491 930 470 C1000 450 1034 383 1045 314Z"/>
+            <path class="ink-patch" d="M252 112 C318 87 375 107 414 157 C361 178 303 171 258 147Z"/>
+            <path class="ink-patch" d="M948 112 C882 87 825 107 786 157 C839 178 897 171 942 147Z"/>
+            <path class="ink-patch" d="M214 403 C258 350 314 350 368 387 C347 454 275 469 214 403Z"/>
+            <path class="ink-patch" d="M986 403 C942 350 886 350 832 387 C853 454 925 469 986 403Z"/>
+            <path class="route" d="M300 284 C384 240 425 330 512 300 C594 271 636 340 712 302 C790 264 826 329 900 284"/>
+            <circle class="bead" cx="600" cy="302" r="12"/>
+          </g>
+
+          <g class="frame" data-frame="4">
+            <path class="outline" d="M105 324 C71 207 143 111 265 94 C370 80 459 145 466 224 C473 290 420 325 360 295 C315 273 277 228 234 253 C186 281 200 335 250 354 C305 375 370 353 385 408 C399 464 328 508 230 481 C157 460 121 399 105 324Z"/>
+            <path class="outline" d="M1095 324 C1129 207 1057 111 935 94 C830 80 741 145 734 224 C727 290 780 325 840 295 C885 273 923 228 966 253 C1014 281 1000 335 950 354 C895 375 830 353 815 408 C801 464 872 508 970 481 C1043 460 1079 399 1095 324Z"/>
+            <path class="ink-patch" d="M219 101 C288 75 355 97 398 153 C339 176 273 168 225 140Z"/>
+            <path class="ink-patch" d="M981 101 C912 75 845 97 802 153 C861 176 927 168 975 140Z"/>
+            <path class="ink-patch" d="M166 414 C214 355 282 355 342 395 C318 469 232 489 166 414Z"/>
+            <path class="ink-patch" d="M1034 414 C986 355 918 355 858 395 C882 469 968 489 1034 414Z"/>
+            <path class="route" d="M256 287 C174 212 130 306 208 362 C286 418 344 313 425 285 C501 259 532 345 600 327 C672 308 708 249 785 285 C866 324 916 421 992 353 C1063 290 1021 218 944 286"/>
+            <path class="route" d="M460 286 C518 279 548 333 600 327" opacity=".55"/>
+          </g>
+
+          <g class="frame" data-frame="5">
+            <path class="outline" d="M82 328 C44 197 125 102 252 86 C365 72 459 141 466 226 C473 298 417 332 354 297 C307 270 270 223 226 252 C177 284 191 340 244 360 C305 382 369 357 385 414 C400 472 323 519 222 488 C145 463 99 398 82 328Z"/>
+            <path class="outline" d="M1118 328 C1156 197 1075 102 948 86 C835 72 741 141 734 226 C727 298 783 332 846 297 C893 270 930 223 974 252 C1023 284 1009 340 956 360 C895 382 831 357 815 414 C800 472 877 519 978 488 C1055 463 1101 398 1118 328Z"/>
+            <path class="ink-patch" d="M208 93 C282 65 350 91 401 153 C337 176 271 166 214 136Z"/>
+            <path class="ink-patch" d="M992 93 C918 65 850 91 799 153 C863 176 929 166 986 136Z"/>
+            <path class="ink-patch" d="M142 423 C194 358 268 358 336 402 C309 480 217 500 142 423Z"/>
+            <path class="ink-patch" d="M1058 423 C1006 358 932 358 864 402 C891 480 983 500 1058 423Z"/>
+            <path class="route" d="M-5 310 C118 280 174 350 264 322 C351 294 391 241 465 278 C522 307 555 371 616 344 C684 313 706 245 784 274 C863 303 926 369 1001 314 C1085 252 1128 304 1205 282"/>
+            <path class="route" d="M442 278 C465 250 494 241 522 261 C548 280 555 315 542 338 C529 361 505 363 489 346" opacity=".75"/>
+            <circle class="bead" cx="318" cy="381" r="13"/>
+          </g>
+
+          <g class="frame" data-frame="6">
+            <path class="outline" d="M82 328 C44 197 125 102 252 86 C365 72 459 141 466 226 C473 298 417 332 354 297 C307 270 270 223 226 252 C177 284 191 340 244 360 C305 382 369 357 385 414 C400 472 323 519 222 488 C145 463 99 398 82 328Z"/>
+            <path class="outline" d="M1118 328 C1156 197 1075 102 948 86 C835 72 741 141 734 226 C727 298 783 332 846 297 C893 270 930 223 974 252 C1023 284 1009 340 956 360 C895 382 831 357 815 414 C800 472 877 519 978 488 C1055 463 1101 398 1118 328Z"/>
+            <path class="ink-patch" d="M208 93 C282 65 350 91 401 153 C337 176 271 166 214 136Z"/>
+            <path class="ink-patch" d="M992 93 C918 65 850 91 799 153 C863 176 929 166 986 136Z"/>
+            <path class="ink-patch" d="M142 423 C194 358 268 358 336 402 C309 480 217 500 142 423Z"/>
+            <path class="ink-patch" d="M1058 423 C1006 358 932 358 864 402 C891 480 983 500 1058 423Z"/>
+            <path class="route" d="M-5 310 C118 280 174 350 264 322 C351 294 391 241 465 278 C522 307 555 371 616 344 C684 313 706 245 784 274 C863 303 926 369 1001 314 C1085 252 1128 304 1205 282"/>
+            <path class="route" d="M442 278 C465 250 494 241 522 261 C548 280 555 315 542 338 C529 361 505 363 489 346" opacity=".75"/>
+            <circle class="bead" cx="318" cy="381" r="13"/>
+          </g>
+        </svg>
+      </div>
+
+      <p class="prompt is-visible" id="prompt">点击开始动效 ↗</p>
+      <div class="final-copy" id="finalCopy">关于真实的人，关于细小的感受，也关于一个产品还能不能再好一点。<strong>我还在找答案。<br>也会继续做下去。</strong></div>
+      <button id="advance" type="button">开始动效 ↗</button>
+    </section>
+  </main>
+
+  <script>
+    const art = document.getElementById("art");
+    const openingCopy = document.getElementById("openingCopy");
+    const prompt = document.getElementById("prompt");
+    const finalCopy = document.getElementById("finalCopy");
+    const advance = document.getElementById("advance");
+    const frames = [...document.querySelectorAll(".frame")];
+    let currentFrame = 0;
+    let isPlaying = false;
+    let sequenceTimers = [];
+
+    function showFrame(frameNumber) {
+      currentFrame = frameNumber;
+      frames.forEach((frame) => {
+        frame.classList.toggle("is-active", Number(frame.dataset.frame) === frameNumber);
+      });
+      art.classList.add("is-visible");
+      openingCopy.style.display = "none";
+      finalCopy.classList.remove("is-visible");
+      prompt.textContent = frameNumber >= 6 ? "最后一帧 / 保持 ↗" : "动效进行中 ↗";
+      prompt.classList.add("is-visible");
+    }
+
+    function finishSequence() {
+      art.classList.remove("is-visible");
+      prompt.classList.remove("is-visible");
+      finalCopy.classList.add("is-visible");
+      advance.textContent = "再看一遍 ↗";
+      advance.style.display = "inline-block";
+      advance.disabled = false;
+      advance.style.opacity = "1";
+      isPlaying = false;
+    }
+
+    function playSequence() {
+      isPlaying = true;
+      advance.disabled = true;
+      advance.style.opacity = ".35";
+      showFrame(1);
+
+      [2, 3, 4, 5, 6].forEach((frameNumber, index) => {
+        sequenceTimers.push(window.setTimeout(() => showFrame(frameNumber), 820 * (index + 1)));
+      });
+
+      sequenceTimers.push(window.setTimeout(finishSequence, 820 * 5 + 1450));
+    }
+
+    function resetSequence() {
+      sequenceTimers.forEach((timer) => window.clearTimeout(timer));
+      sequenceTimers = [];
+      currentFrame = 0;
+      isPlaying = false;
+      art.classList.remove("is-visible");
+      finalCopy.classList.remove("is-visible");
+      prompt.textContent = "点击开始动效 ↗";
+      prompt.classList.add("is-visible");
+      openingCopy.style.display = "grid";
+      advance.textContent = "开始动效 ↗";
+      advance.style.display = "inline-block";
+      advance.disabled = false;
+      advance.style.opacity = "1";
+    }
+
+    advance.addEventListener("click", () => {
+      if (isPlaying) return;
+      if (currentFrame >= 6 || finalCopy.classList.contains("is-visible")) {
+        resetSequence();
+        return;
+      }
+
+      playSequence();
+    });
+  </script>
+</body>
+</html>

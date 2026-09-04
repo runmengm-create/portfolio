@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Renee · 蓝色句点原型</title>
+  <style>
+    :root {
+      --paper: #f2efe7;
+      --ink: #25241f;
+      --blue: #2f63e9;
+      --soft: #817c73;
+      --ease: cubic-bezier(.16, 1, .3, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      min-width: 320px;
+      min-height: 100%;
+      margin: 0;
+      background: var(--paper) url("../../assets/paper-texture.png") repeat;
+      background-size: 200px 200px;
+    }
+
+    body {
+      min-height: 100dvh;
+      overflow: hidden;
+      color: var(--ink);
+      font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
+    }
+
+    .entry-stage {
+      position: relative;
+      display: grid;
+      min-height: 100dvh;
+      place-items: center;
+      isolation: isolate;
+    }
+
+    .entry-core {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      justify-items: center;
+      gap: 2.4rem;
+      width: min(86vw, 38rem);
+      text-align: center;
+    }
+
+    .name-button {
+      position: relative;
+      display: inline-grid;
+      place-items: center;
+      padding: 1.8rem 2.4rem 1.6rem;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .name-button:focus-visible {
+      outline: 1px solid var(--blue);
+      outline-offset: .65rem;
+    }
+
+    .wordmark {
+      display: inline-block;
+      font-family: Arial, "Helvetica Neue", sans-serif;
+      font-size: clamp(4rem, 12vw, 8.5rem);
+      font-weight: 700;
+      letter-spacing: -.08em;
+      line-height: .86;
+    }
+
+    .target-letter {
+      position: relative;
+      display: inline-block;
+    }
+
+    .ball {
+      position: absolute;
+      top: .95rem;
+      left: 50%;
+      width: clamp(.7rem, 1.25vw, 1rem);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 .45rem .7rem rgba(47, 99, 233, .18);
+      transform: translate(-50%, -7rem);
+      animation: ball-land 1.55s var(--ease) .25s forwards;
+      will-change: transform;
+    }
+
+    .ball::after {
+      position: absolute;
+      right: 50%;
+      bottom: -.58rem;
+      width: 2rem;
+      height: .28rem;
+      border-radius: 50%;
+      background: rgba(47, 99, 233, .18);
+      content: "";
+      filter: blur(4px);
+      opacity: .14;
+      transform: translateX(50%) scale(.25);
+      animation: ball-shadow 1.55s var(--ease) .25s forwards;
+    }
+
+    .entry-hint {
+      color: var(--soft);
+      font-size: .72rem;
+      letter-spacing: .14em;
+    }
+
+    .entry-stage.is-transitioning .entry-core {
+      animation: entry-fade .6s ease forwards;
+    }
+
+    @keyframes ball-land {
+      0% { opacity: 0; transform: translate(-50%, -7rem) scale(.8); }
+      50% { opacity: 1; transform: translate(-50%, .7rem) scale(1.04); }
+      68% { transform: translate(-50%, -.2rem) scale(.98); }
+      83% { transform: translate(-50%, .14rem) scale(1.01); }
+      100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+    }
+
+    @keyframes ball-shadow {
+      0%, 42% { opacity: .1; transform: translateX(50%) scale(.25); }
+      54% { opacity: .6; transform: translateX(50%) scale(1); }
+      100% { opacity: .32; transform: translateX(50%) scale(.7); }
+    }
+
+    @keyframes entry-fade {
+      to { opacity: 0; transform: scale(.985); }
+    }
+
+    @media (max-width: 640px) {
+      .entry-core { gap: 2rem; }
+      .name-button { padding-inline: 1.2rem; }
+      .wordmark { font-size: clamp(4rem, 21vw, 6.2rem); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ball,
+      .ball::after { animation: none; }
+      .ball { opacity: 1; transform: translate(-50%, 0); }
+      .ball::after { opacity: .32; transform: translateX(50%) scale(.7); }
+      .entry-stage.is-transitioning .entry-core { animation-duration: .18s; }
+    }
+  </style>
+</head>
+<body>
+  <main class="entry-stage" id="entryStage">
+    <div class="entry-core">
+      <button class="name-button" id="enterButton" type="button" aria-label="进入 Renee 的作品集">
+        <span class="wordmark">Rene<span class="target-letter">e<span class="ball" aria-hidden="true"></span></span></span>
+      </button>
+      <p class="entry-hint">CLICK TO ENTER</p>
+    </div>
+  </main>
+  <script>
+    const stage = document.getElementById("entryStage");
+    const enterButton = document.getElementById("enterButton");
+    let transitioning = false;
+
+    enterButton.addEventListener("click", () => {
+      if (transitioning) return;
+      transitioning = true;
+      stage.classList.add("is-transitioning");
+      window.setTimeout(() => {
+        window.location.href = "preview-07-ball-detail.html";
+      }, 840);
+    });
+  </script>
+</body>
+</html>

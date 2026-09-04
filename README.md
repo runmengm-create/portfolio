@@ -1,8 +1,16 @@
-# Portfolio Local Preview
+# 个人作品集｜当前工作入口
 
-This folder is an independent local prototype. It does not modify the `portfolio-work` Git repository.
+以后修改网站，只从 [`当前使用/README.md`](当前使用/README.md) 开始。已确认内容、母版和交互规则都集中在该目录。
 
-## Preview
+## 当前网页
+
+- `index.html`：当前页面结构与实际展示文案
+- `styles.css`：当前视觉样式
+- `app.js`：当前交互与动效
+- `assets/`：网页正在引用的运行素材；这里已经移除未使用旧图
+- `projects/`：四个项目详情页
+
+本地预览：
 
 ```bash
 cd /Users/runmeng.ma/Desktop/马润萌/portfolio-local-preview
@@ -11,19 +19,10 @@ python3 -m http.server 4174
 
 Open `http://127.0.0.1:4174/`.
 
-## Review preview
+## 文件状态
 
-Open `http://127.0.0.1:4174/preview.html` for the independent Role → About → Selected Works review page. Its chat UI posts only to `window.PREVIEW_CHAT_ENDPOINT || "/api/chat"`; no private key or hidden instruction is shipped to the browser. If the endpoint is unavailable, the UI reports “安全服务尚未连接” and restores the user’s input.
+- [`当前使用/`](当前使用/)：每次修改只看这里和当前网页文件
+- [`待确认/`](待确认/)：尚未确认，不要接入正式网页
+- [`废案/`](废案/)：旧方案、被替代版本和历史资料，仅在明确追溯时查看
 
-## Current scope
-
-- Hand-drawn contour entry transition and responsive Hero
-- Role Overview before About, using transparent artwork layers and HTML copy
-- About method statement with Songti/Sans font switching
-- Selected Works open-fields layout with one-shot blue route and project drawers
-- Text-led Education section with awards and volunteer experience
-- Digital Twin placeholder and Footer
-- Independent accessible preview page with four project links and reduced-motion route/observation states
-- Desktop/mobile layouts with reduced-motion fallback
-
-Approved PNGs remain visual sources; runtime artwork is separated under `assets/illustrations/` and page text stays in HTML.
+不要从 `待确认/` 或 `废案/` 复制内容回网页，除非用户重新明确选择。

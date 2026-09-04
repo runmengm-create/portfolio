@@ -5,14 +5,11 @@
     { "src": "index.html", "use": "@vercel/static" },
     { "src": "styles.css", "use": "@vercel/static" },
     { "src": "app.js", "use": "@vercel/static" },
-    { "src": "preview.html", "use": "@vercel/static" },
-    { "src": "preview.css", "use": "@vercel/static" },
-    { "src": "preview.js", "use": "@vercel/static" },
     { "src": "projects/**", "use": "@vercel/static" },
-    { "src": "assets/**", "use": "@vercel/static" },
-    { "src": "design-assets/**", "use": "@vercel/static" }
+    { "src": "assets/**", "use": "@vercel/static" }
   ],
   "routes": [
+    { "src": "/api/chat", "dest": "/api/chat.js" },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/$1" }
   ]

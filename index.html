@@ -7,8 +7,10 @@
   <meta name="description" content="马润萌，智能硬件产品经理个人作品集。">
   <title>马润萌 | 产品经理作品集</title>
   <link rel="preload" as="image" href="assets/paper-texture.png">
-  <link rel="stylesheet" href="styles.css?v=20260821-initial-ring-2">
-  <script src="app.js" defer></script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.2.9/400.css">
+  <link rel="stylesheet" href="styles.css?v=20260904-exp-labels-1">
+  <script src="app.js?v=20260904-ending-line-1" defer></script>
 </head>
 <body class="is-locked" data-font="songti">
   <div class="paper-grain" aria-hidden="true"></div>
@@ -16,29 +18,8 @@
   <section class="entry" id="entry" aria-label="作品集入口">
     <div class="entry-copy">
       <button class="entry-interface" id="enterButton" type="button" aria-label="进入马润萌的作品集">
-        <svg class="entry-contour-fallback" viewBox="0 0 1000 700" preserveAspectRatio="none" aria-hidden="true">
-          <g>
-            <ellipse cx="480" cy="385" rx="20" ry="18"></ellipse>
-            <ellipse cx="480" cy="385" rx="54" ry="48"></ellipse>
-            <ellipse cx="480" cy="385" rx="88" ry="78"></ellipse>
-            <ellipse cx="480" cy="385" rx="122" ry="108"></ellipse>
-            <ellipse cx="480" cy="385" rx="156" ry="138"></ellipse>
-            <ellipse cx="480" cy="385" rx="190" ry="168"></ellipse>
-            <ellipse cx="480" cy="385" rx="224" ry="198"></ellipse>
-            <ellipse cx="480" cy="385" rx="258" ry="228"></ellipse>
-            <ellipse cx="480" cy="385" rx="292" ry="258"></ellipse>
-            <ellipse cx="480" cy="385" rx="326" ry="288"></ellipse>
-            <ellipse cx="480" cy="385" rx="360" ry="318"></ellipse>
-            <ellipse cx="480" cy="385" rx="394" ry="348"></ellipse>
-            <ellipse cx="480" cy="385" rx="428" ry="378"></ellipse>
-            <ellipse cx="480" cy="385" rx="462" ry="408"></ellipse>
-            <ellipse cx="480" cy="385" rx="496" ry="438"></ellipse>
-            <ellipse class="accent" cx="480" cy="385" rx="122" ry="108"></ellipse>
-          </g>
-        </svg>
-        <canvas id="entryContours" aria-hidden="true"></canvas>
-        <span class="entry-name" aria-hidden="true">Renee</span>
-        <span class="entry-role" aria-hidden="true">从真实场景出发，做出产品判断。</span>
+        <span class="entry-wordmark" aria-hidden="true">Rene<span class="entry-target-letter">e<span class="entry-guide-dot"></span></span></span>
+        <span class="entry-hint" aria-hidden="true">CLICK TO ENTER</span>
       </button>
     </div>
   </section>
@@ -46,10 +27,11 @@
   <header class="site-header">
     <a class="brand" href="#top" aria-label="回到首页">RUNMENG MA</a>
     <nav class="primary-nav" aria-label="主导航">
-      <a href="#role">ROLE OVERVIEW</a>
+      <a href="#role">EXPERIENCE</a>
       <a href="#about">ABOUT</a>
       <a href="#works">WORKS</a>
       <a href="#education">EDUCATION</a>
+      <a href="#contact">CONTACT</a>
       <a href="#chat">CHAT</a>
       <a href="assets/resume.pdf" target="_blank" rel="noopener">RESUME</a>
     </nav>
@@ -72,7 +54,7 @@
 
       <div class="hero-visual">
         <div class="hero-panel" aria-label="产品判断系统图" data-hero-state="idle">
-          <img src="design-assets/generated/styleframes/candidates/hero-01-system-panel-v1.png" alt="由两个黑色系统节点和蓝色连接节点构成的产品判断系统图" width="1332" height="1181">
+          <img src="assets/illustrations/hero/system-panel-v1.png" alt="由两个黑色系统节点和蓝色连接节点构成的产品判断系统图" width="1332" height="1181">
           <svg class="hero-panel-flow" viewBox="0 0 100 84" preserveAspectRatio="none" aria-hidden="true">
             <path id="heroFlowPath" d="M14 18 C25 12 28 4 46 4 C64 5 77 2 83 14 C89 28 84 41 88 56 C91 72 80 78 62 78 C45 79 30 85 18 77 C5 70 6 53 8 37 C8 27 8 21 14 18 Z"></path>
             <circle class="hero-flow-bead" r="0.75" cx="14" cy="18"><animateMotion dur="9s" repeatCount="indefinite" rotate="auto"><mpath href="#heroFlowPath"></mpath></animateMotion></circle>
@@ -86,76 +68,65 @@
       </div>
     </section>
 
-    <section class="role-overview" id="role" aria-labelledby="roleTitle">
+    <section class="role-overview experience-section" id="role" aria-labelledby="roleTitle">
       <div class="numbered-section-title role-heading reveal">
         <div class="section-number">01</div>
         <div>
-          <p class="section-kicker">ROLE OVERVIEW / 角色概览</p>
-          <h2 id="roleTitle">从设计到产品</h2>
+          <p class="section-kicker">EXPERIENCE / 实习经历</p>
+          <h2 id="roleTitle">实习经历</h2>
         </div>
       </div>
 
-      <p class="section-deck role-intro reveal">从设计方案，到定义问题，我慢慢走进了产品。</p>
-
-      <div class="role-visual reveal">
-        <div class="role-artwork-frame">
-          <img class="role-artwork-base" src="assets/illustrations/role/role-overview-artwork-static.png" alt="布料、抽象猫、行走人物与座舱系统组成的角色概览图" width="1671" height="430">
-          <svg class="role-artwork-flow" viewBox="0 0 1671 430" preserveAspectRatio="none" aria-hidden="true">
-            <g class="role-flow-routes" fill="none" stroke="var(--blue)" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
-              <path class="role-flow-segment role-flow-segment-dickies" data-role="dickies" pathLength="1" d="M0 78 C38 86 29 120 67 133 C101 144 123 136 143 168 C164 202 197 192 226 214 C247 230 269 219 292 230 C320 243 314 274 342 282 C370 291 396 280 424 280 C453 279 476 292 501 284 C535 274 557 258 584 264 C610 270 621 291 648 278"></path>
-              <path class="role-flow-segment role-flow-segment-70mai" data-role="70mai" pathLength="1" d="M692 268 C718 272 723 296 747 292 C766 289 765 270 783 269 C803 268 810 284 831 285 C852 287 868 265 890 259 C910 255 926 268 947 278"></path>
-              <path class="role-flow-segment role-flow-segment-nio" data-role="nio" pathLength="1" d="M1057 286 C1090 275 1112 283 1142 280 C1173 277 1198 261 1228 257 C1264 253 1300 268 1338 275 C1372 281 1409 284 1440 261 C1467 242 1472 216 1462 194 C1453 173 1467 153 1488 141 C1514 126 1548 136 1568 157 C1585 175 1580 194 1565 210 C1549 227 1537 246 1531 269 C1528 281 1529 291 1529 302"></path>
-            </g>
-            <g class="role-flow-highlights" fill="none" stroke="var(--blue)" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
-              <path class="role-flow-highlight role-flow-highlight-dickies" data-role="dickies" pathLength="1" d="M0 78 C38 86 29 120 67 133 C101 144 123 136 143 168 C164 202 197 192 226 214 C247 230 269 219 292 230 C320 243 314 274 342 282 C370 291 396 280 424 280 C453 279 476 292 501 284 C535 274 557 258 584 264 C610 270 621 291 648 278"></path>
-              <path class="role-flow-highlight role-flow-highlight-70mai" data-role="70mai" pathLength="1" d="M692 268 C718 272 723 296 747 292 C766 289 765 270 783 269 C803 268 810 284 831 285 C852 287 868 265 890 259 C910 255 926 268 947 278"></path>
-              <path class="role-flow-highlight role-flow-highlight-nio" data-role="nio" pathLength="1" d="M1057 286 C1090 275 1112 283 1142 280 C1173 277 1198 261 1228 257 C1264 253 1300 268 1338 275 C1372 281 1409 284 1440 261 C1467 242 1472 216 1462 194 C1453 173 1467 153 1488 141 C1514 126 1548 136 1568 157 C1585 175 1580 194 1565 210 C1549 227 1537 246 1531 269 C1528 281 1529 291 1529 302"></path>
-            </g>
-            <g class="role-flow-yarn" transform="translate(668 268)" aria-hidden="true">
-              <g class="role-flow-yarn-motion">
-                <circle r="28"></circle>
-                <path d="M-20 -10 C-7 -27 18 -24 24 -7 C31 12 11 27 -9 25 C-28 23 -32 3 -20 -10 Z"></path>
-                <path d="M-25 5 C-9 -12 10 -12 27 3 M-15 23 C-1 4 17 4 25 18 M-14 -24 C-1 -9 1 10 -9 25 M17 -22 C6 -5 9 13 21 23"></path>
-              </g>
-            </g>
-            <circle class="role-flow-node role-flow-node-dickies" data-role="dickies" cx="648" cy="278" r="5"></circle>
-            <circle class="role-flow-node role-flow-node-70mai" data-role="70mai" cx="947" cy="278" r="5"></circle>
-            <circle class="role-flow-node role-flow-node-nio" data-role="nio" cx="1529" cy="302" r="6"></circle>
-          </svg>
+      <div class="experience-rail-head reveal">
+        <p class="section-deck role-intro">从设计到产品</p>
+        <div class="experience-controls" aria-label="实习经历翻页">
+          <button type="button" data-experience-prev aria-label="查看上一段实习经历">←</button>
+          <button type="button" data-experience-next aria-label="查看下一段实习经历">→</button>
         </div>
       </div>
 
-      <div class="role-labels reveal">
-        <article class="role-label role-label-dickies">
-          <button class="role-trigger" type="button" data-role="dickies" aria-expanded="false">
-            <span class="role-company">Dickies / 李宁</span>
-            <strong>先学着观察人</strong>
-            <small class="role-note">从用户、场景和真实感受出发</small>
-            <span class="role-action">查看经历 ↗</span>
-          </button>
+      <div class="experience-rail reveal" data-experience-rail tabindex="0" aria-label="实习经历，横向滑动浏览">
+        <article class="experience-card">
+          <div class="experience-meta"><span>2026.05 至今</span><span>NIO</span></div>
+          <h3>蔚来</h3>
+          <p class="experience-role">智能座舱产品经理实习生</p>
+          <ul>
+            <li><span class="experience-bullet-label">座舱侧功能 Owner</span><span class="experience-bullet-copy">承接 G1.3 改款车型 P0 感知影像需求，独立负责 BSV 车型级新增及 DOW 规则优化，完成完整 PRD 与跨域规则设计，并协同多团队推进开发。</span></li>
+            <li><span class="experience-bullet-label">AI 产品定义</span><span class="experience-bullet-copy">基于 FY 用户真实出行场景，完成随心搜、灵犀行程、地址妙记等 P0/P1 产品规划，抽象共性能力并明确 NOMI 主线复用、FY 新增及图商依赖。</span></li>
+            <li><span class="experience-bullet-label">数据体系设计</span><span class="experience-bullet-copy">从产品决策问题反推 360° 全景影像数据体系，拆解 6 类分析目标和 22 个关键事件，推动跨团队评审，为行为分析、问题定位及版本验证建立数据基础。</span></li>
+          </ul>
         </article>
-        <article class="role-label role-label-70mai">
-          <button class="role-trigger" type="button" data-role="70mai" aria-expanded="false">
-            <span class="role-company">70mai</span>
-            <strong>开始真正做产品</strong>
-            <small class="role-note">把体验放进软硬件与现实约束里</small>
-            <span class="role-action">查看经历 ↗</span>
-          </button>
+
+        <article class="experience-card">
+          <div class="experience-meta"><span>2025.12 至 2026.05</span><span>70mai</span></div>
+          <h3>70mai · 小米生态链</h3>
+          <p class="experience-role">整机产品经理实习生</p>
+          <ul>
+            <li><span class="experience-bullet-label">称重与余粮体系</span><span class="experience-bullet-copy">针对温漂、粮食密度变化和宠物干扰导致的称重不稳定，重构智能喂食器称重与余粮体系，明确固件、米家插件与云端职责，并推动 OTA6 方案进入版本开发流程。</span></li>
+            <li><span class="experience-bullet-label">新品预立项</span><span class="experience-bullet-copy">负责米家智能宠物项圈新品预立项与产品定义，从跨品类替代行为中识别机会，并在定位、通信、续航、重量、防水与米家生态约束下收敛首版边界。</span></li>
+            <li><span class="experience-bullet-label">数据驱动决策</span><span class="experience-bullet-copy">通过 297 份有效调研样本支持智能饮水机方向决策，项目已立项并进入开发。</span></li>
+          </ul>
         </article>
-        <article class="role-label role-label-nio">
-          <button class="role-trigger" type="button" data-role="nio" aria-expanded="false">
-            <span class="role-company">蔚来</span>
-            <strong>走进更复杂的系统</strong>
-            <small class="role-note">在协作与取舍中，把判断继续往前推</small>
-            <span class="role-action">查看经历 ↗</span>
-          </button>
+
+        <article class="experience-card">
+          <div class="experience-meta"><span>2025.08 至 2025.12</span><span>VF</span></div>
+          <h3>VF Corporation · Dickies</h3>
+          <p class="experience-role">服饰产品开发实习生</p>
+          <ul>
+            <li><span class="experience-bullet-label">跨团队协作</span><span class="experience-bullet-copy">在设计方案、产品要求与量产约束之间推进信息对齐，协同北美总部、国内开发与供应链团队完成跨部门沟通。</span></li>
+            <li><span class="experience-bullet-label">开发与量产</span><span class="experience-bullet-copy">跟进多团队输入并处理信息偏差，使设计决策、开发要求与生产执行保持一致，支持产品开发和生产落地。</span></li>
+          </ul>
         </article>
-        <div class="role-drawer" id="roleDrawer" hidden>
-          <div class="drawer-heading">
-            <p class="drawer-kicker" id="roleDrawerKicker">经历抽屉</p>
-          </div>
-          <div class="drawer-content" id="roleDrawerContent"></div>
-        </div>
+
+        <article class="experience-card">
+          <div class="experience-meta"><span>2025.03 至 2025.06</span><span>LI-NING</span></div>
+          <h3>李宁</h3>
+          <p class="experience-role">跑鞋产品实习生</p>
+          <ul>
+            <li><span class="experience-bullet-label">趋势与竞品研究</span><span class="experience-bullet-copy">围绕女性跑鞋开展趋势、竞品与社交媒体研究，将消费偏好转化为新品配色、产品主题与 CMF 方向。</span></li>
+            <li><span class="experience-bullet-label">打样与工艺验证</span><span class="experience-bullet-copy">参与打样与工艺验证，其中“吾子登科·故宫联名”方向获采纳并投入量产。</span></li>
+          </ul>
+        </article>
       </div>
     </section>
 
@@ -274,22 +245,43 @@
           <p class="education-degree">工业设计学士</p>
           <div class="education-record">
             <h4>本科阶段 · 个人荣誉</h4>
+            <p>2022.08　中国好创意暨全国数字艺术设计大赛 · 国家级三等奖 · 个人</p>
+            <p>2022.08　“上图杯”先进成图技术与创新设计大赛 · 市级二等奖 · 个人</p>
+          </div>
+        </article>
+      </div>
+      <details class="education-more reveal">
+        <summary>查看其余荣誉与志愿经历</summary>
+        <div class="education-more-grid">
+          <div>
+            <h3>其余荣誉</h3>
             <p>2022.02　上海市大学生创客大赛 · 市级三等奖 · 排名第一</p>
             <p>2022.07　上海市大学生工业设计大赛 · 市级三等奖 · 个人</p>
             <p>2022.07　中国“互联网+”大学生创新创业大赛 · 校级二等奖 · 排名第二</p>
-            <p>2022.08　中国好创意暨全国数字艺术设计大赛 · 国家级三等奖 · 个人</p>
-            <p>2022.08　“上图杯”先进成图技术与创新设计大赛 · 市级二等奖 · 个人</p>
             <p>2022.09　“汇创青春”上海大学生文化创意作品展示活动 · 市级二等奖 · 个人</p>
             <p>2022.11　全国大学生海洋文化创意设计大赛 · 国家级佳作奖 · 排名第二</p>
           </div>
-          <div class="education-record volunteer-record">
-            <h4>本科阶段 · 志愿经历</h4>
+          <div>
+            <h3>志愿与组织经历</h3>
             <p>2023　　第六届进博会优秀志愿者</p>
             <p>2021—2022　院学生会平面部部长</p>
             <p>疫情防控志愿者 · 百人大清滩优秀志愿者</p>
             <p>陆家嘴地铁站志愿者 · 徐悲鸿艺术学院迎新志愿者</p>
           </div>
-        </article>
+        </div>
+      </details>
+    </section>
+
+    <section class="contact-strip" id="contact" aria-labelledby="contactTitle">
+      <div class="contact-copy reveal">
+        <p class="section-kicker">CONTACT / 联系我</p>
+        <h2 id="contactTitle">期待把判断做成真正落地的产品。</h2>
+        <p>正在寻找 2027 届智能硬件或智能座舱产品经理校招机会。</p>
+      </div>
+      <div class="contact-links reveal" aria-label="联系方式">
+        <a href="mailto:runmengM@outlook.com"><span>EMAIL</span><strong>runmengM@outlook.com</strong></a>
+        <a href="tel:+8615539920387"><span>PHONE / WECHAT</span><strong>155-3992-0387</strong></a>
+        <a href="assets/resume.pdf" target="_blank" rel="noopener"><span>RESUME</span><strong>查看简历 PDF ↗</strong></a>
       </div>
     </section>
 
@@ -305,17 +297,28 @@
       <div class="twin-console reveal" aria-label="数字分身交流区域">
         <div class="twin-console-head"><span>你的问题</span><span id="twinStatus">在线对话</span></div>
         <div class="twin-console-body">
-          <span class="twin-orbit" aria-hidden="true"></span>
           <div class="twin-chat-messages" id="twinMessages" aria-live="polite">
-            <p class="twin-chat-message assistant">你好呀，我是马润萌。想问项目、产品思路，或者我本人，都可以聊。</p>
+            <p class="twin-chat-message assistant">你好呀，我是马润萌。想问项目或产品思路，都可以聊。</p>
           </div>
         </div>
         <div class="twin-console-guide" aria-label="对话引导">
-          <button class="twin-guide-row" type="button" data-prompt="想从哪里开始都可以。">
-            <strong>和我聊聊</strong><span>想从哪里开始都可以。</span>
+          <button class="twin-guide-row" type="button" data-prompt="你在做称重项目时，为什么不直接删掉余粮重量这一块？" aria-pressed="false">
+            <strong>问项目</strong>
+            <svg class="twin-guide-stroke" viewBox="0 0 120 40" preserveAspectRatio="none" aria-hidden="true">
+              <path pathLength="1" d="M9 20 C13 7 36 4 59 7 C87 3 111 11 109 21 C108 33 82 36 59 32 C32 36 8 31 9 20Z"></path>
+            </svg>
           </button>
-          <button class="twin-guide-row" type="button" data-prompt="从一个项目开始吧。比如，问我当时为什么会这样做。">
-            <strong>不知道问什么？</strong><span>从一个项目开始吧。比如，问我当时为什么会这样做。</span>
+          <button class="twin-guide-row" type="button" data-prompt="你通常怎么判断一个模糊问题到底值不值得做？" aria-pressed="false">
+            <strong>问方法</strong>
+            <svg class="twin-guide-stroke" viewBox="0 0 120 40" preserveAspectRatio="none" aria-hidden="true">
+              <path pathLength="1" d="M9 20 C13 7 36 4 59 7 C87 3 111 11 109 21 C108 33 82 36 59 32 C32 36 8 31 9 20Z"></path>
+            </svg>
+          </button>
+          <button class="twin-guide-row" type="button" data-prompt="从工业设计转向产品经理，你最明显的变化是什么？" aria-pressed="false">
+            <strong>问经历</strong>
+            <svg class="twin-guide-stroke" viewBox="0 0 120 40" preserveAspectRatio="none" aria-hidden="true">
+              <path pathLength="1" d="M9 20 C13 7 36 4 59 7 C87 3 111 11 109 21 C108 33 82 36 59 32 C32 36 8 31 9 20Z"></path>
+            </svg>
           </button>
         </div>
         <form class="twin-input-preview" id="twinChatForm">
@@ -323,17 +326,24 @@
           <button id="twinSend" type="submit">发送 ↗</button>
         </form>
       </div>
-      <div class="twin-invite reveal">
+        <div class="twin-invite ending-scene">
         <p class="twin-invite-kicker">NEXT / 继续往前</p>
-        <h2><span>还有很多东西，</span><span>我想亲手把它做出来。</span></h2>
-        <p>关于人，关于体验，也关于一个产品究竟还能好到什么程度。</p>
-        <p class="twin-invite-close">答案还没有想完。<br>那就继续做下去。</p>
-        <div class="twin-invite-art ending-hands-art" aria-label="两只手通过蓝线连接" role="img">
-          <img class="ending-hands" src="assets/illustrations/ending/hands-reference-cutout-v1.png" alt="两只手伸向中间的连接点" width="1536" height="1024">
-          <svg class="ending-hands-route" viewBox="0 0 1536 1024" preserveAspectRatio="none" aria-hidden="true">
-            <path id="endingHandsPath" pathLength="1" d="M374 512 C468 466 615 575 770 544 C886 521 994 516 1123 590 C1211 641 1262 660 1306 626 C1334 604 1362 596 1390 600"></path>
-            <circle class="ending-hands-bead" r="15" cx="770" cy="544"></circle>
-          </svg>
+        <div class="ending-screen ending-screen-opening">
+          <h2 class="ending-opening" aria-label="还有很多东西，我想继续把它做好。">
+            <span>还有很多东西，</span>
+            <span>我想继续把它做好。</span>
+          </h2>
+        </div>
+        <div class="ending-screen ending-screen-detail" aria-live="polite">
+          <p class="ending-detail" aria-label="关于真实的人，关于细小的感受，也关于一个产品还能不能再好一点。">
+            <span>关于真实的人，</span>
+            <span>关于细小的感受，</span>
+            <span>也关于一个产品</span>
+            <span>还能不能再好一点。</span>
+          </p>
+        </div>
+        <div class="ending-screen ending-screen-close">
+          <p class="twin-invite-close ending-close">我还在继续找答案。<br><span>也会继续做下去。</span></p>
         </div>
       </div>
     </section>

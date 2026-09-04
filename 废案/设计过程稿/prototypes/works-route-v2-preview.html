@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Works route v2 preview</title>
+  <style>
+    @font-face{font-family:RunmengSongti;src:url('../../assets/fonts/Songti.ttc') format('truetype');font-weight:400;font-display:swap}
+    :root{--paper:#f2efe7;--ink:#282722;--blue:#2f63e9;--line:rgba(27,27,24,.25)}
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--paper) url('../../assets/paper-texture.png') repeat;background-size:200px 200px;color:var(--ink);font-family:RunmengSongti,'Songti SC',serif}
+    body{padding:46px 54px 72px}
+    header{display:flex;align-items:end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--ink);padding-bottom:16px}
+    .eyebrow{color:var(--blue);font-size:12px;letter-spacing:.12em}
+    h1{margin:8px 0 0;font-size:48px;line-height:1.06;font-weight:400;letter-spacing:-.04em}
+    .note{max-width:300px;color:#77736b;font-size:13px;line-height:1.7}
+    .board{position:relative;width:min(100%,1100px);height:880px;margin:42px auto 0;overflow:hidden}
+    .route{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+    .route path{fill:none;stroke:var(--blue);stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;opacity:.84}
+    .node{position:absolute;width:13px;height:13px;border:2px solid var(--blue);border-radius:50%;background:var(--paper);z-index:3;box-shadow:0 0 0 6px color-mix(in srgb,var(--blue) 10%,transparent)}
+    .node:after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--blue)}
+    .n1{left:34.5%;top:14.3%}.n2{left:59%;top:31.5%}.n3{left:34.5%;top:51.2%}.n4{left:61%;top:71.2%}
+    .field{position:absolute;display:grid;align-items:center;gap:30px;width:46%;z-index:2}
+    .field img{display:block;width:100%;height:auto;mix-blend-mode:multiply}
+    .field .copy{display:grid;gap:8px}
+    .field .index{color:var(--blue);font-family:Georgia,serif;font-size:19px}
+    .field h2{margin:0;font-size:26px;line-height:1.2;font-weight:400;letter-spacing:-.03em}
+    .field p{margin:0;color:#77736b;font-size:14px;line-height:1.6}
+    .field a{width:max-content;margin-top:4px;color:var(--blue);font-size:13px;text-decoration:none;border-bottom:1px solid var(--blue);padding-bottom:3px}
+    .odd{grid-template-columns:1fr 1fr;left:0}.odd img{grid-column:1}.odd .copy{grid-column:2}.even{grid-template-columns:1fr 1fr;right:0}.even img{grid-column:2;grid-row:1}.even .copy{grid-column:1;grid-row:1;text-align:right;justify-items:end}
+    .f1{top:5%;}.f2{top:28%;}.f3{top:48%;}.f4{top:68%;}
+    .legend{display:flex;justify-content:center;gap:18px;margin-top:32px;color:#77736b;font-size:12px}.legend b{color:var(--blue);font-weight:400}
+  </style>
+</head>
+<body>
+  <header><div><div class="eyebrow">WORKS / ROUTE STUDY V2</div><h1>让四个项目被同一条线牵住。</h1></div><p class="note">静态构图参考：蓝线围绕图与文字形成连续路径；网页正式版仍由 HTML 文字与 SVG 线条独立渲染。</p></header>
+  <main class="board" aria-label="项目蓝线环绕构图预览">
+    <svg class="route" viewBox="0 0 1100 1500" preserveAspectRatio="none" aria-hidden="true"><path d="M380 220 C505 82 718 104 792 236 C855 348 774 438 648 482 C505 532 348 493 224 570 C90 654 191 775 365 776 C531 778 706 722 826 816 C951 914 845 1031 681 1074 C514 1118 346 1042 208 1148 C87 1240 197 1382 382 1375"></path></svg>
+    <span class="node n1" aria-hidden="true"></span><span class="node n2" aria-hidden="true"></span><span class="node n3" aria-hidden="true"></span><span class="node n4" aria-hidden="true"></span>
+    <article class="field odd f1"><img src="../../assets/illustrations/works/project-01.png" alt="" width="388" height="354"><div class="copy"><span class="index">01</span><h2>A 柱补盲</h2><p>复杂规则 / 跨系统协同 / 安全体验</p><a href="#">查看项目 ↗</a></div></article>
+    <article class="field even f2"><img src="../../assets/illustrations/works/project-02.png" alt="" width="414" height="372"><div class="copy"><span class="index">02</span><h2>称重与余粮体系重构</h2><p>软硬件协同 / 状态规则 / 端云职责</p><a href="#">查看项目 ↗</a></div></article>
+    <article class="field odd f3"><img src="../../assets/illustrations/works/project-03.png" alt="" width="405" height="358"><div class="copy"><span class="index">03</span><h2>米家智能宠物项圈</h2><p>用户洞察 / 产品定义 / 硬件取舍</p><a href="#">查看项目 ↗</a></div></article>
+    <article class="field even f4"><img src="../../assets/illustrations/works/project-04.png" alt="" width="430" height="360"><div class="copy"><span class="index">04</span><h2>PoopNow</h2><p>推荐策略 / 独立交付 / AI 辅助开发</p><a href="#">查看项目 ↗</a></div></article>
+  </main>
+  <div class="legend"><span><b>●</b> 节点在项目之间传递</span><span>蓝线可在网页中做轻微流动</span></div>
+</body>
+</html>

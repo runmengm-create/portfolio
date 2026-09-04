@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>最后一屏 | 三版对比</title>
+  <style>
+    :root {
+      --paper: #f2efe7;
+      --ink: #1b1b18;
+      --soft: #6f6b63;
+      --blue: #2f63e9;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: #dedbd3;
+      color: var(--ink);
+      font-family: "Hiragino Sans GB", "PingFang SC", sans-serif;
+    }
+
+    header {
+      width: min(100%, 1440px);
+      margin: 0 auto 1.5rem;
+    }
+
+    h1 {
+      margin: 0 0 0.4rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    header p {
+      margin: 0;
+      color: var(--soft);
+      font-size: 0.9rem;
+    }
+
+    .board {
+      display: grid;
+      width: min(100%, 1440px);
+      margin: 0 auto;
+      gap: 2rem;
+    }
+
+    article {
+      overflow: hidden;
+      background: var(--paper);
+      box-shadow: 0 18px 54px rgba(27, 27, 24, 0.12);
+    }
+
+    .caption {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid rgba(27, 27, 24, 0.16);
+    }
+
+    .caption strong {
+      color: var(--blue);
+      font-size: 0.9rem;
+    }
+
+    .caption span {
+      color: var(--soft);
+      font-size: 0.78rem;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 900px;
+      border: 0;
+      background: var(--paper);
+    }
+
+    @media (max-width: 760px) {
+      body { padding: 1rem; }
+      iframe { height: 1180px; }
+      .caption { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>最后一屏静态版式对比</h1>
+    <p>仅对 NEXT 结尾段落做静态排版。04、正式页面、交互和动效均未修改。</p>
+  </header>
+  <main class="board">
+    <article>
+      <div class="caption"><strong>A / 递进留白</strong><span>三段文案沿页面逐步推进，留白多，阅读节奏慢</span></div>
+      <iframe src="方案-A-递进留白.html" title="方案 A 递进留白"></iframe>
+    </article>
+    <article>
+      <div class="caption"><strong>B / 三段页章</strong><span>三个段落同时可见，结构最清楚，最像编辑排版</span></div>
+      <iframe src="方案-B-三段页章.html" title="方案 B 三段页章"></iframe>
+    </article>
+    <article>
+      <div class="caption"><strong>C / 聚焦落点</strong><span>主句更有力度，蓝线只负责把视线带向最后一句</span></div>
+      <iframe src="方案-C-聚焦落点.html" title="方案 C 聚焦落点"></iframe>
+    </article>
+  </main>
+</body>
+</html>

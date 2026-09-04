@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ending motion C — frame prototype</title>
+    <style>
+      :root { --paper: #f3eee7; --ink: #2d2b29; --blue: #326ee8; }
+      * { box-sizing: border-box; }
+      html, body { min-height: 100%; }
+      body {
+        margin: 0; background: var(--paper); color: var(--ink);
+        font-family: "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+      }
+      .stage { min-height: 100dvh; display: grid; place-items: center; overflow: hidden; }
+      .center { min-height: 100dvh; width: 100%; display: grid; place-items: center; padding: 44px 24px; text-align: center; }
+      .moment { width: min(960px, 100%); display: grid; place-items: center; }
+      .copy { margin: 0; font-size: clamp(34px, 5.2vw, 76px); line-height: 1.48; letter-spacing: .035em; font-weight: 400; }
+      .copy.small { font-size: clamp(24px, 3vw, 42px); line-height: 1.8; }
+      .copy.final { font-size: clamp(30px, 4.2vw, 60px); line-height: 1.65; }
+      .line { display: block; animation: text-in 900ms cubic-bezier(.2,.75,.2,1) both; }
+      .line:nth-child(2) { animation-delay: 220ms; }
+      .line:nth-child(3) { animation-delay: 440ms; }
+      .line:nth-child(4) { animation-delay: 660ms; }
+      .intro { cursor: pointer; user-select: none; }
+      .hint, .replay { color: var(--blue); font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; font-size: 13px; letter-spacing: .12em; }
+      .hint { margin: 38px 0 0; opacity: .82; }
+      .art { width: min(980px, 94vw); display: grid; place-items: center; }
+      .frame { display: block; width: 100%; height: auto; aspect-ratio: 512 / 250; object-fit: cover; object-position: center; filter: saturate(.92) contrast(.98); }
+      .frame.is-changing { animation: frame-cut 120ms steps(1, end) both; }
+      .middle, .final { animation: text-in 1100ms cubic-bezier(.2,.75,.2,1) both; }
+      .replay { margin-top: 42px; border: 0; border-bottom: 1px solid currentColor; padding: 0 0 5px; background: transparent; cursor: pointer; }
+      [hidden] { display: none !important; }
+      @keyframes text-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes text-out { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-12px); } }
+      @keyframes frame-cut { 0% { opacity: .5; } 100% { opacity: 1; } }
+      .intro.is-leaving { animation: text-out 520ms ease both; }
+      @media (max-width: 640px) { .center { padding-inline: 14px; } .copy { letter-spacing: 0; } .art { width: 100vw; } }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; } }
+    </style>
+  </head>
+  <body>
+    <main class="stage" aria-live="polite">
+      <div class="center">
+        <section class="moment intro" id="intro" role="button" tabindex="0" aria-label="点击开始动效">
+          <p class="copy"><span class="line">还有很多东西，</span><span class="line">我想继续把它做好。</span></p>
+          <p class="hint">点击开始</p>
+        </section>
+        <section class="moment" id="artMoment" hidden>
+          <div class="art"><img class="frame" id="frame" src="ending-c-frames/frame-01.png" alt="抽象的两只手，蓝线从手指之间穿过" /></div>
+        </section>
+        <section class="moment middle" id="middle" hidden>
+          <p class="copy small"><span class="line">关于真实的人，</span><span class="line">关于细小的感受，</span><span class="line">也关于一个产品</span><span class="line">还能不能再好一点。</span></p>
+        </section>
+        <section class="moment final" id="final" hidden>
+          <p class="copy final"><span class="line">我还在继续找答案。</span><span class="line">也会继续做下去。</span></p>
+          <button class="replay" id="replay" type="button">再看一次</button>
+        </section>
+      </div>
+    </main>
+    <script>
+      const frameEl = document.querySelector('#frame');
+      const intro = document.querySelector('#intro');
+      const artMoment = document.querySelector('#artMoment');
+      const middle = document.querySelector('#middle');
+      const final = document.querySelector('#final');
+      const replay = document.querySelector('#replay');
+      const frames = [1, 2, 3, 4, 5, 6].map((n) => `ending-c-frames/frame-0${n}.png`);
+      const frameGap = 820;
+      let started = false;
+      let timers = [];
+      frames.slice(1).forEach((src) => { const image = new Image(); image.src = src; });
+      function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+      function showOnly(section) { [intro, artMoment, middle, final].forEach((item) => { item.hidden = item !== section; }); }
+      function swapFrame(index) {
+        frameEl.classList.remove('is-changing'); void frameEl.offsetWidth;
+        frameEl.src = frames[index]; frameEl.classList.add('is-changing');
+        frameEl.alt = index === 5 ? '抽象的两只摊开的手，蓝线缠在手指上并落在掌心' : '抽象的两只手，蓝线正在穿过并缠绕';
+      }
+      function play() {
+        clearTimers(); started = true; intro.classList.add('is-leaving');
+        timers.push(setTimeout(() => {
+          showOnly(artMoment); swapFrame(0);
+          frames.slice(1).forEach((_, index) => { timers.push(setTimeout(() => swapFrame(index + 1), frameGap * (index + 1))); });
+          timers.push(setTimeout(() => showOnly(middle), frameGap * frames.length + 900));
+          timers.push(setTimeout(() => showOnly(final), frameGap * frames.length + 3300));
+        }, 520));
+      }
+      function restart() { showOnly(intro); intro.classList.remove('is-leaving'); started = false; play(); }
+      intro.addEventListener('click', () => { if (!started) play(); });
+      intro.addEventListener('keydown', (event) => { if ((event.key === 'Enter' || event.key === ' ') && !started) { event.preventDefault(); play(); } });
+      replay.addEventListener('click', restart);
+    </script>
+  </body>
+</html>

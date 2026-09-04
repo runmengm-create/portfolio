@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1672 941" role="img" aria-labelledby="title desc">
+  <title id="title">教育经历文字排版候选稿</title>
+  <desc id="desc">以年份、学校、学院、学位和研究方向构成的米白纸面文字排版，不含具象插画。</desc>
+  <defs>
+    <pattern id="paper" width="160" height="160" patternUnits="userSpaceOnUse">
+      <path d="M12 34c18-15 28 11 44-5s24 4 39-6 22 4 40-10M18 118c16-11 24 6 39-5s24 8 40-3 24 8 48-6M88 18c-10 14 6 22-5 36s6 24-4 38" fill="none" stroke="#1b1b18" stroke-opacity=".045" stroke-width="1.1" stroke-linecap="round"/>
+    </pattern>
+  </defs>
+
+  <rect width="1672" height="941" fill="#f2efe7"/>
+  <rect width="1672" height="941" fill="url(#paper)"/>
+
+  <g fill="#1b1b18" font-family="Noto Sans CJK SC, PingFang SC, Hiragino Sans GB, sans-serif">
+    <text x="106" y="142" font-size="58" font-weight="600" letter-spacing="-3">教育经历</text>
+    <text x="108" y="194" font-size="20" fill="#66635b" letter-spacing="-0.5">从设计训练，到产品判断。</text>
+  </g>
+  <path d="M106 226H604" stroke="#1b1b18" stroke-opacity=".36" stroke-width="1.5"/>
+
+  <g fill="#1b1b18" font-family="Noto Sans CJK SC, PingFang SC, Hiragino Sans GB, sans-serif">
+    <text x="112" y="382" font-size="118" font-weight="500" letter-spacing="-8">2024-2027</text>
+    <text x="112" y="486" font-size="68" font-weight="600" letter-spacing="-4">东华大学</text>
+    <text x="116" y="536" font-size="23" fill="#66635b" letter-spacing="-0.8">机械工程学院</text>
+    <text x="116" y="628" font-size="38" font-weight="500" letter-spacing="-2">机械硕士</text>
+    <text x="116" y="672" font-size="21" fill="#66635b" letter-spacing="-0.7"><tspan fill="#1b1b18" font-weight="600">研究方向：</tspan>工业设计工程</text>
+
+    <text x="1002" y="536" font-size="78" font-weight="500" letter-spacing="-5">2020-2024</text>
+    <text x="1002" y="624" font-size="52" font-weight="600" letter-spacing="-3">上海海事大学</text>
+    <text x="1006" y="672" font-size="22" fill="#66635b" letter-spacing="-0.8">徐悲鸿艺术学院</text>
+    <text x="1006" y="754" font-size="32" font-weight="500" letter-spacing="-1.8">工业设计学士</text>
+  </g>
+
+  <path d="M720 400c110 5 160 20 218 76 26 24 44 42 72 58" fill="none" stroke="#2f63e9" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="720" cy="400" r="7" fill="#2f63e9"/>
+  <path d="M116 706H434" stroke="#1b1b18" stroke-opacity=".24" stroke-width="1.5"/>
+  <path d="M1006 794H1288" stroke="#2f63e9" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

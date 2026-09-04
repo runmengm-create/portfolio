@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Font reference sheet</title>
+  <style>
+    @font-face{font-family:RunmengSongti;src:url('../../assets/fonts/Songti.ttc') format('truetype');font-weight:400;font-display:swap}
+    @font-face{font-family:RunmengSans;src:url('../../assets/fonts/Hiragino-Sans-GB.ttc') format('truetype');font-weight:400;font-display:swap}
+    :root{--paper:#f2efe7;--ink:#282722;--blue:#2f63e9;--soft:#77736b;--line:rgba(27,27,24,.24)}
+    *{box-sizing:border-box}html,body{margin:0;background:var(--paper) url('../../assets/paper-texture.png') repeat;background-size:200px 200px;color:var(--ink)}
+    body{padding:48px 64px 72px;font-family:RunmengSongti,'Songti SC',serif}
+    header{display:flex;justify-content:space-between;align-items:end;gap:40px;border-bottom:1px solid var(--ink);padding-bottom:18px}
+    .kicker{color:var(--blue);font:400 12px/1.4 Georgia,serif;letter-spacing:.14em}.note{max-width:390px;color:var(--soft);font-size:14px;line-height:1.7}
+    h1{margin:10px 0 0;font-size:48px;font-weight:400;letter-spacing:-.04em;line-height:1.08}
+    .sheet{display:grid;gap:0;margin-top:34px;border-top:1px solid var(--line)}
+    .row{display:grid;grid-template-columns:220px minmax(0,1fr);gap:30px;padding:24px 0 30px;border-bottom:1px solid rgba(27,27,24,.22)}
+    .label{display:grid;align-content:start;gap:6px}.label strong{font:400 17px/1.3 Georgia,serif}.label span{color:var(--soft);font-size:13px;line-height:1.5}
+    .sample{font-size:38px;line-height:1.15;letter-spacing:-.035em}.sub{margin-top:10px;color:var(--soft);font-size:15px;line-height:1.7}
+    .songti-file{font-family:RunmengSongti,'Songti SC',serif}.songti-system{font-family:'Songti SC','STSong',serif}.stsong{font-family:STSong,'Songti SC',serif}.sans-file{font-family:RunmengSans,'Hiragino Sans GB',sans-serif}.pingfang{font-family:'PingFang SC','Hiragino Sans GB',sans-serif}.hiragino{font-family:'Hiragino Sans GB','PingFang SC',sans-serif}
+    .footer{margin-top:26px;color:var(--soft);font-size:13px;line-height:1.7}
+  </style>
+</head>
+<body>
+  <header><div><div class="kicker">TYPE STUDY / FONT REFERENCES</div><h1>从复杂系统中，做出产品判断。</h1></div><p class="note">只做字体对比，不改正式网页。重点看字面厚度、横竖笔画、数字与中文混排的轻盈程度。</p></header>
+  <main class="sheet">
+    <section class="row"><div class="label"><strong>A / 当前字体文件</strong><span>Runmeng Songti · assets/fonts/Songti.ttc</span></div><div><div class="sample songti-file">把问题拆开，再一起收口。</div><p class="sub songti-file">2020—2024　上海海事大学　工业设计学士</p></div></section>
+    <section class="row"><div class="label"><strong>B / 系统宋体</strong><span>Songti SC · macOS system</span></div><div><div class="sample songti-system">把问题拆开，再一起收口。</div><p class="sub songti-system">2020—2024　上海海事大学　工业设计学士</p></div></section>
+    <section class="row"><div class="label"><strong>C / 华文宋体</strong><span>STSong · system fallback</span></div><div><div class="sample stsong">把问题拆开，再一起收口。</div><p class="sub stsong">2020—2024　上海海事大学　工业设计学士</p></div></section>
+    <section class="row"><div class="label"><strong>D / 当前无衬线文件</strong><span>Runmeng Sans · assets/fonts/Hiragino-Sans-GB.ttc</span></div><div><div class="sample sans-file">把问题拆开，再一起收口。</div><p class="sub sans-file">2020—2024　上海海事大学　工业设计学士</p></div></section>
+    <section class="row"><div class="label"><strong>E / 苹方</strong><span>PingFang SC · system sans</span></div><div><div class="sample pingfang">把问题拆开，再一起收口。</div><p class="sub pingfang">2020—2024　上海海事大学　工业设计学士</p></div></section>
+    <section class="row"><div class="label"><strong>F / 冬青黑体</strong><span>Hiragino Sans GB · system sans</span></div><div><div class="sample hiragino">把问题拆开，再一起收口。</div><p class="sub hiragino">2020—2024　上海海事大学　工业设计学士</p></div></section>
+  </main>
+  <p class="footer">正式网页暂时保留当前宋体版本；你确认字体编号后，我再替换字体文件与全局字体变量。</p>
+</body>
+</html>

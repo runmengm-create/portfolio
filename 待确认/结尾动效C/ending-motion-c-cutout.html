@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ending motion C — text only</title>
+    <style>
+      :root { --paper: #f3eee7; --ink: #2d2b29; --blue: #326ee8; }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Songti SC", "STSong", "Noto Serif CJK SC", serif; }
+      .ending { min-height: 100dvh; display: grid; place-items: center; overflow: hidden; padding: 48px 24px; background: radial-gradient(circle at 50% 42%, rgba(255,255,255,.24), transparent 52%), var(--paper); }
+      .moment { width: min(960px, 100%); display: grid; place-items: center; text-align: center; opacity: 0; pointer-events: none; position: absolute; transform: translateY(14px); }
+      .moment.is-visible { opacity: 1; pointer-events: auto; position: relative; transform: translateY(0); }
+      .copy { margin: 0; font-size: clamp(34px, 5.2vw, 76px); line-height: 1.48; letter-spacing: .035em; font-weight: 400; }
+      .copy.small { font-size: clamp(24px, 3vw, 42px); line-height: 1.8; }
+      .copy.final { font-size: clamp(30px, 4.2vw, 60px); line-height: 1.65; }
+      .line { display: block; opacity: 0; transform: translateY(14px); }
+      .is-visible .line { animation: text-in 1100ms cubic-bezier(.2,.75,.2,1) both; }
+      .is-visible .line:nth-child(2) { animation-delay: 780ms; }
+      .middle .line:nth-child(3) { animation-delay: 1560ms; }
+      .middle .line:nth-child(4) { animation-delay: 2340ms; }
+      .final .line:nth-child(2) { color: var(--blue); animation-delay: 900ms; }
+      @keyframes text-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes text-out { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-14px); } }
+      .moment.is-leaving { position: absolute; animation: text-out 620ms ease both; }
+      @media (max-width: 640px) { .ending { padding-inline: 14px; } .copy { letter-spacing: 0; } }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; } }
+    </style>
+  </head>
+  <body>
+    <section class="ending" id="ending" aria-live="polite">
+      <div class="moment is-visible" id="first">
+        <p class="copy"><span class="line">还有很多东西，</span><span class="line">我想继续把它做好。</span></p>
+      </div>
+      <div class="moment" id="middle">
+        <p class="copy small"><span class="line">关于真实的人，</span><span class="line">关于细小的感受，</span><span class="line">也关于一个产品</span><span class="line">还能不能再好一点。</span></p>
+      </div>
+      <div class="moment" id="final">
+        <p class="copy final"><span class="line">我还在继续找答案。</span><span class="line">也会继续做下去。</span></p>
+      </div>
+    </section>
+
+    <script>
+      const ending = document.querySelector('#ending');
+      const moments = [document.querySelector('#first'), document.querySelector('#middle'), document.querySelector('#final')];
+      const waits = [3000, 5600];
+      let timers = [];
+      let playing = false;
+
+      function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+      function show(index) {
+        moments.forEach((moment, momentIndex) => {
+          moment.classList.toggle('is-visible', momentIndex === index);
+          moment.classList.toggle('is-leaving', momentIndex !== index && moment.classList.contains('is-visible'));
+        });
+      }
+      function play() {
+        clearTimers(); playing = true;
+        show(0);
+        timers.push(setTimeout(() => show(1), waits[0]));
+        timers.push(setTimeout(() => show(2), waits[1]));
+        timers.push(setTimeout(() => { playing = false; }, waits[1] + 1600));
+      }
+      function reset() { clearTimers(); playing = false; moments.forEach((moment) => moment.classList.remove('is-visible', 'is-leaving')); }
+
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio >= .55 && !playing) play();
+        if (!entry.isIntersecting && entry.boundingClientRect.top > 0) reset();
+      }, { threshold: [.55] });
+      observer.observe(ending);
+    </script>
+  </body>
+</html>

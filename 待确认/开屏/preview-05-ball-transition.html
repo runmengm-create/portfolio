@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Renee · 开屏动效原型</title>
+  <style>
+    :root {
+      --paper: #f2efe7;
+      --ink: #25241f;
+      --blue: #2f63e9;
+      --soft: #817c73;
+      --ease: cubic-bezier(.16, 1, .3, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      min-width: 320px;
+      min-height: 100%;
+      margin: 0;
+      background: var(--paper) url("../../assets/paper-texture.png") repeat;
+      background-size: 200px 200px;
+      color: var(--ink);
+    }
+
+    body {
+      min-height: 100dvh;
+      overflow: hidden;
+      font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
+    }
+
+    .entry-stage {
+      position: relative;
+      display: grid;
+      min-height: 100dvh;
+      place-items: center;
+      isolation: isolate;
+      --ripple-x: 50%;
+      --ripple-y: 50%;
+    }
+
+    .entry-stage::before,
+    .entry-stage::after {
+      position: absolute;
+      inset: 8vh 7vw;
+      border: 1px solid rgba(37, 36, 31, .12);
+      border-radius: 50%;
+      content: "";
+      pointer-events: none;
+    }
+
+    /* The entry is intentionally quiet; the water ripple belongs to the
+       click-to-enter transition, not to the idle state. */
+    .entry-stage::before,
+    .entry-stage::after { display: none; }
+
+    .entry-stage::after {
+      inset: 16vh 18vw;
+      border-color: rgba(47, 99, 233, .12);
+    }
+
+    .entry-core {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      justify-items: center;
+      gap: 2.5rem;
+      width: min(86vw, 38rem);
+      text-align: center;
+    }
+
+    .name-button {
+      position: relative;
+      display: inline-grid;
+      place-items: center;
+      min-width: 12rem;
+      padding: 1.8rem 2.4rem 1.6rem;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      font: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .name-button:focus-visible {
+      outline: 1px solid var(--blue);
+      outline-offset: .65rem;
+    }
+
+    .wordmark {
+      position: relative;
+      display: block;
+      font-family: Arial, "Helvetica Neue", sans-serif;
+      font-size: clamp(4rem, 12vw, 8.5rem);
+      font-weight: 700;
+      letter-spacing: -.08em;
+      line-height: .86;
+    }
+
+    .ball {
+      position: absolute;
+      top: 1.05rem;
+      left: 58%;
+      width: clamp(.7rem, 1.25vw, 1rem);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 .5rem .75rem rgba(47, 99, 233, .18);
+      z-index: 1;
+      transform: translate(-50%, -7rem);
+      animation: ball-drop 1.7s var(--ease) .25s forwards;
+    }
+
+    .ball::after {
+      position: absolute;
+      right: 50%;
+      bottom: -.55rem;
+      width: 2.1rem;
+      height: .35rem;
+      border-radius: 50%;
+      background: rgba(47, 99, 233, .18);
+      content: "";
+      filter: blur(4px);
+      opacity: .1;
+      transform: translateX(50%) scale(.25);
+      animation: ball-shadow 1.7s var(--ease) .25s forwards;
+    }
+
+    .entry-hint {
+      color: var(--soft);
+      font-size: .72rem;
+      letter-spacing: .14em;
+    }
+
+    .ripple {
+      position: fixed;
+      z-index: 3;
+      top: var(--ripple-y);
+      left: var(--ripple-x);
+      width: 1.25rem;
+      height: 1.25rem;
+      border: .75px solid var(--blue);
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+    }
+
+    .ripple:nth-child(2) { border-color: rgba(47, 99, 233, .72); }
+    .ripple:nth-child(3) { border-color: rgba(47, 99, 233, .4); }
+
+    .is-transitioning .entry-core,
+    .entry-stage.is-transitioning::before,
+    .entry-stage.is-transitioning::after {
+      animation: entry-fade .58s ease forwards;
+    }
+
+    .is-transitioning .ripple {
+      animation: ripple-expand .84s var(--ease) forwards;
+    }
+
+    .is-transitioning .ripple:nth-child(2) { animation-delay: .08s; }
+    .is-transitioning .ripple:nth-child(3) { animation-delay: .16s; }
+
+    @keyframes ball-drop {
+      0% { opacity: 0; transform: translate(-50%, -7rem) scale(.8); }
+      45% { opacity: 1; transform: translate(-50%, .72rem) scale(1.03); }
+      65% { transform: translate(-50%, -.2rem) scale(.98); }
+      81% { transform: translate(-50%, .18rem) scale(1.01); }
+      100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+    }
+
+    @keyframes ball-shadow {
+      0%, 40% { opacity: .1; transform: translateX(50%) scale(.25); }
+      52% { opacity: .72; transform: translateX(50%) scale(1); }
+      100% { opacity: .34; transform: translateX(50%) scale(.7); }
+    }
+
+    @keyframes ripple-expand {
+      0% { width: 1.25rem; height: 1.25rem; opacity: .72; }
+      72% { opacity: .26; }
+      100% { width: 180vmax; height: 180vmax; opacity: 0; }
+    }
+
+    @keyframes entry-fade {
+      to { opacity: 0; transform: scale(.985); }
+    }
+
+    @media (max-width: 640px) {
+      .entry-core { gap: 2rem; }
+      .name-button { min-width: 10rem; padding-inline: 1.2rem; }
+      .wordmark { font-size: clamp(4rem, 21vw, 6.2rem); }
+      .ball { top: .95rem; left: 58%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ball,
+      .ball::after { animation: none; }
+      .ball { opacity: 1; transform: translate(-50%, 0); }
+      .ball::after { opacity: .34; transform: translateX(50%) scale(.7); }
+      .is-transitioning .ripple { animation-duration: .18s; }
+      .is-transitioning .entry-core,
+      .is-transitioning .entry-stage::before,
+      .is-transitioning .entry-stage::after { animation-duration: .18s; }
+    }
+  </style>
+</head>
+<body>
+  <main class="entry-stage" id="entryStage">
+    <div class="entry-core">
+      <button class="name-button" id="enterButton" type="button" aria-label="进入 Renee 的作品集">
+        <span class="wordmark">Renee<span class="ball" aria-hidden="true"></span></span>
+      </button>
+      <p class="entry-hint">CLICK TO ENTER</p>
+    </div>
+    <span class="ripple" aria-hidden="true"></span>
+    <span class="ripple" aria-hidden="true"></span>
+    <span class="ripple" aria-hidden="true"></span>
+  </main>
+  <script>
+    const stage = document.getElementById("entryStage");
+    const enterButton = document.getElementById("enterButton");
+    let transitioning = false;
+
+    enterButton.addEventListener("click", () => {
+      if (transitioning) return;
+      transitioning = true;
+      const ball = enterButton.querySelector(".ball");
+      const ballRect = ball.getBoundingClientRect();
+      stage.style.setProperty("--ripple-x", `${ballRect.left + ballRect.width / 2}px`);
+      stage.style.setProperty("--ripple-y", `${ballRect.top + ballRect.height / 2}px`);
+      stage.classList.add("is-transitioning");
+      window.setTimeout(() => {
+        window.location.href = "preview-05-ball-detail.html";
+      }, 780);
+    });
+  </script>
+</body>
+</html>

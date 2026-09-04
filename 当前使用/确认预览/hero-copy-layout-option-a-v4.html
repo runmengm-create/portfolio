@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>首屏 · 产品思考</title>
+  <style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f6f2ea;
+      color: #1d1b19;
+      font-family: "Songti SC", "Noto Serif CJK SC", serif;
+    }
+    .frame {
+      width: 1600px;
+      min-height: 900px;
+      margin: 0 auto;
+      padding: 70px 90px 76px;
+      background: #f6f2ea url("../../assets/paper-texture.png") repeat;
+      background-size: 420px auto;
+      overflow: hidden;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 860px 1fr;
+      gap: 94px;
+      align-items: center;
+      min-height: 752px;
+    }
+    .art {
+      position: relative;
+      width: 860px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .art img {
+      display: block;
+      width: 780px;
+      height: auto;
+    }
+    .art-caption {
+      position: absolute;
+      right: 28px;
+      bottom: 22px;
+      color: #1d1b19;
+      font-size: 20px;
+      line-height: 1.45;
+    }
+    .art-caption small {
+      display: block;
+      margin-bottom: 6px;
+      color: #2f6df6;
+      font: 13px/1.3 Arial, sans-serif;
+      letter-spacing: .14em;
+    }
+    .copy {
+      max-width: 450px;
+      padding-top: 28px;
+    }
+    .eyebrow {
+      margin-bottom: 44px;
+      color: #2f6df6;
+      font: 15px/1.4 Arial, sans-serif;
+      letter-spacing: .2em;
+    }
+    h1 {
+      margin: 0;
+      font-size: 54px;
+      line-height: 1.42;
+      font-weight: 500;
+      letter-spacing: .02em;
+    }
+    .copy p {
+      max-width: 390px;
+      margin: 44px 0 0;
+      color: #68635b;
+      font-size: 22px;
+      line-height: 1.8;
+    }
+    .copy .rule {
+      width: 118px;
+      height: 1px;
+      margin-top: 54px;
+      background: #1d1b19;
+    }
+  </style>
+</head>
+<body>
+  <main class="frame">
+    <div class="layout">
+      <div class="art">
+        <img src="../../assets/illustrations/hero/system-panel-v1.png" alt="两个约束节点由线路连接的产品思考图形">
+        <div class="art-caption"><small>PRODUCT THINKING</small>让判断在约束中成形</div>
+      </div>
+      <section class="copy">
+        <div class="eyebrow">PRODUCT THINKING</div>
+        <h1>你好，先把问题看清楚，<br>再让它往前走。</h1>
+        <p>我从真实场景出发，把复杂判断整理成可以落地的下一步。</p>
+        <div class="rule"></div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

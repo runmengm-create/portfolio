@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>最后一屏方案 B | 三段页章</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .prototype {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100dvh;
+    }
+
+    .chapter-head {
+      padding-bottom: clamp(1.5rem, 2.6vw, 2.5rem);
+      border-bottom: 1px solid var(--blue);
+    }
+
+    .sequence {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr 0.82fr;
+      gap: clamp(2rem, 5vw, 6rem);
+      align-items: center;
+      min-height: clamp(34rem, 71vh, 49rem);
+    }
+
+    .beat {
+      position: relative;
+      padding-top: 2.2rem;
+    }
+
+    .beat::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2.4rem;
+      height: 1px;
+      background: var(--blue);
+      content: "";
+    }
+
+    .beat-one {
+      grid-area: 1 / 3;
+      justify-self: end;
+      width: min(32vw, 28rem);
+      text-align: right;
+      align-self: start;
+      margin-top: clamp(5rem, 12vh, 10rem);
+    }
+
+    .beat-one::before {
+      right: 0;
+      left: auto;
+    }
+
+    .beat-two {
+      grid-area: 1 / 2;
+      align-self: center;
+    }
+
+    .beat-three {
+      grid-area: 1 / 3;
+      align-self: end;
+      margin-bottom: clamp(4rem, 9vh, 7rem);
+    }
+
+    .ending-lead {
+      font-size: clamp(2.7rem, 4.4vw, 4.8rem);
+      line-height: 1.3;
+    }
+
+    .ending-detail {
+      max-width: 27ch;
+      font-size: clamp(1rem, 1.4vw, 1.28rem);
+    }
+
+    .ending-close {
+      font-size: clamp(1.45rem, 2.2vw, 2.25rem);
+    }
+
+    @media (max-width: 760px) {
+      .sequence {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        min-height: 40rem;
+        padding: 3.5rem 0;
+      }
+
+      .beat-one,
+      .beat-two,
+      .beat-three {
+        grid-area: auto;
+        width: auto;
+        align-self: auto;
+        margin: 0;
+      }
+
+      .beat-one {
+        width: 100%;
+      }
+
+      .beat-two {
+        margin-left: 14%;
+      }
+
+      .beat-three {
+        margin-left: 28%;
+      }
+
+      .ending-lead {
+        font-size: clamp(2.5rem, 12vw, 3.8rem);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="prototype">
+    <header class="chapter-head">
+      <p class="next-label">NEXT / 继续往前</p>
+    </header>
+    <section class="sequence" aria-label="继续往前">
+      <div class="beat beat-one">
+        <h1 class="ending-lead"><span>还有很多东西，</span><span>我想继续把它做好。</span></h1>
+      </div>
+      <div class="beat beat-two">
+        <p class="ending-detail">关于真实的人，关于细小的感受，也关于一个产品还能不能再好一点。</p>
+      </div>
+      <div class="beat beat-three">
+        <p class="ending-close"><span>我还在继续找答案。</span><span>也会继续做下去。</span></p>
+      </div>
+    </section>
+    <footer class="site-footer"><span>© 2026 马润萌</span><span>SMART HARDWARE PRODUCT MANAGER</span></footer>
+  </main>
+</body>
+</html>

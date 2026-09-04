@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>最后一屏方案 A | 递进留白</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .prototype {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-rows: auto 1fr auto;
+      gap: 0 clamp(0.8rem, 1.4vw, 1.5rem);
+      min-height: 100dvh;
+    }
+
+    .next-label {
+      grid-column: 1 / 5;
+      grid-row: 1;
+      align-self: start;
+    }
+
+    .sequence {
+      position: relative;
+      display: grid;
+      grid-column: 1 / -1;
+      grid-row: 2;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-rows: repeat(3, 1fr);
+      gap: 0 clamp(0.8rem, 1.4vw, 1.5rem);
+      min-height: clamp(34rem, 69vh, 48rem);
+      padding: clamp(2rem, 6vh, 5rem) 0 clamp(1.5rem, 4vh, 3.5rem);
+    }
+
+    .sequence::before {
+      position: absolute;
+      top: 43%;
+      right: 28%;
+      left: 0;
+      height: 1px;
+      background: var(--blue);
+      content: "";
+    }
+
+    .sequence::after {
+      position: absolute;
+      right: 0;
+      bottom: 24%;
+      width: 31%;
+      height: 1px;
+      background: var(--line);
+      content: "";
+    }
+
+    .ending-lead {
+      grid-column: 1 / 7;
+      grid-row: 1;
+      align-self: center;
+      font-size: clamp(2.8rem, 5vw, 5.4rem);
+      line-height: 1.25;
+    }
+
+    .ending-detail {
+      grid-column: 6 / 10;
+      grid-row: 2;
+      align-self: center;
+      max-width: 27ch;
+      padding: 0.8rem 0 0 1.4rem;
+      background: var(--paper);
+      font-size: clamp(1rem, 1.35vw, 1.25rem);
+    }
+
+    .ending-close {
+      grid-column: 9 / 13;
+      grid-row: 3;
+      align-self: center;
+      padding-left: 1.5rem;
+      background: var(--paper);
+      font-size: clamp(1.45rem, 2.25vw, 2.35rem);
+    }
+
+    .site-footer {
+      grid-column: 1 / -1;
+      grid-row: 3;
+    }
+
+    @media (max-width: 760px) {
+      .sequence {
+        display: flex;
+        min-height: 35rem;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 3rem;
+        padding: 4rem 0 3rem;
+      }
+
+      .sequence::before {
+        top: 40%;
+        right: 0;
+      }
+
+      .sequence::after {
+        right: 0;
+        bottom: 28%;
+        width: 58%;
+      }
+
+      .ending-lead {
+        max-width: none;
+        font-size: clamp(2.15rem, 9vw, 3rem);
+      }
+
+      .ending-detail {
+        align-self: flex-end;
+        max-width: 22ch;
+        padding-left: 1rem;
+      }
+
+      .ending-close {
+        align-self: flex-end;
+        max-width: 13rem;
+        padding-left: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="prototype">
+    <p class="next-label">NEXT / 继续往前</p>
+    <section class="sequence" aria-label="继续往前">
+      <h1 class="ending-lead"><span>还有很多东西，</span><span>我想继续把它做好。</span></h1>
+      <p class="ending-detail">关于真实的人，关于细小的感受，也关于一个产品还能不能再好一点。</p>
+      <p class="ending-close"><span>我还在继续找答案。</span><span>也会继续做下去。</span></p>
+    </section>
+    <footer class="site-footer"><span>© 2026 马润萌</span><span>SMART HARDWARE PRODUCT MANAGER</span></footer>
+  </main>
+</body>
+</html>
