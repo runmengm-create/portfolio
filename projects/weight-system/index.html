@@ -1,2 +1,172 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>称重与余粮体系重构｜项目预览</title><link rel="stylesheet" href="../project-pages.css"></head><body><main class="project-placeholder"><p class="eyebrow">PROJECT 02 / SELECTED WORK</p><h1>称重与余粮体系重构</h1><p>软硬件协同 / 状态规则 / 端云职责</p><p class="placeholder-note">项目详情页占位，等待完整 case study 接入。</p><a href="../../#works">← 返回项目列表</a></main></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="智能喂食器称重与余粮体系重构案例。">
+  <title>称重与余粮体系重构 · Case Study</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../case-study-shared.css">
+</head>
+<body>
+  <div id="progress" aria-hidden="true"></div>
+  <nav class="case-nav" aria-label="项目导航">
+    <a class="nav-back" href="../../#works">← 返回作品集</a>
+    <span class="nav-label">称重与余粮 · Case Study</span>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <span class="eyebrow" data-reveal>Product Experience · Case Study</span>
+        <h1 class="hero-title" data-reveal>称重与余粮<span class="accent">体系重构</span></h1>
+        <p class="hero-sub" data-reveal>从“食盆还剩多少”，追问到“宠物今天吃够了吗”。围绕当日进食量，重新组织称重、出粮与喂食信息。</p>
+        <div class="tags" data-reveal>
+          <span class="pill accent">问题定义</span>
+          <span class="pill accent">体系重构</span>
+          <span class="pill">软硬件协同</span>
+        </div>
+        <div class="hero-meta" data-reveal>
+          <div><div class="meta-label">角色</div><div class="meta-value">整机产品经理实习生</div></div>
+          <div><div class="meta-label">负责范围</div><div class="meta-value">问题定义、进食量与余粮体系重构<br>软硬件及端云协同</div></div>
+          <div><div class="meta-label">阶段</div><div class="meta-value">已上线<br>已获得用户反馈</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-kicker" data-reveal>01&nbsp;&nbsp;追问问题</div>
+        <h2 class="section-title" data-reveal>用户为什么需要知道<span>余粮重量？</span></h2>
+        <p class="section-body" data-reveal>余粮显示偏差是项目的起点。我继续追问，用户查看这个数字，是为了做什么判断？往下拆解后，真正关心的是宠物当天吃了多少、是否吃够，以及接下来如何安排喂食。食盆余粮是回答这些问题的一个维度。</p>
+        <div class="question-ladder" data-question-ladder data-reveal="scale">
+          <div class="question-step" data-question-step>
+            <span class="question-number">01 / SURFACE</span>
+            <div><div class="question-text">余粮重量显示有偏差</div><div class="question-desc">这是被用户直接感知到的表面问题。</div></div>
+          </div>
+          <div class="question-step" data-question-step>
+            <span class="question-number">02 / ASK</span>
+            <div><div class="question-text">用户为什么在意这个数字？</div><div class="question-desc">重量本身不是最终目标，需要继续追问它要支持什么判断。</div></div>
+          </div>
+          <div class="question-step" data-question-step>
+            <span class="question-number">03 / NEED</span>
+            <div><div class="question-text">宠物今天吃了多少，是否吃够？</div><div class="question-desc">用户想理解的是一天中的进食情况，而不是某个时刻的孤立读数。</div></div>
+          </div>
+          <div class="question-step" data-question-step>
+            <span class="question-number">04 / PRODUCT GOAL</span>
+            <div><div class="question-text">围绕当日进食情况构建体系</div><div class="question-desc">余粮、出粮与进食记录共同服务于这个目标。</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-kicker" data-reveal>02&nbsp;&nbsp;目标重定义</div>
+        <h2 class="section-title" data-reveal>从一个重量数字，到<span>一天的进食情况</span></h2>
+        <p class="section-body" data-reveal>当目标转向当日进食情况，产品需要解释不同数据各自代表什么。我将设备出粮、宠物进食与食盆余粮分开表达，并把它们与当天的喂食安排联系起来。</p>
+        <div class="reframe" data-reveal="scale" data-reframe>
+          <div class="reframe-block old">
+            <div class="reframe-tag">Question at first</div>
+            <div class="reframe-title">余粮显示存在偏差</div>
+          </div>
+          <div class="reframe-connector">keep asking</div>
+          <div class="reframe-block new">
+            <div class="reframe-tag">Product goal</div>
+            <div class="reframe-title">帮助用户理解当日进食情况</div>
+          </div>
+        </div>
+        <div class="meaning-list" data-reveal data-meaning-list>
+          <div class="meaning-item" data-meaning-item><b>出粮量</b><span>设备投放了多少，说明喂食计划执行到哪里。</span></div>
+          <div class="meaning-item" data-meaning-item><b>进食量</b><span>宠物当天累计吃了多少，承接今日记录与事件。</span></div>
+          <div class="meaning-item" data-meaning-item><b>余粮</b><span>食盆当前还剩多少，作为理解当日状态的一个维度。</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wide-wrap">
+        <div class="section-kicker" data-reveal>03&nbsp;&nbsp;信息重组</div>
+        <h2 class="section-title" data-reveal>把喂食过程组织成<span>能理解的信息</span></h2>
+        <p class="section-body" data-reveal>围绕新的目标，首页区分累计出粮、累计进食和剩余待执行计划；今日记录承接进食统计与事件查看，余粮模块保留当前状态、克重和更新时间，让每一类信息都有明确用途。</p>
+        <div class="data-switcher" data-reveal="scale">
+          <div class="data-copy">
+            <span class="micro-label">Information model</span>
+            <h3 data-data-title aria-live="polite">累计进食</h3>
+            <p data-data-body aria-live="polite">今日记录承接宠物当天的进食统计，让用户先看过程，再理解当前状态。</p>
+            <div class="data-buttons" role="group" aria-label="切换喂食信息示意">
+              <button class="data-btn" type="button" data-data-view="feeding" aria-pressed="true">进食记录</button>
+              <button class="data-btn" type="button" data-data-view="output" aria-pressed="false">喂食执行</button>
+              <button class="data-btn" type="button" data-data-view="remainder" aria-pressed="false">当前余粮</button>
+            </div>
+          </div>
+          <div class="data-panel" role="region" aria-label="喂食信息组织示意">
+            <div class="panel-header"><span class="panel-title" data-data-title>累计进食</span><span class="panel-meta"><span class="panel-state"><span class="status-dot" aria-hidden="true"></span><span data-data-state>TRACKING / TODAY</span></span><span class="panel-caption" data-data-caption>today / feeding</span></span></div>
+            <div class="panel-body">
+              <div class="panel-row selected" data-data-row><span data-row-label>累计进食克重</span><span data-row-value>按记录汇总</span></div>
+              <div class="panel-row" data-data-row><span data-row-label>查看事件</span><span data-row-value>可筛选</span></div>
+              <div class="panel-row" data-data-row><span data-row-label>关联计划</span><span data-row-value>继续执行</span></div>
+            </div>
+            <div class="panel-foot">方案示意。不同信息分别表达，不将计划出粮完成情况写成宠物进食达成率。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wide-wrap">
+        <div class="section-kicker" data-reveal>04&nbsp;&nbsp;体系落地</div>
+        <h2 class="section-title" data-reveal>让新逻辑覆盖<span>完整使用过程</span></h2>
+        <p class="section-body" data-reveal>新体系同时覆盖新用户建档和老用户已有计划。我将信息录入、测试出粮、计划衔接与校准异常纳入流程，并拆解固件、插件与云端职责，推动多端按照统一规则实现。</p>
+        <div class="path-pair" data-reveal="scale" data-path-pair>
+          <div class="path">
+            <div class="path-label">New user path</div>
+            <div class="path-steps"><span class="path-step" data-path-step>信息录入</span><span class="path-arrow" data-path-step>→</span><span class="path-step" data-path-step>测试出粮</span><span class="path-arrow" data-path-step>→</span><span class="path-step" data-path-step>推荐计划</span></div>
+          </div>
+          <div class="path">
+            <div class="path-label">Existing user path</div>
+            <div class="path-steps"><span class="path-step" data-path-step>校准</span><span class="path-arrow" data-path-step>→</span><span class="path-step" data-path-step>测试出粮</span><span class="path-arrow" data-path-step>→</span><span class="path-step" data-path-step>既有计划衔接</span></div>
+          </div>
+        </div>
+        <div class="roles" data-reveal data-roles>
+          <div class="role-item" data-role-item><span class="item-index">APP</span><b>插件</b><span>录入信息、下发指令、展示状态和计划。</span></div>
+          <div class="role-item" data-role-item><span class="item-index">DEVICE</span><b>固件</b><span>执行出粮、采样并上报状态。</span></div>
+          <div class="role-item" data-role-item><span class="item-index">CLOUD</span><b>云端</b><span>处理档案、样本、判定与计划存储。</span></div>
+        </div>
+        <p class="support-note" data-reveal>对复杂的余粮异常分支，先评估它是否影响今日出粮与进食统计，再决定处理优先级。</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-kicker" data-reveal>05&nbsp;&nbsp;上线反馈</div>
+        <h2 class="section-title" data-reveal>重新定义问题之后，看<span>实际反馈</span></h2>
+        <div class="metric-result" data-reveal="scale">
+          <div class="metric-number" aria-label="余粮相关投诉占全部反馈比例下降约 2 个百分点"><span class="metric-prefix">↓ 约</span><span class="metric-value"><span data-counter data-target="2" data-decimals="0" aria-hidden="true">0</span><small>个百分点</small></span></div>
+          <div class="metric-copy">
+            <p>项目上线后，通过私域反馈群持续跟踪用户反馈，<strong>余粮相关投诉占全部反馈的比例较此前下降约 2 个百分点。</strong></p>
+            <div class="metric-source">来源：上线后私域反馈群 · 口径：占全部反馈的比例</div>
+          </div>
+        </div>
+        <div class="results" data-reveal>
+          <div class="result-row"><span class="result-mark" aria-hidden="true"></span><span>完整 OTA6 PRD 与多端规则评审</span></div>
+          <div class="result-row"><span class="result-mark" aria-hidden="true"></span><span>围绕当日进食情况重组产品信息</span></div>
+          <div class="result-row"><span class="result-mark" aria-hidden="true"></span><span>完成上线交付并持续跟踪反馈</span></div>
+        </div>
+        <div class="takeaway" data-reveal="scale">
+          <span class="takeaway-label">PM Takeaway</span>
+          <p>最关键的判断发生在方案设计之前：继续追问用户为什么需要这个数字。当问题推进到“宠物今天吃了多少、是否吃够”，需要设计的内容也扩展为围绕进食情况建立的一整套产品体系。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="case-footer">
+    <div class="wrap footer-inner">
+      <span class="footer-info">Case Study · 70mai · 2026</span>
+      <a class="footer-back" href="../../#works">← 返回作品集 ↗</a>
+    </div>
+  </footer>
+  <script src="../case-study-shared.js" defer></script>
+</body>
+</html>

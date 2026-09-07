@@ -3,6 +3,7 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matc
 const entry = document.getElementById("entry");
 const enterButton = document.getElementById("enterButton");
 let hasEntered = false;
+const landingHash = window.location.hash;
 
 function enterSite() {
   if (hasEntered) return;
@@ -21,6 +22,16 @@ enterButton.addEventListener("click", enterSite);
 document.addEventListener("keydown", (event) => {
   if (event.key === "Enter" && !hasEntered) enterSite();
 });
+
+if (landingHash === "#works") {
+  enterSite();
+  window.setTimeout(() => {
+    document.getElementById("works")?.scrollIntoView({
+      behavior: reducedMotion ? "auto" : "smooth",
+      block: "start"
+    });
+  }, reducedMotion ? 40 : 1000);
+}
 
 const revealObserver = typeof IntersectionObserver === "function" ? new IntersectionObserver((entries, observer) => {
   entries.forEach((entryItem) => {

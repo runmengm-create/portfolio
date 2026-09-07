@@ -1,2 +1,154 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>A 柱补盲｜项目预览</title><link rel="stylesheet" href="../project-pages.css"></head><body><main class="project-placeholder"><p class="eyebrow">PROJECT 01 / SELECTED WORK</p><h1>A 柱补盲</h1><p>复杂规则 / 跨系统协同 / 安全体验</p><p class="placeholder-note">项目详情页占位，等待完整 case study 接入。</p><a href="../../#works">← 返回项目列表</a></main></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A 柱补盲座舱侧功能定义与开发推进案例。">
+  <title>A 柱补盲 · Case Study</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../case-study-shared.css">
+</head>
+<body>
+  <div id="progress" aria-hidden="true"></div>
+  <nav class="case-nav" aria-label="项目导航">
+    <a class="nav-back" href="../../#works">← 返回作品集</a>
+    <span class="nav-label">A 柱补盲 · Case Study</span>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <span class="eyebrow" data-reveal>Product Definition · Case Study</span>
+        <h1 class="hero-title" data-reveal>A 柱<span class="accent">补盲</span></h1>
+        <p class="hero-sub" data-reveal>围绕萤火虫现有影像能力的缺口，引入成熟的补盲体验，完成座舱侧功能定义、车型适配与跨团队开发推进。</p>
+        <div class="tags" data-reveal>
+          <span class="pill accent">复杂规则</span>
+          <span class="pill accent">跨系统协同</span>
+          <span class="pill">安全体验</span>
+        </div>
+        <div class="hero-meta" data-reveal>
+          <div><div class="meta-label">角色</div><div class="meta-value">智能座舱产品经理实习生<br>座舱侧功能 Owner</div></div>
+          <div><div class="meta-label">负责范围</div><div class="meta-value">功能规则<br>交互方案与车型适配</div></div>
+          <div><div class="meta-label">阶段</div><div class="meta-value">方案收口<br>推进开发</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-kicker" data-reveal>01&nbsp;&nbsp;能力缺口</div>
+        <h2 class="section-title" data-reveal>补齐影像体验中的<span>一块能力</span></h2>
+        <p class="section-body" data-reveal>项目围绕萤火虫的影像能力补齐展开。我负责座舱侧功能方案，将成熟的补盲体验转化为适用于当前车型的交互与规则，并推动相关团队对齐实现边界。</p>
+        <div class="rule-grid" data-reveal="scale">
+          <div class="rule-item">
+            <span class="item-index">NEED / 01</span>
+            <div class="item-title">需要补齐</div>
+            <p class="item-desc">补盲影像能力，让车辆侧后方的辅助信息在合适的场景中进入座舱视野。</p>
+          </div>
+          <div class="rule-item">
+            <span class="item-index">MY SCOPE / 02</span>
+            <div class="item-title">我的负责范围</div>
+            <p class="item-desc">座舱功能定义、显示与提示规则、车型适配，以及跨团队实现边界对齐。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wide-wrap">
+        <div class="section-kicker" data-reveal>02&nbsp;&nbsp;方案选择</div>
+        <h2 class="section-title" data-reveal>让需要的视图<span>清晰出现</span></h2>
+        <p class="section-body" data-reveal>沿用成熟补盲交互的基本逻辑，明确功能何时进入、显示哪一侧，以及条件变化后如何保持或退出。规则设计服务于完整、可执行的车型方案。</p>
+        <div class="view-demo" data-reveal="scale">
+          <div class="view-copy">
+            <span class="micro-label">View state</span>
+            <h3 data-view-title aria-live="polite">左侧视图</h3>
+            <p data-view-body aria-live="polite">当左侧区域需要补盲信息时，对应视图获得清晰反馈，帮助驾驶者理解当前显示内容。</p>
+            <div class="view-status" aria-live="polite"><span class="status-dot" aria-hidden="true"></span><span data-view-status>LEFT SIGNAL ACTIVE</span></div>
+            <div class="view-controls" role="group" aria-label="切换补盲视图示意">
+              <button class="view-btn" type="button" data-view="left" aria-pressed="true">左侧视图</button>
+              <button class="view-btn" type="button" data-view="right" aria-pressed="false">右侧视图</button>
+              <button class="view-btn" type="button" data-view="exit" aria-pressed="false">退出显示</button>
+            </div>
+          </div>
+          <div class="view-illustration">
+            <div class="cockpit" role="img" aria-label="座舱显示区域示意，展示左侧、中央和右侧视图区域">
+              <div class="cockpit-top"><span>Cabin display / schematic</span><span>functional view</span></div>
+              <div class="cockpit-screen">
+                <div class="screen-zone active" data-screen-zone="left"><span class="zone-scan" aria-hidden="true"></span><span class="screen-label">left view</span></div>
+                <div class="screen-zone screen-center" data-screen-zone="center"><span>main display</span></div>
+                <div class="screen-zone" data-screen-zone="right"><span class="zone-scan" aria-hidden="true"></span><span class="screen-label">right view</span></div>
+              </div>
+              <div class="demo-note">功能示意，不对应实际界面布局。此处只说明视图对应关系，不表示感知算法或自动驾驶能力。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-kicker" data-reveal>03&nbsp;&nbsp;车型适配</div>
+        <h2 class="section-title" data-reveal>把通用体验落实到<span>具体规则</span></h2>
+        <p class="section-body" data-reveal>围绕左右视图、显示区域、风险提示、功能冲突和异常恢复，补齐当前车型的座舱侧规则，并明确状态变化后的处理方式。</p>
+        <div class="numbered-list" data-reveal="scale" data-motion-list="rules">
+          <div class="numbered-row" data-motion-row>
+            <span class="item-index">01</span>
+            <div><div class="item-title">视图与显示对应</div><p class="item-desc">明确左右视图与显示区域的对应关系，减少信息出现位置与用户预期之间的偏差。</p></div>
+          </div>
+          <div class="numbered-row" data-motion-row>
+            <span class="item-index">02</span>
+            <div><div class="item-title">提示与优先级</div><p class="item-desc">把影像、风险提示和其他座舱信息放在同一套优先级与冲突规则中处理。</p></div>
+          </div>
+          <div class="numbered-row" data-motion-row>
+            <span class="item-index">03</span>
+            <div><div class="item-title">退出与异常恢复</div><p class="item-desc">补齐条件结束、显示被打断和能力不可用时的退出、降级与恢复路径。</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wide-wrap">
+        <div class="section-kicker" data-reveal>04&nbsp;&nbsp;协同推进</div>
+        <h2 class="section-title" data-reveal>让输入、判断与<span>显示对齐</span></h2>
+        <p class="section-body" data-reveal>我协同感知、车辆状态、座舱、仪表和研发等角色，对齐信号条件、显示规则与异常边界，完成方案评审收口并推进开发。</p>
+        <div class="flow-diagram" data-reveal="scale" role="img" aria-label="感知与车辆状态经过座舱功能规则，形成影像与风险提示">
+          <div class="flow-track" data-flow-track>
+            <div class="flow-node" data-flow-node><span>Input</span><b>感知与车辆状态</b><span>上下游能力输入</span></div>
+            <div class="flow-arrow" data-flow-arrow aria-hidden="true">→</div>
+            <div class="flow-node blue-node" data-flow-node><span>Decision</span><b>座舱功能规则</b><span>我的负责范围</span></div>
+            <div class="flow-arrow" data-flow-arrow aria-hidden="true">→</div>
+            <div class="flow-node" data-flow-node><span>Output</span><b>影像与风险提示</b><span>用户可见反馈</span></div>
+          </div>
+          <p class="flow-caption">跨团队协同的核心，是把输入条件、座舱判断和最终显示写进同一套实现规则。</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-kicker" data-reveal>05&nbsp;&nbsp;阶段成果</div>
+        <h2 class="section-title" data-reveal>把成熟能力推进到<span>可落地的方案</span></h2>
+        <div class="results" data-reveal="scale">
+          <div class="result-row"><span class="result-mark" aria-hidden="true"></span><span>座舱侧功能规则与交互方案</span></div>
+          <div class="result-row"><span class="result-mark" aria-hidden="true"></span><span>跨团队评审与方案收口</span></div>
+          <div class="result-row"><span class="result-mark" aria-hidden="true"></span><span>推进版本开发</span></div>
+        </div>
+        <div class="takeaway" data-reveal="scale">
+          <span class="takeaway-label">PM Takeaway</span>
+          <p>这个项目的重点，是把成熟能力补齐到具体车型中。明确适配范围，补全状态变化和异常处理，再让相关团队依据一致的规则推进实现，是我在其中承担的主要工作。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="case-footer">
+    <div class="wrap footer-inner">
+      <span class="footer-info">Case Study · NIO · 2026</span>
+      <a class="footer-back" href="../../#works">← 返回作品集 ↗</a>
+    </div>
+  </footer>
+  <script src="../case-study-shared.js" defer></script>
+</body>
+</html>
